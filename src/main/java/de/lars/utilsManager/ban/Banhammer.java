@@ -1,0 +1,115 @@
+package de.lars.utilsManager.ban;
+
+import de.lars.apiManager.banAPI.BanAPI;
+import de.lars.apiManager.rankAPI.RankAPI;
+import de.lars.utilsManager.utils.RankStatements;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Objects;
+
+public class Banhammer implements Listener {
+    private String name;
+    private String Itemname;
+    private ItemMeta itemMeta;
+    private String displayName;
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        if (event.getRightClicked().getType() != EntityType.PLAYER) {
+            return;
+        }
+
+        if (!(player.hasPermission("plugin.ban"))) {
+            return;
+        }
+
+        if (!event.getPlayer().getItemInHand().getType().equals(Material.NETHERITE_HOE)) {
+            return;
+        }
+
+        if (!Objects.equals(event.getPlayer().getItemInHand().getItemMeta().getDisplayName(), "Banhammer")) {
+            return;
+        }
+
+        Player banned = (Player) event.getRightClicked();
+        BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", 7);
+        sendDiscordMessage(player, 7, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!");
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(EntityDamageByEntityEvent event) {
+        if (event.getEntity().getType() != EntityType.PLAYER) {
+            return;
+        }
+        if (event.getDamager().getType() != EntityType.PLAYER) {
+            return;
+        }
+        Player player = (Player) event.getDamager();
+
+        if(!(RankAPI.getApi().getRankID(player) >= 9)) {
+            return;
+        }
+
+        if(!player.getItemInHand().getType().equals(Material.NETHERITE_HOE)) {
+            return;
+        }
+
+        if(!Objects.equals(player.getItemInHand().getItemMeta().getDisplayName(), "Banhammer")) {
+            return;
+        }
+
+        Player banned = (Player) event.getEntity();
+        BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", 7);
+        sendDiscordMessage(player, 7, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!");
+    }
+
+    private void sendDiscordMessage(Player tragetPlayer, Integer time, String reason) {
+        try {
+            URL url = new URL("https://discord.com/api/v9/channels/" + channelId + "/messages");
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.addRequestProperty("Authorization", "Bot " + botToken);
+            connection.addRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            String jsonPayload = "{\n" +
+                    "    \"mobile_network_type\": \"unknown\",\n" +
+                    "    \"content\": \"" + "Der Spieler " + RankStatements.getUnformattedRank(tragetPlayer) + tragetPlayer.getName() + " wurde bestraft für " + NamedTextColor.BLUE + time + NamedTextColor.YELLOW + " Tage und dem Grund " + NamedTextColor.GREEN + reason + NamedTextColor.YELLOW + "!" + "\",\n" +
+                    "    \"tts\": false,\n" +
+                    "    \"flags\": 0\n" +
+                    "}";
+
+            try (OutputStream outputStream = connection.getOutputStream()) {
+                byte[] input = jsonPayload.getBytes("utf-8");
+                outputStream.write(input, 0, input.length);
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
