@@ -75,13 +75,13 @@ public final class Main extends JavaPlugin {
             protocolManager = ProtocolLibrary.getProtocolManager();
         }
         instance = this;
-        backpackManager = new BackpackManager();
-        tablistManager = new TablistManager();
-        rankManager = new RankManager();
     }
 
     @Override
     public void onEnable() {
+        backpackManager = new BackpackManager();
+        tablistManager = new TablistManager();
+        rankManager = new RankManager();
         timer = new Timer();
         realTime = new RealTime();
         //bankText = new BankText();
