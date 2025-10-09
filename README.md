@@ -20,4 +20,10 @@ paper-plugin.yml
 
 config.yml
 
-These files must be present in the final JAR so that Paper can load your plugin and its configuration correctly.
+Additionally this libarys extracted in the build.
+
+org.java-websocket:Java-WebSocket
+
+org.slf4j:slf4j-api
+
+These files and libarys must be present in the final JAR so that Paper can load your plugin and its configuration correctly.
