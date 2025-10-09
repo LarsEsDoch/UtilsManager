@@ -2,6 +2,7 @@ package de.lars.utilsManager.DiscordBot;
 
 import de.lars.apiManager.dataAPI.DataAPI;
 import de.lars.utilsManager.utils.RankStatements;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,12 +23,14 @@ public class DiscordBot {
     private final String botToken;
     private final String serverStatusChannelID;
     private final String playerStatusChannelID;
+    private final String punishmentsChannelID;
 
-    public DiscordBot(String token, String applicationID, String serverChannelID, String playerChannelID) {
+    public DiscordBot(String token, String applicationID, String serverChannelID, String playerChannelID, String punishmentsChannelId) {
         startTime = LocalDateTime.now();
         botToken = token;
         serverStatusChannelID = serverChannelID;
         playerStatusChannelID = playerChannelID;
+        punishmentsChannelID = punishmentsChannelId;
 
         try {
             URL url = new URL("https://discord.com/api/v10/applications/" + applicationID + "/commands");
@@ -278,6 +281,88 @@ public class DiscordBot {
             String jsonPayload = "{\n" +
                     "    \"mobile_network_type\": \"unknown\",\n" +
                     "    \"content\": \"" + messageContent + "\",\n" +
+                    "    \"tts\": false,\n" +
+                    "    \"flags\": 0\n" +
+                    "}";
+
+            try (OutputStream outputStream = connection.getOutputStream()) {
+                byte[] input = jsonPayload.getBytes("utf-8");
+                outputStream.write(input, 0, input.length);
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendBanMessage(Player tragetPlayer, Integer time, String reason) {
+        try {
+            URL url = new URL("https://discord.com/api/v9/channels/" + punishmentsChannelID + "/messages");
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.addRequestProperty("Authorization", "Bot " + botToken);
+            connection.addRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            String jsonPayload = "{\n" +
+                    "    \"mobile_network_type\": \"unknown\",\n" +
+                    "    \"content\": \"" + "Der Spieler " + RankStatements.getUnformattedRank(tragetPlayer) + tragetPlayer.getName() + " wurde bestraft für " + NamedTextColor.BLUE + time + NamedTextColor.YELLOW + " Tage und dem Grund " + NamedTextColor.GREEN + reason + NamedTextColor.YELLOW + "!" + "\",\n" +
+                    "    \"tts\": false,\n" +
+                    "    \"flags\": 0\n" +
+                    "}";
+
+            try (OutputStream outputStream = connection.getOutputStream()) {
+                byte[] input = jsonPayload.getBytes("utf-8");
+                outputStream.write(input, 0, input.length);
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendKickMessage(Player tragetPlayer, Integer time, String reason) {
+        String timeString;
+        if (time == 0) {
+            timeString = "den ";
+        } else {
+            int seconds = time % 60;
+            int minutes = (time / 60) % 60;
+            int hours = (time / 3600);
+            String formatedTime = String.format("%02d Stunden %02d Minuten %02d Sekunden", hours, minutes, seconds);
+            timeString = formatedTime + " und dem ";
+        }
+        try {
+            URL url = new URL("https://discord.com/api/v9/channels/" + punishmentsChannelID + "/messages");
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.addRequestProperty("Authorization", "Bot " + botToken);
+            connection.addRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            String jsonPayload = "{\n" +
+                    "    \"mobile_network_type\": \"unknown\",\n" +
+                    "    \"content\": \"" + "Der Spieler " + RankStatements.getUnformattedRank(tragetPlayer) + tragetPlayer.getName() + " wurde gekickt für " + timeString + "Grund " + reason + "!" + "\",\n" +
                     "    \"tts\": false,\n" +
                     "    \"flags\": 0\n" +
                     "}";

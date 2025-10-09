@@ -107,7 +107,7 @@ public class KickCommand implements BasicCommand {
                         .append(Component.text("!", NamedTextColor.WHITE)));
             }
             kickPlayer.kick(reasonComponent);
-            //sendDiscordMessage(kickPlayer, 0, reason.toString());
+            Main.getInstance().getDiscordBot().sendKickMessage(kickPlayer, 0, reason.toString());
         } else {
             Main.getInstance().getKickManager().setKicked(kickPlayer, reason.toString(), time);
             int seconds = time % 60;
@@ -130,7 +130,7 @@ public class KickCommand implements BasicCommand {
                         .append(Component.text(time, NamedTextColor.RED))
                         .append(Component.text( " seconds!", NamedTextColor.WHITE)));
             }
-            //sendDiscordMessage(kickPlayer, time, reason.toString());
+            Main.getInstance().getDiscordBot().sendKickMessage(kickPlayer, time, reason.toString());
         }
     }
 
@@ -140,52 +140,6 @@ public class KickCommand implements BasicCommand {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/kick <Spieler> (<Grund>) (<Länge in Sec>)");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/kick <Player> (<Reason>) (<Period in sec>)");
-        }
-    }
-
-    private void sendDiscordMessage(Player tragetPlayer, Integer time, String reason) {
-        String timeString;
-        if (time == 0) {
-            timeString = "den ";
-        } else {
-            int seconds = time % 60;
-            int minutes = (time / 60) % 60;
-            int hours = (time / 3600);
-            String formatedTime = String.format("%02d Stunden %02d Minuten %02d Sekunden", hours, minutes, seconds);
-            timeString = formatedTime + " und dem ";
-        }
-        try {
-            URL url = new URL("https://discord.com/api/v9/channels/" + channelId + "/messages");
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.addRequestProperty("Authorization", "Bot " + botToken);
-            connection.addRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-
-            String jsonPayload = "{\n" +
-                    "    \"mobile_network_type\": \"unknown\",\n" +
-                    "    \"content\": \"" + "Der Spieler " + RankStatements.getUnformattedRank(tragetPlayer) + tragetPlayer.getName() + " wurde gekickt für " + timeString + "Grund " + reason + "!" + "\",\n" +
-                    "    \"tts\": false,\n" +
-                    "    \"flags\": 0\n" +
-                    "}";
-
-            try (OutputStream outputStream = connection.getOutputStream()) {
-                byte[] input = jsonPayload.getBytes("utf-8");
-                outputStream.write(input, 0, input.length);
-            }
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            connection.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

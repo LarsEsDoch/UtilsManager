@@ -103,8 +103,9 @@ public final class Main extends JavaPlugin {
         String applicationID = getConfig().getString("discord.applicationID");
         String serverStatusChannelID = getConfig().getString("discord.serverStatusChannelID");
         String playerStatusChannelID = getConfig().getString("discord.playerStatusChannelID") ;
+        String punishmentsChannelID = getConfig().getString("discord.punishmentsChannelID");
 
-        discordBot = new DiscordBot(botToken, applicationID, serverStatusChannelID, playerStatusChannelID);
+        discordBot = new DiscordBot(botToken, applicationID, serverStatusChannelID, playerStatusChannelID, punishmentsChannelID);
 
         new RecipeLoader().registerRecipes();
         // entitysSummons.EntitysSummons();

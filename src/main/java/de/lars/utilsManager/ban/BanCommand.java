@@ -3,6 +3,7 @@ package de.lars.utilsManager.ban;
 import de.lars.apiManager.banAPI.BanAPI;
 import de.lars.apiManager.languageAPI.LanguageAPI;
 import de.lars.apiManager.rankAPI.RankAPI;
+import de.lars.utilsManager.Main;
 import de.lars.utilsManager.utils.RankStatements;
 import de.lars.utilsManager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -130,18 +131,7 @@ public class BanCommand implements BasicCommand {
                     .append(Component.text(".", NamedTextColor.YELLOW)));
         }
         BanAPI.getApi().setBanned(player, reason, time);
-        sendDiscordMessage(player, time, reason);
-    }
-
-    public String concatenateArgs(String[] args) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i < args.length; i++) {
-            sb.append(args[i]);
-            if (i < args.length - 1) {
-                sb.append(" ");
-            }
-        }
-        return sb.toString();
+        Main.getInstance().getDiscordBot().sendBanMessage(player, time, reason);
     }
 
     private void sendUsage(Player player) {
@@ -153,42 +143,6 @@ public class BanCommand implements BasicCommand {
             player.sendMessage(Component.text("Use", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/ban <Player> <Time> <Reason>", NamedTextColor.BLUE)));
-        }
-    }
-
-    private void sendBanDiscordMessage(Player tragetPlayer, Integer time, String reason) {
-        try {
-            URL url = new URL("https://discord.com/api/v9/channels/" + channelId + "/messages");
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.addRequestProperty("Authorization", "Bot " + botToken);
-            connection.addRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-
-            String jsonPayload = "{\n" +
-                    "    \"mobile_network_type\": \"unknown\",\n" +
-                    "    \"content\": \"" + "Der Spieler " + RankStatements.getUnformattedRank(tragetPlayer) + tragetPlayer.getName() + " wurde bestraft für " + NamedTextColor.BLUE + time + NamedTextColor.YELLOW + " Tage und dem Grund " + NamedTextColor.GREEN + reason + NamedTextColor.YELLOW + "!" + "\",\n" +
-                    "    \"tts\": false,\n" +
-                    "    \"flags\": 0\n" +
-                    "}";
-
-            try (OutputStream outputStream = connection.getOutputStream()) {
-                byte[] input = jsonPayload.getBytes("utf-8");
-                outputStream.write(input, 0, input.length);
-            }
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            connection.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
