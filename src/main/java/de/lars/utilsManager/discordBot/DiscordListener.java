@@ -3,7 +3,10 @@ package de.lars.utilsManager.discordBot;
 import de.lars.apiManager.languageAPI.LanguageAPI;
 import de.lars.utilsManager.utils.Statements;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -12,12 +15,40 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DiscordListener extends ListenerAdapter {
+
+    @Override
+    public void onReady(@NotNull ReadyEvent event) {
+        event.getJDA().updateCommands()
+            .addCommands(
+            Commands.slash("status", "Zeigt den Status des Minecraft-Servers"),
+            Commands.slash("players", "Zeigt eine Liste der Spieler, die online sind"),
+
+            Commands.slash("whitelist_add", "Fügt einen Spieler zur Whitelist hinzu")
+                .addOption(OptionType.STRING, "name", "Name des Spielers", true),
+
+            Commands.slash("whitelist_remove", "Entfernt einen Spieler von der Whitelist")
+                .addOption(OptionType.STRING, "name", "Name des Spielers", true),
+
+            Commands.slash("say", "Sendet eine Nachricht in den Minecraft-Chat")
+                .addOption(OptionType.STRING, "nachricht", "Die Nachricht, die gesendet werden soll", true),
+
+            Commands.slash("msg", "Sendet eine private Nachricht an einen Spieler")
+                .addOption(OptionType.STRING, "spieler", "Name des Spielers", true)
+                .addOption(OptionType.STRING, "nachricht", "Nachricht, die an den Spieler gesendet wird", true),
+
+            Commands.slash("broadcast", "Sendet eine Broadcast-Nachricht an alle Spieler")
+                .addOption(OptionType.STRING, "nachricht", "Nachricht, die gesendet werden soll", true)
+        )
+        .queue();
+        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Discord bot commands registered!", NamedTextColor.GREEN)));
+    }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -29,6 +60,13 @@ public class DiscordListener extends ListenerAdapter {
             case "say" -> handleSay(event);
             case "msg" -> handleMsg(event);
             case "broadcast" -> handleBroadcast(event);
+            //case "deaths" -> handleDeaths(event);
+            //case "coords" -> handleCoords(event);
+            //case "economy" -> handleEconomy(event);
+            //case "kick" -> handleKick(event);
+            //case "ban" -> handleBan(event);
+            //case "unban" -> handleUnban(event);
+            //case "mute" -> handleMute(event);
         }
     }
 

@@ -49,8 +49,7 @@ public class DiscordBot {
 
             jda.getPresence().setStatus(OnlineStatus.ONLINE);
             jda.getPresence().setActivity(Activity.playing("Minecraft auf "+ Bukkit.getIp()));
-
-            Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Discord bot started and registered!!", NamedTextColor.GREEN)));
+            Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Discord bot started!", NamedTextColor.GREEN)));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -63,6 +62,7 @@ public class DiscordBot {
 
         String message = "Der Server ist nun offline!\\nEr war für " + Duration.between(startTime, endTime).toMinutes() + " Minuten aktiv!";
         sendStatusMessage(message);
+
         if (jda != null) {
             jda.shutdownNow();
         }
