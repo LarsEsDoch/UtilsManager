@@ -48,7 +48,8 @@ public class Banhammer implements Listener {
 
         Player banned = (Player) event.getRightClicked();
         BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", 7);
-        Main.getInstance().getDiscordBot().sendBanMessage(player, 7, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!");
+        String message = "Der Spieler " + RankStatements.getUnformattedRank(banned) + banned.getName() + " wurde von" + RankStatements.getRank(player) + player.getName() + " gebannt für 7 Tage !";
+        Main.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
 
     @EventHandler
@@ -75,6 +76,7 @@ public class Banhammer implements Listener {
 
         Player banned = (Player) event.getEntity();
         BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", 7);
-        Main.getInstance().getDiscordBot().sendBanMessage(player, 7, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!");
+        String message = "Der Spieler " + RankStatements.getUnformattedRank(banned) + banned.getName() + " wurde von" + RankStatements.getUnformattedRank(player) + player.getName() + " gebannt für 7 Tage !";
+        Main.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
 }

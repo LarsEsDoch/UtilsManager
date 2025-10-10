@@ -136,7 +136,18 @@ public class JoinListener implements Listener {
             Main.getInstance().getRangManager().setPerm();
             Main.getInstance().getTablistManager().setTabList(player);
             Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), bukkitTask -> {
-                //Main.getInstance().getDiscordBot().sendPlayerOnMessage(player);
+                StringBuilder message;
+
+                if (Bukkit.getOnlinePlayers().size() > 1) {
+                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\\n\\nEs sind aktuell " + Bukkit.getOnlinePlayers().size() + " Spieler online.\\n");
+                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\\n");
+                    }
+                } else {
+                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\\n\\nEs ist aktuell nur er online.");
+                }
+
+                Main.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
                 Main.getInstance().getTablistManager().setAllPlayerTeams();
             }, 20);
         }

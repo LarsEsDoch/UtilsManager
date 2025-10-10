@@ -71,9 +71,9 @@ public class BanCommand implements BasicCommand {
             sendUsage(sendplayer);
             return;
         }
-        String reason = "";
+        StringBuilder reason = new StringBuilder();
         for (int i = 2; i < args.length; i++) {
-            reason += args[i] + " ";
+            reason.append(args[i]).append(" ");
         }
         if(RankAPI.getApi().getRankID(sendplayer) == 8) {
             if(RankAPI.getApi().getRankID(player) > 8) {
@@ -119,7 +119,7 @@ public class BanCommand implements BasicCommand {
                     .append(Component.text(" für ", NamedTextColor.YELLOW))
                     .append(Component.text(time, NamedTextColor.BLUE))
                     .append(Component.text(" Tage gebannt mit dem Grund ", NamedTextColor.YELLOW))
-                    .append(Component.text(reason, NamedTextColor.GREEN))
+                    .append(Component.text(reason.toString(), NamedTextColor.GREEN))
                     .append(Component.text(".", NamedTextColor.YELLOW)));
         } else {
             sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You have banned ", NamedTextColor.YELLOW))
@@ -127,11 +127,12 @@ public class BanCommand implements BasicCommand {
                     .append(Component.text(" for ", NamedTextColor.YELLOW))
                     .append(Component.text(time, NamedTextColor.BLUE))
                     .append(Component.text(" days with the reason ", NamedTextColor.YELLOW))
-                    .append(Component.text(reason, NamedTextColor.GREEN))
+                    .append(Component.text(reason.toString(), NamedTextColor.GREEN))
                     .append(Component.text(".", NamedTextColor.YELLOW)));
         }
-        BanAPI.getApi().setBanned(player, reason, time);
-        Main.getInstance().getDiscordBot().sendBanMessage(player, time, reason);
+        BanAPI.getApi().setBanned(player, reason.toString(), time);
+        String message = "Der Spieler " + RankStatements.getUnformattedRank(player) + player.getName() + " wurde von" + RankStatements.getUnformattedRank(player) + player.getName() + " mit dem Grund " + reason + " für 7 Tage gebannt!";
+        Main.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
 
     private void sendUsage(Player player) {

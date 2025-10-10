@@ -4,7 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.lars.apiManager.dataAPI.DataAPI;
 import de.lars.apiManager.playersAPI.PlayerAPI;
-import de.lars.utilsManager.DiscordBot.DiscordBot;
+import de.lars.utilsManager.discordBot.DiscordBot;
 import de.lars.utilsManager.backpack.BackpackCommand;
 import de.lars.utilsManager.backpack.BackpackManager;
 import de.lars.utilsManager.backpack.BackpackconfigurationCommand;
@@ -100,19 +100,17 @@ public final class Main extends JavaPlugin {
         saveDefaultConfig();
 
         String botToken = getConfig().getString("discord.token");
-        String applicationID = getConfig().getString("discord.applicationID");
         String serverStatusChannelID = getConfig().getString("discord.serverStatusChannelID");
         String playerStatusChannelID = getConfig().getString("discord.playerStatusChannelID") ;
         String punishmentsChannelID = getConfig().getString("discord.punishmentsChannelID");
 
-        discordBot = new DiscordBot(botToken, applicationID, serverStatusChannelID, playerStatusChannelID, punishmentsChannelID);
+        discordBot = new DiscordBot(botToken, serverStatusChannelID, playerStatusChannelID, punishmentsChannelID);
 
         new RecipeLoader().registerRecipes();
         // entitysSummons.EntitysSummons();
         entitysSummons.EntityHearths();
         banManager.runchecking();
         teleporterListener.checkTeleportTime();
-        maintenanceManager.maintenanceManagerStart();
 
         listenerRegistration();
         commandRegistration();
@@ -143,6 +141,7 @@ public final class Main extends JavaPlugin {
             //discordBot.sendOffMessage();
         }
 
+        discordBot.disable();
         Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager successful disabled!", NamedTextColor.DARK_RED)));
     }
 

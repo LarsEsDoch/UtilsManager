@@ -107,7 +107,6 @@ public class KickCommand implements BasicCommand {
                         .append(Component.text("!", NamedTextColor.WHITE)));
             }
             kickPlayer.kick(reasonComponent);
-            Main.getInstance().getDiscordBot().sendKickMessage(kickPlayer, 0, reason.toString());
         } else {
             Main.getInstance().getKickManager().setKicked(kickPlayer, reason.toString(), time);
             int seconds = time % 60;
@@ -130,8 +129,35 @@ public class KickCommand implements BasicCommand {
                         .append(Component.text(time, NamedTextColor.RED))
                         .append(Component.text( " seconds!", NamedTextColor.WHITE)));
             }
-            Main.getInstance().getDiscordBot().sendKickMessage(kickPlayer, time, reason.toString());
         }
+        if (reason.toString().isEmpty()) {
+            sendKickMessage(kickPlayer, time, null);
+        } else {
+            sendKickMessage(kickPlayer, time, reason.toString());
+        }
+    }
+
+    private void sendKickMessage(Player player, Integer time, String reason) {
+        String reasonString;
+        if (reason == null) {
+            reasonString = "";
+        } else {
+            reasonString = "mit dem Grund " + reason + " ";
+        }
+
+        String timeString;
+        if (time == 0) {
+            timeString = "";
+        } else {
+            int seconds = time % 60;
+            int minutes = (time / 60) % 60;
+            int hours = (time / 3600);
+            String formatedTime = String.format("%02d Stunden %02d Minuten %02d Sekunden", hours, minutes, seconds);
+            timeString = "für " + formatedTime + " ";
+        }
+
+        String message = "Der Spieler " + RankStatements.getUnformattedRank(player) + player.getName() + " wurde " + timeString + reasonString + "gekickt !";
+        Main.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
 
     private void sendUsage(CommandSender sender) {

@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class MaintenanceManager {
 
-    public void maintenanceManagerStart() {
+    public void maintenanceManager() {
         run();
     }
 
