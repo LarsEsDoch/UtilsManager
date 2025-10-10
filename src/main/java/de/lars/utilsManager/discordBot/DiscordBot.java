@@ -39,14 +39,6 @@ public class DiscordBot {
                     .build()
                     .awaitReady();
 
-            jda.upsertCommand("status", "Zeigt den Status des Minecraft-Servers").queue();
-            jda.upsertCommand("players", "Zeigt eine Liste der Spieler, die online sind").queue();
-            jda.upsertCommand("whitelist_add", "Fügt einen Spieler zur Whitelist hinzu").queue();
-            jda.upsertCommand("whitelist_remove", "Entfernt einen Spieler von der Whitelist").queue();
-            jda.upsertCommand("say", "Sendet eine Nachricht in den Minecraft-Chat").queue();
-            jda.upsertCommand("msg", "Sendet eine private Nachricht an einen Spieler").queue();
-            jda.upsertCommand("broadcast", "Sendet eine Broadcast-Nachricht an alle Spieler").queue();
-
             jda.getPresence().setStatus(OnlineStatus.ONLINE);
             jda.getPresence().setActivity(Activity.playing("Minecraft auf "+ Bukkit.getIp()));
             Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Discord bot started!", NamedTextColor.GREEN)));
