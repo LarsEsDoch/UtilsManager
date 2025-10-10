@@ -129,7 +129,7 @@ public class TablistManager{
             scoreboardTeam.displayName(RankStatements.getRank(target));
             scoreboardTeam.prefix(RankStatements.getCleanRankLong(target));
             scoreboardTeam.color(namedTextColor);
-            if (RankAPI.getApi().getStatus(target).equals("00-00")) {
+            if (RankAPI.getApi().getStatus(target).isEmpty()) {
                 target.playerListName(RankStatements.getRank(target));
             } else {
                 String input = RankAPI.getApi().getStatus(target);

@@ -116,9 +116,6 @@ public final class Main extends JavaPlugin {
         commandRegistration();
         updateTime();
 
-        if (!DataAPI.getApi().isMaintenanceActive()) {
-            //discordBot.sendOnMessage();
-        }
         Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager enabled!", NamedTextColor.DARK_GREEN)));
     }
 

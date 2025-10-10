@@ -142,7 +142,7 @@ public class KickCommand implements BasicCommand {
         if (reason == null) {
             reasonString = "";
         } else {
-            reasonString = "mit dem Grund " + reason + " ";
+            reasonString = "mit dem Grund " + reason;
         }
 
         String timeString;
@@ -152,7 +152,14 @@ public class KickCommand implements BasicCommand {
             int seconds = time % 60;
             int minutes = (time / 60) % 60;
             int hours = (time / 3600);
-            String formatedTime = String.format("%02d Stunden %02d Minuten %02d Sekunden", hours, minutes, seconds);
+            String formatedTime;
+            if (hours == 0) {
+                 formatedTime = String.format("%02d Stunden %02d Minuten %02d Sekunden", hours, minutes, seconds);
+            } else if (minutes == 0) {
+                 formatedTime = String.format("%02d Minuten %02d Sekunden", minutes, seconds);
+            } else {
+                 formatedTime = String.format("%02d Sekunden", seconds);
+            }
             timeString = "für " + formatedTime + " ";
         }
 

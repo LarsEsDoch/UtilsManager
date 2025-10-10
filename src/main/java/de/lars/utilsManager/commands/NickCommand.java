@@ -93,7 +93,7 @@ public class NickCommand implements BasicCommand {
             }
             scoreboardTeam.prefix(RankStatements.getRank(target));
             scoreboardTeam.color(namedTextColor);
-            if (RankAPI.getApi().getStatus(target).equals("00-00")) {
+            if (RankAPI.getApi().getStatus(target).isEmpty()) {
                 target.setPlayerListName(RankStatements.getRank(target) + target.getCustomName());
             } else {
                 String input = RankAPI.getApi().getStatus(target);
@@ -124,7 +124,6 @@ public class NickCommand implements BasicCommand {
             case 12 -> NamedTextColor.RED;
             case 13 -> NamedTextColor.LIGHT_PURPLE;
             case 14 -> NamedTextColor.YELLOW;
-            case 15 -> NamedTextColor.WHITE;
             default -> NamedTextColor.WHITE;
         };
     }
