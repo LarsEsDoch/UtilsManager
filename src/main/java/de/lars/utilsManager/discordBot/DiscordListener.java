@@ -199,7 +199,7 @@ public class DiscordListener extends ListenerAdapter {
             String hoverText = user.getName();
 
             message = Component.text(roleName, NamedTextColor.GREEN)
-                    .append(Component.text("|", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(" | ", NamedTextColor.DARK_GRAY))
                     .append(Component.text(displayName, NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text(hoverText))))
                     .append(Component.text("> ", NamedTextColor.DARK_GRAY))
                     .append(RankStatements.getRank(target))

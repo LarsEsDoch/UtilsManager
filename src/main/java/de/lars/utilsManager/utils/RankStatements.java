@@ -26,7 +26,7 @@ public class RankStatements {
                 case 4 -> Component.text("Titan ", NamedTextColor.BLUE)
                         .append(Component.text("| ", NamedTextColor.DARK_GRAY))
                         .append(Component.text(player.getName(), namedTextColor));
-                case 5 -> Component.text("Skibidi hitler ", NamedTextColor.GOLD)
+                case 5 -> Component.text("Matrix ", NamedTextColor.GOLD)
                         .append(Component.text("| ", NamedTextColor.DARK_GRAY))
                         .append(Component.text(player.getName(), namedTextColor));
                 case 6 -> Component.text("Builder ", NamedTextColor.YELLOW)
@@ -74,7 +74,7 @@ public class RankStatements {
                 case 4 -> Component.text("Titan ", NamedTextColor.BLUE)
                         .append(Component.text("| ", NamedTextColor.DARK_GRAY))
                         .append(Component.text(player.getName(), namedTextColor, type));
-                case 5 -> Component.text("Skibidi hitler ", NamedTextColor.GOLD)
+                case 5 -> Component.text("Matrix ", NamedTextColor.GOLD)
                         .append(Component.text("| ", NamedTextColor.DARK_GRAY))
                         .append(Component.text(player.getName(), namedTextColor, type));
                 case 6 -> Component.text("Builder ", NamedTextColor.YELLOW)
@@ -105,7 +105,7 @@ public class RankStatements {
             case 2 -> Component.text("Premium ", NamedTextColor.GREEN);
             case 3 -> Component.text("Supreme ", NamedTextColor.AQUA);
             case 4 -> Component.text("Titan ", NamedTextColor.BLUE);
-            case 5 -> Component.text("Skibidi hitler ", NamedTextColor.GOLD);
+            case 5 -> Component.text("Matrix ", NamedTextColor.GOLD);
             case 6 -> Component.text("Builder ", NamedTextColor.YELLOW);
             case 7 -> Component.text("Developer ", NamedTextColor.DARK_PURPLE);
             case 8 -> Component.text("Team ", NamedTextColor.DARK_BLUE);
@@ -120,7 +120,7 @@ public class RankStatements {
             case 2 -> Component.text("Premium ", NamedTextColor.GREEN).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
             case 3 -> Component.text("Supreme ", NamedTextColor.AQUA).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
             case 4 -> Component.text("Titan ", NamedTextColor.BLUE).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
-            case 5 -> Component.text("Skibidi hitler ", NamedTextColor.GOLD).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
+            case 5 -> Component.text("Matrix ", NamedTextColor.GOLD).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
             case 6 -> Component.text("Builder ", NamedTextColor.YELLOW).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
             case 7 -> Component.text("Developer ", NamedTextColor.DARK_PURPLE).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
             case 8 -> Component.text("Team ", NamedTextColor.DARK_BLUE).append(Component.text(" | ", NamedTextColor.DARK_GRAY));
@@ -141,7 +141,7 @@ public class RankStatements {
         } else if (rank == 4) {
             return "Titan | ";
         } else if (rank == 5) {
-            return "Skibidi hitler | ";
+            return "Matrix | ";
         } else if (rank == 6) {
             return "Builder | ";
         } else if (rank == 7) {

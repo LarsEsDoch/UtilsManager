@@ -29,7 +29,7 @@ public class MsgCommand implements BasicCommand {
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("", NamedTextColor.YELLOW));
+            sendUsage(player);
             return;
         }
 
@@ -63,7 +63,7 @@ public class MsgCommand implements BasicCommand {
         Component targetList = targets.stream()
         .map(RankStatements::getRank)
         .reduce((a, b) -> a.append(Component.text(", ", NamedTextColor.GRAY)).append(b))
-        .orElse(Component.empty()).color(NamedTextColor.WHITE);
+        .orElse(Component.empty());
 
 
         for (Player target : targets) {

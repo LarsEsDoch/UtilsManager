@@ -21,7 +21,10 @@ public class ClearChatCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        Player player = (Player) stack.getSender();
+        if (!(stack.getExecutor() instanceof Player player)) {
+            stack.getSender().sendMessage(Component.text("Only player can send Messages.", NamedTextColor.RED));
+            return;
+        }
         if (!(player.hasPermission("plugin.clearchat"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;

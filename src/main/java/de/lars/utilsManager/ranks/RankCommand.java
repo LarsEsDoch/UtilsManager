@@ -162,7 +162,14 @@ public class RankCommand implements BasicCommand {
 
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
-        if (args.length == 2 || args.length == 3) {
+        if (args.length == 1 || args.length == 0) {
+            List<String> names = new ArrayList<>();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                names.add(p.getName());
+            }
+
+            return names;
+        } else if (args.length == 2 || args.length == 3) {
             List<String> rankCommands = new ArrayList<>();
             rankCommands.add("player");
             rankCommands.add("premium");

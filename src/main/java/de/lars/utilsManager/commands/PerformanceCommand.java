@@ -6,6 +6,7 @@ import me.lucko.spark.api.Spark;
 import me.lucko.spark.api.SparkProvider;
 import me.lucko.spark.api.statistic.StatisticWindow;
 import me.lucko.spark.api.statistic.types.DoubleStatistic;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,7 +19,10 @@ public class PerformanceCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        Player player = (Player) stack.getSender();
+        if (!(stack.getExecutor() instanceof Player player)) {
+            stack.getSender().sendMessage(Component.text("Only player can send Messages.", NamedTextColor.RED));
+            return;
+        }
         DecimalFormat df = new DecimalFormat("#.##");
 
         Spark spark = SparkProvider.get();

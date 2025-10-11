@@ -26,7 +26,10 @@ public class KickCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        Player player = (Player) stack.getSender();
+        if (!(stack.getExecutor() instanceof Player player)) {
+            stack.getSender().sendMessage(Component.text("Only player can send Messages.", NamedTextColor.RED));
+            return;
+        }
         int time = 0;
         if (!(player.hasPermission("plugin.ban"))) {
             player.sendMessage(Statements.getNotAllowed(player));

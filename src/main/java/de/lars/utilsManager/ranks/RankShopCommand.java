@@ -20,7 +20,10 @@ public class RankShopCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        Player player = (Player) stack.getSender();
+        if (!(stack.getExecutor() instanceof Player player)) {
+            stack.getSender().sendMessage(Component.text("Only player can send Messages.", NamedTextColor.RED));
+            return;
+        }
 
         HashMap<Integer, ItemStack> integerItemStackHashMap = new HashMap<>();
         integerItemStackHashMap.put(10, new ItemBuilder(Material.EMERALD)

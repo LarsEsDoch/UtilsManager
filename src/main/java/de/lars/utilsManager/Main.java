@@ -264,7 +264,7 @@ public final class Main extends JavaPlugin {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("addcoins", "Give a player some money", new Addcoins());
+            commands.register("addcoins", "Give a player some money", new AddcoinsCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {

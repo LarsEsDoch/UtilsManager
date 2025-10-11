@@ -21,7 +21,10 @@ public class GiftCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        Player player = (Player) stack.getSender();
+        if (!(stack.getExecutor() instanceof Player player)) {
+            stack.getSender().sendMessage(Component.text("Only player can send Messages.", NamedTextColor.RED));
+            return;
+        }
 
         if (CoinAPI.getApi().getGifts(player).isEmpty()) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {

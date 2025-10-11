@@ -18,8 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("ALL")
-public class Addcoins implements BasicCommand {
+public class AddcoinsCommand implements BasicCommand {
 
     private int addcoins;
     private Player player;
@@ -27,7 +26,10 @@ public class Addcoins implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        Player player = (Player) stack.getSender();
+        if (!(stack.getExecutor() instanceof Player player)) {
+            stack.getSender().sendMessage(Component.text("Only player can send Messages.", NamedTextColor.RED));
+            return;
+        }
         if (args.length == 0) {
             sendUsage(player);
             return;
