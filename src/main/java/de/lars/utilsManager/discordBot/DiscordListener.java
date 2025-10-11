@@ -75,11 +75,14 @@ public class DiscordListener extends ListenerAdapter {
         int maxPlayers = Bukkit.getMaxPlayers();
         long maxMemory = Runtime.getRuntime().maxMemory() / (1024 * 1024);
         long usedMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
+        LocalDateTime nowTime = Main.getInstance().getDiscordBot().getStartTime();
+        LocalDateTime endTime = LocalDateTime.now();
 
         String message = "🌍 Server ist online!\n" +
                 "👥 Spieler: " + onlinePlayers + "/" + maxPlayers + "\n" +
-                "⚡ TPS: " + String.format("%.2f", Bukkit.getServer().getTPS()[0]) +
-                "\nRAM: " + usedMemory + " MB / " + maxMemory + " MB";
+                "⚡ TPS: " + String.format("%.2f", Bukkit.getServer().getTPS()[0]) + "\n" +
+                "💾 RAM: " + usedMemory + " MB / " + maxMemory + " MB" + "\n" +
+                "⏳ Uptime: " + Duration.between(nowTime, endTime).toMinutes() + " Minuten";
 
         event.reply(message).setEphemeral(true).queue();
     }
@@ -103,7 +106,9 @@ public class DiscordListener extends ListenerAdapter {
         String name = Objects.requireNonNull(event.getOption("name")).getAsString();
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
 
-        offlinePlayer.setWhitelisted(true);
+        Bukkit.getScheduler().runTask(Main.getInstance(), bukkitTask -> {
+            offlinePlayer.setWhitelisted(true);
+        });
         event.reply("✅ `" + name + "` wurde zur Whitelist hinzugefügt.").setEphemeral(true).queue();
     }
 
@@ -111,7 +116,9 @@ public class DiscordListener extends ListenerAdapter {
         String name = Objects.requireNonNull(event.getOption("name")).getAsString();
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
 
-        offlinePlayer.setWhitelisted(false);
+        Bukkit.getScheduler().runTask(Main.getInstance(), bukkitTask -> {
+            offlinePlayer.setWhitelisted(false);
+        });
         event.reply("❌ `" + name + "` wurde von der Whitelist entfernt.").setEphemeral(true).queue();
     }
 

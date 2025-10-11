@@ -83,4 +83,8 @@ public class DiscordBot {
             channel.sendMessage(message).queue();
         }
     }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
 }
