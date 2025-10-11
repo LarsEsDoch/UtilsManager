@@ -462,6 +462,10 @@ public final class Main extends JavaPlugin {
             commands.register("maintenance", "Set the server under maintenance so you can work privately", new MaintenanceCommand());
         });
 
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            commands.register("msg", "Message another player", new MsgCommand());
+        });
 
         Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager Commands registered!", NamedTextColor.GREEN)));
     }
