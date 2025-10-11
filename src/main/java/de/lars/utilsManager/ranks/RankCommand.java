@@ -51,9 +51,9 @@ public class RankCommand implements BasicCommand {
         Player player = Bukkit.getPlayer(args[0]);
         if (!Bukkit.getOnlinePlayers().contains(player) || player == null || !RankAPI.getApi().doesUserExist(player)) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                player.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
+                sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
-                player.sendMessage(Component.text("The Player dosen't exist!", NamedTextColor.RED));
+                sendplayer.sendMessage(Component.text("The Player dosen't exist!", NamedTextColor.RED));
             }
             return ;
         }
@@ -153,7 +153,7 @@ public class RankCommand implements BasicCommand {
 
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
-        if (args.length == 0 || args.length == 1) {
+        if (args.length == 2 || args.length == 3) {
             List<String> rankCommands = new ArrayList<>();
             rankCommands.add("player");
             rankCommands.add("premium");
@@ -172,7 +172,7 @@ public class RankCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 1) {
+        if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setrank <Spieler> <Rang> <Zeit>");
         } else {
             player.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setrank <player> <rank> <time>");

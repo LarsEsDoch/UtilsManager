@@ -75,7 +75,7 @@ public class BuyCommand implements BasicCommand {
                 DecimalFormat formatterm = new DecimalFormat("#,###");
                 String formatierteMissing = formatterm.format(missing);
                 if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 1) {
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + formatierteMissing + "$.");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + formatierteMissing + "$.");

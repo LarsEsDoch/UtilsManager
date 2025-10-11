@@ -4,6 +4,9 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.lars.apiManager.dataAPI.DataAPI;
 import de.lars.apiManager.playersAPI.PlayerAPI;
+import de.lars.utilsManager.chunks.ChunkCommand;
+import de.lars.utilsManager.court.CourtCommand;
+import de.lars.utilsManager.court.ReportCommand;
 import de.lars.utilsManager.discordBot.DiscordBot;
 import de.lars.utilsManager.backpack.BackpackCommand;
 import de.lars.utilsManager.backpack.BackpackManager;
@@ -264,7 +267,6 @@ public final class Main extends JavaPlugin {
             commands.register("addcoins", "Give a player some money", new Addcoins());
         });
 
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("pay", "Pay a player money", new PayCommand());
@@ -275,14 +277,11 @@ public final class Main extends JavaPlugin {
             commands.register("wallet", "See how much money you or an other player has left", new WalletCommand());
         });
 
-         */
-
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("setcoins", "Set the balance of a player to specific amount", new Setcoins());
         });
 
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("buy", "Buy some Materials", new BuyCommand());
@@ -293,20 +292,15 @@ public final class Main extends JavaPlugin {
             commands.register("sell", "Sell some Materials", new SellCommand());
         });
 
-         */
-
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("language", "Change your language", new LanguageCommand());
         });
 
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("gifts", "Look if you have gifts and claim them", new GiftCommand());
         });
-
-         */
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
@@ -318,7 +312,6 @@ public final class Main extends JavaPlugin {
             commands.register("togglescoreboard", "Decide if you want a scoreboard", new ToggleScoreboardCommand());
         });
 
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("shop", "Open the shop overview", new ShopCommand());
@@ -329,19 +322,16 @@ public final class Main extends JavaPlugin {
             commands.register("prices", "See the prices of materials", new PriceCommand());
         });
 
-         */
-
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("setrank", "Change the rank of a player", new RankCommand());
         });
 
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("rankshop", "Open the shop for the 5 ranks to buy", new RankShopCommand());
         });
-         */
+
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("nick", "Hide your Name", new NickCommand());
@@ -382,7 +372,6 @@ public final class Main extends JavaPlugin {
             commands.register("performance", "Check the performance of the server", new PerformanceCommand());
         });
 
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("report", "Report a player to get him in court", new ReportCommand());
@@ -393,15 +382,10 @@ public final class Main extends JavaPlugin {
             commands.register("court", "Decide if you want to join the court or be a witnesser", new CourtCommand());
         });
 
-         */
-
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("chunk", "Mangement for the chunk you are in or in general", new ChunkCommand());
         });
-
-         */
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
@@ -413,13 +397,10 @@ public final class Main extends JavaPlugin {
             commands.register("feed", "Feed a player", new FeedCommand());
         });
 
-        /*
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("claimgift", "Claim the gifts you've stored", new ClaimGiftCommand());
         });
-
-         */
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();

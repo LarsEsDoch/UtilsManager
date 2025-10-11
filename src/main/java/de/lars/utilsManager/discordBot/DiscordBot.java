@@ -52,7 +52,7 @@ public class DiscordBot {
     public void disable() {
         LocalDateTime endTime = LocalDateTime.now();
 
-        String message = "Der Server ist nun offline!\\nEr war für " + Duration.between(startTime, endTime).toMinutes() + " Minuten aktiv!";
+        String message = "Der Server ist nun offline!\nEr war für " + Duration.between(startTime, endTime).toMinutes() + " Minuten aktiv!";
         sendStatusMessage(message);
 
         if (jda != null) {

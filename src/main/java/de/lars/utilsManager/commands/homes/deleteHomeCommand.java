@@ -32,7 +32,7 @@ public class deleteHomeCommand implements BasicCommand {
 
         String HomeName = args[0];
         if (!HomeAPI.getApi().doesOwnHomeExist(player, HomeName)) {
-            if(LanguageAPI.getApi().getLanguage(player) == 1) {
+            if(LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Home ", NamedTextColor.RED))
                         .append(Component.text(HomeName, NamedTextColor.YELLOW))
                         .append(Component.text(" existiert nicht!", NamedTextColor.RED)));

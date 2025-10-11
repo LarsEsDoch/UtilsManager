@@ -64,7 +64,6 @@ public class EntityCommand implements BasicCommand {
 
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
-        Player player = (Player) commandSourceStack.getSender();
         if (args.length == 0 || args.length == 1) {
             Collection<String> entityList = new ArrayList<>();
             for (EntityType entity : EntityType.values()) {
