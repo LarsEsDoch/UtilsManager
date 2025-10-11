@@ -10,6 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class LanguageCommand implements BasicCommand {
 
     @Override
@@ -55,5 +60,17 @@ public class LanguageCommand implements BasicCommand {
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/language german/english", NamedTextColor.BLUE)));
         }
+    }
+
+    @Override
+    public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
+        if (args.length == 0 || args.length == 1) {
+            List<String> languages = new ArrayList<>();
+            languages.add("deutsch");
+            languages.add("english");
+
+            return languages;
+        }
+        return Collections.emptyList();
     }
 }
