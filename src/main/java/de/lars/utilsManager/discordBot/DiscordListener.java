@@ -1,7 +1,12 @@
 package de.lars.utilsManager.discordBot;
 
 import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.utilsManager.Main;
+import de.lars.utilsManager.utils.RankStatements;
 import de.lars.utilsManager.utils.Statements;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -9,6 +14,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -17,6 +23,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -124,11 +132,36 @@ public class DiscordListener extends ListenerAdapter {
 
     private void handleSay(SlashCommandInteractionEvent event) {
         String nachricht = Objects.requireNonNull(event.getOption("nachricht")).getAsString();
-        String sender = Objects.requireNonNull(event.getMember()).getNickname();
+        Member member = event.getMember();
+        User user = event.getUser();
+        Component message;
+
+        if (member == null) {
+            String name = user.getGlobalName();
+            String hoverText = user.getName();
+
+            message = Component.text(name, NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text(hoverText)))
+                    .append(Component.text(">: ", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(nachricht, NamedTextColor.WHITE));
+        } else {
+            Role highestRole = member.getRoles().isEmpty() ? null : member.getRoles().getFirst();
+            String roleName = highestRole != null ? highestRole.getName() : "User";
+
+            String displayName = member.getEffectiveName();
+
+            String hoverText = user.getName();
+
+            message = Component.text(roleName, NamedTextColor.BLUE)
+                    .append(Component.text(" | ", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(displayName, NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text(hoverText))))
+                    .append(Component.text(">: ", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(nachricht, NamedTextColor.WHITE));
+        }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-             player.sendMessage(sender + "[Discord]: " + nachricht);
+             player.sendMessage(message);
         }
+        Bukkit.getConsoleSender().sendMessage(message);
         event.reply("✅ Nachricht wurde an den Server gesendet.").setEphemeral(true).queue();
     }
 
@@ -136,6 +169,8 @@ public class DiscordListener extends ListenerAdapter {
         String playerName = Objects.requireNonNull(event.getOption("spieler")).getAsString();
         String nachricht = Objects.requireNonNull(event.getOption("nachricht")).getAsString();
         String sender = Objects.requireNonNull(event.getMember()).getNickname();
+        Member member = event.getMember();
+        User user = event.getUser();
 
         Player target = Bukkit.getPlayerExact(playerName);
         if (target == null) {
@@ -143,17 +178,57 @@ public class DiscordListener extends ListenerAdapter {
             return;
         }
 
-        target.sendMessage(sender + "[Discord]: " + nachricht);
+        Component message;
+
+        if (member == null) {
+            String displayName = user.getGlobalName();
+
+            String hoverText = user.getName();
+
+            message = Component.text(displayName, NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text(hoverText)))
+                    .append(Component.text("> ", NamedTextColor.DARK_GRAY))
+                    .append(RankStatements.getRank(target))
+                    .append(Component.text(": ", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(nachricht, NamedTextColor.WHITE));
+        } else {
+            Role highestRole = member.getRoles().isEmpty() ? null : member.getRoles().get(0);
+            String roleName = highestRole != null ? highestRole.getName() : "User";
+
+            String displayName = member.getEffectiveName();
+
+            String hoverText = user.getName();
+
+            message = Component.text(roleName, NamedTextColor.GREEN)
+                    .append(Component.text("|", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(displayName, NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text(hoverText))))
+                    .append(Component.text("> ", NamedTextColor.DARK_GRAY))
+                    .append(RankStatements.getRank(target))
+                    .append(Component.text(": ", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(nachricht, NamedTextColor.WHITE));
+        }
+
+        target.sendMessage(message);
+        
         event.reply("✅ Nachricht an `" + playerName + "` gesendet.").setEphemeral(true).queue();
     }
 
     private void handleBroadcast(SlashCommandInteractionEvent event) {
-        String message = Objects.requireNonNull(event.getOption("nachricht")).getAsString();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-             player.sendMessage(
-                            Statements.getPrefix()
-                                    .append(Component.text(message, NamedTextColor.GOLD, TextDecoration.BOLD)));
+        String nachricht = Objects.requireNonNull(event.getOption("nachricht")).getAsString();
+        Member member = event.getMember();
+
+        if (member == null) {
+            event.reply("❌ Dieser Befehl kann nur auf einem Server benutzt werden!").setEphemeral(true).queue();
+            return;
         }
+        Component message = Statements.getPrefix()
+                        .append(Component.text("Discord", NamedTextColor.GOLD))
+                        .append(Component.text(">: ", NamedTextColor.DARK_GRAY))
+                        .append(Component.text(nachricht, NamedTextColor.WHITE));
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+             player.sendMessage(message);
+        }
+        Bukkit.getConsoleSender().sendMessage(message);
         event.reply("✅ Broadcast gesendet.").setEphemeral(true).queue();
     }
 }
