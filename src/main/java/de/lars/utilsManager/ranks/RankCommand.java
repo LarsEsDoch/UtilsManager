@@ -41,7 +41,16 @@ public class RankCommand implements BasicCommand {
         if (args[2].contains("permanent") || args[2].contains("*") || args[2].contains("all")) {
             time = 365000;
         } else {
-            time = Integer.parseInt(args[2]);
+            try {
+                time = Integer.parseInt(args[2]);
+            } catch (Exception e) {
+                if (LanguageAPI.getApi().getLanguage(sendplayer) == 1) {
+                    sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Die Zeitspanne ist zu groß! (Max: 2147483647)", NamedTextColor.RED)));
+                } else {
+                    sendplayer.sendMessage(Statements.getPrefix().append(Component.text("The timespan is to long! (Max: 2147483647)", NamedTextColor.RED)));
+                }
+                return;
+            }
             if (time <= 0) {
                 sendUsage(sendplayer);
                 return ;
