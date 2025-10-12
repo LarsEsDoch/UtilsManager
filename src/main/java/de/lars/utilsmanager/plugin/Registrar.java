@@ -1,222 +1,79 @@
-package de.lars.utilsManager;
+package de.lars.utilsmanager.plugin;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import de.lars.apiManager.dataAPI.DataAPI;
-import de.lars.apiManager.playersAPI.PlayerAPI;
-import de.lars.utilsManager.chunks.ChunkCommand;
-import de.lars.utilsManager.court.CourtCommand;
-import de.lars.utilsManager.court.ReportCommand;
-import de.lars.utilsManager.discordBot.DiscordBot;
-import de.lars.utilsManager.backpack.BackpackCommand;
-import de.lars.utilsManager.backpack.BackpackManager;
-import de.lars.utilsManager.backpack.BackpackconfigurationCommand;
-import de.lars.utilsManager.ban.*;
-import de.lars.utilsManager.bank.BankText;
-import de.lars.utilsManager.bank.BankTextListener;
-import de.lars.utilsManager.coins.*;
-import de.lars.utilsManager.commands.*;
-import de.lars.utilsManager.commands.homes.*;
-import de.lars.utilsManager.court.CourtManager;
-import de.lars.utilsManager.entitys.EntitysSummons;
-import de.lars.utilsManager.freecam.FreeCamCloseCommand;
-import de.lars.utilsManager.freecam.FreeCamCommand;
-import de.lars.utilsManager.freecam.FreecamListener;
-import de.lars.utilsManager.listener.*;
-import de.lars.utilsManager.maintenance.MaintenanceCommand;
-import de.lars.utilsManager.maintenance.MaintenanceListener;
-import de.lars.utilsManager.maintenance.MaintenanceManager;
-import de.lars.utilsManager.questsystem.QuestManager;
-import de.lars.utilsManager.ranks.*;
-import de.lars.utilsManager.realtime.RealTime;
-import de.lars.utilsManager.realtime.RealTimeCommand;
-import de.lars.utilsManager.recipes.RecipeLoader;
-import de.lars.utilsManager.scoreboard.ToggleScoreboardCommand;
-import de.lars.utilsManager.tablist.TablistManager;
-import de.lars.utilsManager.teleporter.FloorTeleporter;
-import de.lars.utilsManager.teleporter.TeleporterListener;
-import de.lars.utilsManager.timer.Timer;
-import de.lars.utilsManager.timer.TimerCommand;
-import de.lars.utilsManager.utils.Statements;
+import de.lars.utilsmanager.ban.BanListener;
+import de.lars.utilsmanager.commands.admin.*;
+import de.lars.utilsmanager.commands.economy.*;
+import de.lars.utilsmanager.commands.moderation.BanCommand;
+import de.lars.utilsmanager.commands.moderation.KickCommand;
+import de.lars.utilsmanager.commands.moderation.UnbanCommand;
+import de.lars.utilsmanager.commands.player.*;
+import de.lars.utilsmanager.commands.teleport.SpawnCommand;
+import de.lars.utilsmanager.commands.teleport.ToggleBedCommand;
+import de.lars.utilsmanager.commands.teleport.home.DeleteHomeCommand;
+import de.lars.utilsmanager.commands.teleport.home.HomeCommand;
+import de.lars.utilsmanager.commands.teleport.home.SetHomeCommand;
+import de.lars.utilsmanager.features.backpack.BackpackCommand;
+import de.lars.utilsmanager.features.backpack.BackpackConfigurationCommand;
+import de.lars.utilsmanager.features.bank.BankTextListener;
+import de.lars.utilsmanager.features.chunk.ChunkCommand;
+import de.lars.utilsmanager.features.chunk.ChunkOwnerListener;
+import de.lars.utilsmanager.features.court.CourtCommand;
+import de.lars.utilsmanager.features.court.ReportCommand;
+import de.lars.utilsmanager.features.freecam.FreeCamCloseCommand;
+import de.lars.utilsmanager.features.freecam.FreeCamCommand;
+import de.lars.utilsmanager.features.freecam.FreecamListener;
+import de.lars.utilsmanager.features.maintenance.MaintenanceListener;
+import de.lars.utilsmanager.features.realtime.RealTimeCommand;
+import de.lars.utilsmanager.features.timer.TimerCommand;
+import de.lars.utilsmanager.listener.misc.FunListeners;
+import de.lars.utilsmanager.listener.misc.NetherListener;
+import de.lars.utilsmanager.listener.misc.ShopListener;
+import de.lars.utilsmanager.listener.misc.StairClickListener;
+import de.lars.utilsmanager.listener.player.*;
+import de.lars.utilsmanager.listener.server.ServerPingListener;
+import de.lars.utilsmanager.listener.teleporter.FloorTeleporter;
+import de.lars.utilsmanager.questsystem.QuestManager;
+import de.lars.utilsmanager.rank.RankCommand;
+import de.lars.utilsmanager.rank.RankShopCommand;
+import de.lars.utilsmanager.rank.RankShopListener;
+import de.lars.utilsmanager.recipes.RecipeLoader;
+import de.lars.utilsmanager.scoreboard.ToggleScoreboardCommand;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+public class Registrar {
 
-    public static Main instance;
-    private Timer timer;
-    private BackpackManager backpackManager;
-    private RealTime realTime;
-    private BankText bankText;
-    private TablistManager tablistManager;
-    private RankManager rankManager;
-    private EntitysSummons entitysSummons;
-    private QuestManager questManager;
-    private SpawnElytraListener spawnElytraListener;
-    private BanManager banManager;
-    private FloorTeleporter floorTeleporter;
-    private CourtManager courtManager;
-    private TeleporterListener teleporterListener;
-    private BedListener bedListener;
-    private FreecamListener freecamListener;
-    private DiscordBot discordBot;
-    private KickManager kickManager;
-    private MaintenanceManager maintenanceManager;
-    private ProtocolManager protocolManager;
-
-    @Override
-    public void onLoad() {
-        if (protocolManager == null) {
-            protocolManager = ProtocolLibrary.getProtocolManager();
-        }
-        instance = this;
-    }
-
-    @Override
-    public void onEnable() {
-        backpackManager = new BackpackManager();
-        tablistManager = new TablistManager();
-        rankManager = new RankManager();
-        timer = new Timer();
-        realTime = new RealTime();
-        //bankText = new BankText();
-        bedListener = new BedListener();
-        entitysSummons = new EntitysSummons();
-        //questManager = new QuestManager();
-        spawnElytraListener = new SpawnElytraListener();
-        floorTeleporter = new FloorTeleporter();
-        courtManager = new CourtManager();
-        banManager = new BanManager();
-        teleporterListener = new TeleporterListener();
-        freecamListener = new FreecamListener();
-        kickManager = new KickManager();
-        maintenanceManager = new MaintenanceManager();
-
-        saveDefaultConfig();
-
-        String botToken = getConfig().getString("discord.token");
-        String serverStatusChannelID = getConfig().getString("discord.serverStatusChannelID");
-        String playerStatusChannelID = getConfig().getString("discord.playerStatusChannelID") ;
-        String punishmentsChannelID = getConfig().getString("discord.punishmentsChannelID");
-
-        discordBot = new DiscordBot(botToken, serverStatusChannelID, playerStatusChannelID, punishmentsChannelID);
-
-        new RecipeLoader().registerRecipes();
-        // entitysSummons.EntitysSummons();
-        entitysSummons.EntityHearths();
-        banManager.runchecking();
-        teleporterListener.checkTeleportTime();
-
-        listenerRegistration();
-        commandRegistration();
-        updateTime();
-
-        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager enabled!", NamedTextColor.DARK_GREEN)));
-    }
-
-    public void updateTime() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask ->  {
-            for (Player online: Bukkit.getOnlinePlayers()) {
-                PlayerAPI.getApi().setPlaytime(online, PlayerAPI.getApi().getPlaytime(online) + 5);
-            }
-        }, 100, 100);
-    }
-
-    @Override
-    public void onDisable() {
-        Bukkit.getScheduler().cancelTasks(this);
-
-        // bankText.BankTextend();
-        backpackManager.save();
-        // entitysSummons.EntitysSummonsEnd();
-        if (!DataAPI.getApi().isMaintenanceActive()) {
-            //discordBot.sendOffMessage();
-        }
-
-        discordBot.disable();
-        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager successful disabled!", NamedTextColor.DARK_RED)));
-    }
-
-    public static Main getInstance() {
-        return instance;
-    }
-
-    public BackpackManager getBackpackManager() {
-        return backpackManager;
-    }
-
-    public BanManager getBanManager() {
-        return banManager;
-    }
-
-    public CourtManager getCourtManager() {
-        return courtManager;
-    }
-
-    public RealTime getRealTime() {
-        return realTime;
-    }
-
-    public TablistManager getTablistManager() {
-        return tablistManager;
-    }
-
-    public RankManager getRangManager() {
-        return rankManager;
-    }
-
-    public QuestManager getQuestManager() {
-        return questManager;
-    }
-
-    public FreecamListener getFreecamListener() {
-        return freecamListener;
-    }
-
-    public KickManager getKickManager() {
-        return kickManager;
-    }
-
-    public DiscordBot getDiscordBot() {
-        return discordBot;
-    }
-
-    private void listenerRegistration() {
+    public static void listenerRegistration(JavaPlugin plugin) {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new JoinListener(), this);
-        pluginManager.registerEvents(new QuitListener(), this);
-        pluginManager.registerEvents(new ChatListener(), this);
-        pluginManager.registerEvents(new ClickListeners(), this);
-        pluginManager.registerEvents(new DeathListener(), this);
-        pluginManager.registerEvents(new RespawnListener(), this);
-        pluginManager.registerEvents(new SpawnElytraListener(), this);
-        pluginManager.registerEvents(new BankTextListener(), this);
-        pluginManager.registerEvents(new Banhammer(), this);
-        pluginManager.registerEvents(new ShopListener(), this);
-        pluginManager.registerEvents(new RankShopListener(), this);
-        //pluginManager.registerEvents(new QuestManager(), this);
-        pluginManager.registerEvents(new BanListener(), this);
-        pluginManager.registerEvents(new StairClickListener(), this);
-        pluginManager.registerEvents(new FloorTeleporter(), this);
-        //pluginManager.registerEvents(new ChunkOwnerListener(), this);
-        pluginManager.registerEvents(new ServerPingListener(), this);
-        pluginManager.registerEvents(new FreecamListener(), this);
-        pluginManager.registerEvents(new MaintenanceListener(), this);
-        pluginManager.registerEvents(new RecipeLoader(), this);
-        pluginManager.registerEvents(new NetherListener(), this);
-
+        pluginManager.registerEvents(new JoinListener(), plugin);
+        pluginManager.registerEvents(new QuitListener(), plugin);
+        pluginManager.registerEvents(new ChatListener(), plugin);
+        pluginManager.registerEvents(new FunListeners(), plugin);
+        pluginManager.registerEvents(new DeathListener(), plugin);
+        pluginManager.registerEvents(new RespawnListener(), plugin);
+        pluginManager.registerEvents(new SpawnElytraListener(), plugin);
+        pluginManager.registerEvents(new BankTextListener(), plugin);
+        pluginManager.registerEvents(new ShopListener(), plugin);
+        pluginManager.registerEvents(new RankShopListener(), plugin);
+        pluginManager.registerEvents(new QuestManager(), plugin);
+        pluginManager.registerEvents(new BanListener(), plugin);
+        pluginManager.registerEvents(new StairClickListener(), plugin);
+        pluginManager.registerEvents(new FloorTeleporter(), plugin);
+        pluginManager.registerEvents(new ChunkOwnerListener(), plugin);
+        pluginManager.registerEvents(new ServerPingListener(), plugin);
+        pluginManager.registerEvents(new FreecamListener(), plugin);
+        pluginManager.registerEvents(new MaintenanceListener(), plugin);
+        pluginManager.registerEvents(new RecipeLoader(), plugin);
+        pluginManager.registerEvents(new NetherListener(), plugin);
     }
 
-    public void commandRegistration() {
-        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
+    public static void commandRegistration(JavaPlugin plugin) {
+        LifecycleEventManager<Plugin> manager = plugin.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("timer", "Control the timer for yourself", new TimerCommand());
@@ -239,12 +96,12 @@ public final class Main extends JavaPlugin {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("deletehome", "Delete your own placed home", new deleteHomeCommand());
+            commands.register("deletehome", "Delete your own placed home", new DeleteHomeCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("sethome", "Create your own home to come back later", new setHomeCommand());
+            commands.register("sethome", "Create your own home to come back later", new SetHomeCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -254,7 +111,7 @@ public final class Main extends JavaPlugin {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("setbpslots", "Change the slots of a player Backpack", new BackpackconfigurationCommand());
+            commands.register("setbpslots", "Change the slots of a player Backpack", new BackpackConfigurationCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -264,7 +121,7 @@ public final class Main extends JavaPlugin {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("addcoins", "Give a player some money", new AddcoinsCommand());
+            commands.register("addcoins", "Give a player some money", new AddCoinsCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -279,7 +136,7 @@ public final class Main extends JavaPlugin {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("setcoins", "Set the balance of a player to specific amount", new Setcoins());
+            commands.register("setcoins", "Set the balance of a player to specific amount", new SetCoinsCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -339,7 +196,7 @@ public final class Main extends JavaPlugin {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("freeezee", "Scare and freeze a player", new FrezeCommand());
+            commands.register("freeezee", "Scare and freeze a player", new FreezeCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -466,7 +323,5 @@ public final class Main extends JavaPlugin {
             final Commands commands = event.registrar();
             commands.register("msg", "Message another player", new MsgCommand());
         });
-
-        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager Commands registered!", NamedTextColor.GREEN)));
     }
 }
