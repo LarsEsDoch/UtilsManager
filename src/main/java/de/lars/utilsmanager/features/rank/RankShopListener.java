@@ -8,22 +8,21 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Calendar;
 
 public class RankShopListener implements Listener {
 
-    private int price;
-    private int balence;
-
     @EventHandler
     public void onInventoryKlick(InventoryClickEvent event) {
-        World world = Bukkit.getWorld("world");
         Player player = (Player) event.getWhoClicked();
         if (player.isOp()) {
             return;
@@ -34,331 +33,78 @@ public class RankShopListener implements Listener {
 
         if (event.getView().title().equals(Component.text("           RankShop", NamedTextColor.DARK_GREEN, TextDecoration.BOLD))) {
             event.setCancelled(true);
-            String clickedItem = event.getCurrentItem().getItemMeta().getLocalizedName();
-            String premium6 = "6premium";
-            String premium12 = "12premium";
-            String supreme6 = "6supreme";
-            String supreme12 = "12supreme";
-            String titan6 = "6titan";
-            String titan12 = "12titan";
-            String matrix6 = "6matrix";
-            String matrix12 = "12matrix";
-            if (clickedItem.equals(premium6)) {
-                
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 500;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
+            ItemStack clicked = event.getCurrentItem();
+            if (clicked == null || !clicked.hasItemMeta()) return;
 
-                    return;
-                }
+            NamespacedKey rankKey = new NamespacedKey("utilsmanager", "rank_id");
+            String id = clicked.getItemMeta().getPersistentDataContainer().get(rankKey, PersistentDataType.STRING);
+            if (id == null) return;
 
-                RankAPI.getApi().setRankID(player, 2, 182, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Premium ", NamedTextColor.GREEN))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("6 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Premium ", NamedTextColor.GREEN))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("6 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-                CoinAPI.getApi().removeCoins(player, price);
+            int balance = CoinAPI.getApi().getCoins(player);
+            int price = switch (id) {
+                case "6premium" -> 500;
+                case "12premium" -> 900;
+                case "6supreme" -> 1500;
+                case "12supreme" -> 2800;
+                case "6titan" -> 5000;
+                case "12titan" -> 9500;
+                case "6matrix" -> 50000;
+                case "12matrix" -> 100000;
+                default -> 0;
+            };
+
+            if (balance < price) {
+                Component message = Component.text()
+                        .append(Component.text(
+                                LanguageAPI.getApi().getLanguage(player) == 2 ? "Du hast nicht genug Geld! Dir fehlen " :
+                                "You haven´t got enough money! You miss ", NamedTextColor.RED))
+                        .append(Component.text(price - balance, NamedTextColor.YELLOW))
+                        .append(Component.text("$.", NamedTextColor.RED)).build();
+                player.sendMessage(message);
                 return;
             }
-            if (clickedItem.equals(premium12)) {
 
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 900;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
-
-                    return;
-                }
-
-                RankAPI.getApi().setRankID(player, 2, 365, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Premium ", NamedTextColor.GREEN))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("12 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Premium ", NamedTextColor.GREEN))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("12 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-                CoinAPI.getApi().removeCoins(player, price);
-                return;
+            int rankID;
+            int durationDays;
+            switch (id) {
+                case "6premium" -> { rankID = 2; durationDays = 182; }
+                case "12premium" -> { rankID = 2; durationDays = 365; }
+                case "6supreme" -> { rankID = 3; durationDays = 182; }
+                case "12supreme" -> { rankID = 3; durationDays = 365; }
+                case "6titan" -> { rankID = 4; durationDays = 182; }
+                case "12titan" -> { rankID = 4; durationDays = 365; }
+                case "6matrix" -> { rankID = 5; durationDays = 182; }
+                case "12matrix" -> { rankID = 5; durationDays = 365; }
+                default -> { return; }
             }
-            if (clickedItem.equals(supreme6)) {
 
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 1500;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
+            RankAPI.getApi().setRankID(player, rankID, durationDays, Calendar.getInstance());
+            CoinAPI.getApi().removeCoins(player, price);
 
-                    return;
-                }
-
-                RankAPI.getApi().setRankID(player, 3, 182, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Supreme ", NamedTextColor.AQUA))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("6 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Supreme ", NamedTextColor.AQUA))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("6 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-                CoinAPI.getApi().removeCoins(player, price);
-                return;
-            }
-            if (clickedItem.equals(supreme12)) {
-
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 2800;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
-
-                    return;
-                }
-
-                RankAPI.getApi().setRankID(player, 3, 365, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Supreme ", NamedTextColor.AQUA))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("12 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Supreme ", NamedTextColor.AQUA))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("12 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-
-                CoinAPI.getApi().removeCoins(player, price);
-                return;
-            }
-            if (clickedItem.equals(titan6)) {
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 5000;
-                if (price >= balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
-
-                    return;
-                }
-
-                RankAPI.getApi().setRankID(player, 4, 182, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Titan ", NamedTextColor.BLUE))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("6 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Titan ", NamedTextColor.BLUE))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("6 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-
-                CoinAPI.getApi().removeCoins(player, price);
-                return;
-            }
-            if (clickedItem.equals(titan12)) {
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 9500;
-                if (price >= balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
-
-
-                    return;
-                }
-
-                RankAPI.getApi().setRankID(player, 4, 365, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Titan ", NamedTextColor.BLUE))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("12 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Titan ", NamedTextColor.BLUE))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("12 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-
-                CoinAPI.getApi().removeCoins(player, price);
-                return;
-            }
-            if (clickedItem.equals(matrix6)) {
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 50000;
-                if (price >= balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
-
-                    return;
-                }
-
-                RankAPI.getApi().setRankID(player, 5, 182, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Matrix ", NamedTextColor.GOLD))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("6 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Matrix ", NamedTextColor.GOLD))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("6 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-
-                CoinAPI.getApi().removeCoins(player, price);
-                return;
-            }
-            if (clickedItem.equals(matrix12)) {
-                balence = CoinAPI.getApi().getCoins(player);
-                price = 100000;
-                if (price >= balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("Du hast nicht genug Geld! Dir fehlen ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Component.text()
-                                .append(Component.text("You haven´t got enough money! You miss ", NamedTextColor.RED))
-                                .append(Component.text(price - balence, NamedTextColor.YELLOW))
-                                .append(Component.text("$.", NamedTextColor.RED)));
-                    }
-
-                    return;
-                }
-
-                RankAPI.getApi().setRankID(player, 5, 365, Calendar.getInstance());
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den", NamedTextColor.WHITE))
-                            .append(Component.text(" Matrix ", NamedTextColor.GOLD))
-                            .append(Component.text("Rang für ", NamedTextColor.WHITE))
-                            .append(Component.text("12 Monate", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text("gekauft.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You bought the", NamedTextColor.WHITE))
-                            .append(Component.text(" Matrix ", NamedTextColor.GOLD))
-                            .append(Component.text("rank for ", NamedTextColor.WHITE))
-                            .append(Component.text("12 months", NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
-
-                CoinAPI.getApi().removeCoins(player, price);
+            String rankName = switch (id) {
+                case "6premium", "12premium" -> "Premium";
+                case "6supreme", "12supreme" -> "Supreme";
+                case "6titan", "12titan" -> "Titan";
+                case "6matrix", "12matrix" -> "Matrix";
+                default -> "";
+            };
+            String months = id.startsWith("6") ? "6 months" : "12 months";
+            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                player.sendMessage(Statements.getPrefix()
+                        .append(Component.text("Du hast den ", NamedTextColor.WHITE))
+                        .append(Component.text(rankName + " ", NamedTextColor.GREEN))
+                        .append(Component.text("Rang für ", NamedTextColor.WHITE))
+                        .append(Component.text(months, NamedTextColor.LIGHT_PURPLE))
+                        .append(Component.text(" gekauft.", NamedTextColor.WHITE)));
+            } else {
+                player.sendMessage(Statements.getPrefix()
+                        .append(Component.text("You bought the ", NamedTextColor.WHITE))
+                        .append(Component.text(rankName + " ", NamedTextColor.GREEN))
+                        .append(Component.text("rank for ", NamedTextColor.WHITE))
+                        .append(Component.text(months, NamedTextColor.LIGHT_PURPLE))
+                        .append(Component.text(".", NamedTextColor.WHITE)));
             }
         }
-
-
     }
 
 }

@@ -10,6 +10,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public class ShopListener implements Listener {
 
@@ -35,8 +39,16 @@ public class ShopListener implements Listener {
 
         if (event.getView().title().equals(Component.text("             Shop", NamedTextColor.DARK_GREEN, TextDecoration.BOLD))) {
             event.setCancelled(true);
+            NamespacedKey prefixKey = new NamespacedKey("utilsmanager", "shop_id");
 
-            Component clickedItem = event.getCurrentItem().getItemMeta().itemName();
+            ItemStack clickedItem = event.getCurrentItem();
+            ItemMeta meta = clickedItem.getItemMeta();
+            if (meta == null) return;
+
+            PersistentDataContainer data = meta.getPersistentDataContainer();
+            String id = data.get(prefixKey, PersistentDataType.STRING);
+            if (id == null) return;
+
             String buycopper = "buycopper";
             String buyamethyst = "buyamethyst";
             String buydiamond = "buydiamond";
@@ -47,7 +59,7 @@ public class ShopListener implements Listener {
             String selldiamond = "selldiamond";
             String sellnetherite = "sellnetherite";
             String sellspawner = "sellspawner";
-            if (clickedItem.equals(buycopper)) {
+            if (id.equalsIgnoreCase(buycopper)) {
                 /* ItemStack copper = new ItemStack(Material.COPPER_INGOT);
 
                 AnvilGUI.Builder Anvil = new AnvilGUI.Builder();
@@ -108,7 +120,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().removeCoins(player, price);
                 return;
             }
-            if (clickedItem.equals(buyamethyst)) {
+            if (id.equalsIgnoreCase(buyamethyst)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD);
                 balence = CoinAPI.getApi().getCoins(player);
@@ -138,7 +150,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().removeCoins(player, price);
                 return;
             }
-            if (clickedItem.equals(buydiamond)) {
+            if (id.equalsIgnoreCase(buydiamond)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack diamond = new ItemStack(Material.DIAMOND);
                 balence = CoinAPI.getApi().getCoins(player);
@@ -168,7 +180,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().removeCoins(player, price);
                 return;
             }
-            if (clickedItem.equals(buynetherite)) {
+            if (id.equalsIgnoreCase(buynetherite)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT);
                 balence = CoinAPI.getApi().getCoins(player);
@@ -198,7 +210,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().removeCoins(player, price);
                 return;
             }
-            if (clickedItem.equals(buyspawner)) {
+            if (id.equalsIgnoreCase(buyspawner)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack spawner = new ItemStack(Material.SPAWNER);
                 balence = CoinAPI.getApi().getCoins(player);
@@ -228,7 +240,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().removeCoins(player, price);
                 return;
             }
-            if (clickedItem.equals(sellcopper)) {
+            if (id.equalsIgnoreCase(sellcopper)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack copper = new ItemStack(Material.COPPER_INGOT);
                 int existing = inventory.all(Material.COPPER_INGOT).values().stream()
@@ -259,7 +271,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().addCoins(player, sellprice);
                 return;
             }
-            if (clickedItem.equals(sellamethyst)) {
+            if (id.equalsIgnoreCase(sellamethyst)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD);
                 int existing = inventory.all(Material.AMETHYST_SHARD).values().stream()
@@ -290,7 +302,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().addCoins(player, sellprice);
                 return;
             }
-            if (clickedItem.equals(selldiamond)) {
+            if (id.equalsIgnoreCase(selldiamond)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack diamond = new ItemStack(Material.DIAMOND);
                 int existing = inventory.all(Material.DIAMOND).values().stream()
@@ -321,7 +333,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().addCoins(player, sellprice);
                 return;
             }
-            if (clickedItem.equals(sellnetherite)) {
+            if (id.equalsIgnoreCase(sellnetherite)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT);
                 int existing = inventory.all(Material.NETHERITE_INGOT).values().stream()
@@ -352,7 +364,7 @@ public class ShopListener implements Listener {
                 CoinAPI.getApi().addCoins(player, sellprice);
                 return;
             }
-            if (clickedItem.equals(sellspawner)) {
+            if (id.equalsIgnoreCase(sellspawner)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack spawner = new ItemStack(Material.SPAWNER);
                 int existing = inventory.all(Material.SPAWNER).values().stream()
@@ -397,128 +409,46 @@ public class ShopListener implements Listener {
 
         if (event.getView().title().equals(Component.text("             Prefix", NamedTextColor.DARK_GREEN, TextDecoration.BOLD))) {
             event.setCancelled(true);
-            Component clickedItem = event.getCurrentItem().getItemMeta().itemName();
-            Component dark_red = Component.text("dark_red");
-            Component red = Component.text("red");
-            Component gold = Component.text("gold");
-            Component yellow = Component.text("yellow");
-            Component dark_green = Component.text("dark_green");
-            Component green = Component.text("green");
-            Component aqua = Component.text("aqua");
-            Component dark_aqua = Component.text("dark_aqua");
-            Component dark_blue = Component.text("dark_blue");
-            Component blue = Component.text("blue");
-            Component light_purple = Component.text("light_purple");
-            Component dark_purple = Component.text("dark_purple");
-            Component gray = Component.text("gray");
-            Component dark_gray = Component.text("dark_gray");
-            Component white = Component.text("white");
-            Component black = Component.text("black");
-            Component reset = Component.text("reset");
-            Component bold = Component.text("bold");
-            Component italic = Component.text("italic");
-            Component magic = Component.text("magic");
-            Component strikethrough = Component.text("strikethrough");
-            Component underline = Component.text("underline");
+            NamespacedKey prefixKey = new NamespacedKey("utilsmanager", "prefix_id");
 
-            if (clickedItem.equals(dark_red)) {
-                player.performCommand("prefix dark_red");
-            }
-            if (clickedItem.equals(red)) {
-                player.performCommand("prefix red");
-            }
-            if (clickedItem.equals(gold)) {
-                player.performCommand("prefix gold");
-            }
-            if (clickedItem.equals(yellow)) {
-                player.performCommand("prefix yellow");
-            }
-            if (clickedItem.equals(dark_green)) {
-                player.performCommand("prefix dark_green");
-            }
-            if (clickedItem.equals(green)) {
-                player.performCommand("prefix green");
-            }
-            if (clickedItem.equals(aqua)) {
-                player.performCommand("prefix aqua");
-            }
-            if (clickedItem.equals(dark_aqua)) {
-                player.performCommand("prefix dark_aqua");
-            }
-            if (clickedItem.equals(dark_blue)) {
-                player.performCommand("prefix dark_blue");
-            }
-            if (clickedItem.equals(blue)) {
-                player.performCommand("prefix blue");
-            }
-            if (clickedItem.equals(light_purple)) {
-                player.performCommand("prefix light_purple");
-            }
-            if (clickedItem.equals(dark_purple)) {
-                player.performCommand("prefix dark_purple");
-            }
-            if (clickedItem.equals(gray)) {
-                player.performCommand("prefix gray");
-            }
-            if (clickedItem.equals(dark_gray)) {
-                player.performCommand("prefix dark_gray");
-            }
-            if (clickedItem.equals(white)) {
-                player.performCommand("prefix white");
-            }
-            if (clickedItem.equals(black)) {
-                player.performCommand("prefix black");
-            }
+            ItemStack clickedItem = event.getCurrentItem();
+            ItemMeta meta = clickedItem.getItemMeta();
+            if (meta == null) return;
 
-            if (clickedItem.equals(bold)) {
-                player.performCommand("prefix bold");
-            }
-            if (clickedItem.equals(italic)) {
-                player.performCommand("prefix italic");
-            }
-            if (clickedItem.equals(magic)) {
-                player.performCommand("prefix magic");
-            }
-            if (clickedItem.equals(strikethrough)) {
-                player.performCommand("prefix strikethrough");
-            }
-            if (clickedItem.equals(underline)) {
-                player.performCommand("prefix underline");
-            }
+            PersistentDataContainer data = meta.getPersistentDataContainer();
+            String id = data.get(prefixKey, PersistentDataType.STRING);
+            if (id == null) return;
 
-            if (clickedItem.equals(reset)) {
-                if (RankAPI.getApi().getRankID(player) == 5) {
-                    RankAPI.getApi().setPrefix(player,6);
-                    RankAPI.getApi().setPrefixType(player, 0);
+            if (id.equalsIgnoreCase("reset")) {
+                int rankId = RankAPI.getApi().getRankID(player);
+
+                switch (rankId) {
+                    case 5 -> RankAPI.getApi().setPrefix(player, 6);
+                    case 6 -> RankAPI.getApi().setPrefix(player, 14);
+                    case 7 -> RankAPI.getApi().setPrefix(player, 5);
+                    case 8 -> RankAPI.getApi().setPrefix(player, 1);
+                    case 9 -> RankAPI.getApi().setPrefix(player, 12);
+                    case 10 -> RankAPI.getApi().setPrefix(player, 4);
                 }
-                if (RankAPI.getApi().getRankID(player) == 6) {
-                    RankAPI.getApi().setPrefix(player,14);
-                    RankAPI.getApi().setPrefixType(player, 0);
-                }
-                if (RankAPI.getApi().getRankID(player) == 7) {
-                    RankAPI.getApi().setPrefix(player,5);
-                    RankAPI.getApi().setPrefixType(player, 0);
-                }
-                if (RankAPI.getApi().getRankID(player) == 8) {
-                    RankAPI.getApi().setPrefix(player,1);
-                    RankAPI.getApi().setPrefixType(player, 0);
-                }
-                if (RankAPI.getApi().getRankID(player) == 9) {
-                    RankAPI.getApi().setPrefix(player,12);
-                    RankAPI.getApi().setPrefixType(player, 0);
-                }
-                if (RankAPI.getApi().getRankID(player) == 10) {
-                    RankAPI.getApi().setPrefix(player, 4);
-                    RankAPI.getApi().setPrefixType(player, 0);
-                }
+
+                RankAPI.getApi().setPrefixType(player, 0);
+
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(NamedTextColor.GOLD + "Du hast deinen Prefix zurückgesetzt.");
+                    player.sendMessage(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD));
                 } else {
-                    player.sendMessage(NamedTextColor.GOLD + "You´ve reset your prefix.");
+                    player.sendMessage(Component.text("You’ve reset your prefix.", NamedTextColor.GOLD));
                 }
+
                 Main.getInstance().getTablistManager().setAllPlayerTeams();
+                return;
             }
+
+            if (id.equalsIgnoreCase("fail")) {
+                player.sendMessage(Component.text("You cannot use this prefix!", NamedTextColor.RED));
+                return;
+            }
+
+            player.performCommand("prefix " + id);
         }
     }
-
 }

@@ -2,6 +2,7 @@ package de.lars.utilsmanager.commands.player;
 
 import de.lars.apiManager.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.RankStatements;
+import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;

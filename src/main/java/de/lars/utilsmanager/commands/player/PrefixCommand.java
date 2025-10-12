@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -32,58 +33,163 @@ public class PrefixCommand implements BasicCommand {
             return;
         }
         if (args.length == 0) {
-            HashMap<Integer, ItemStack> integerItemStackHashMap = new HashMap<>();
+            NamespacedKey prefixKey = new NamespacedKey("utilsmanager", "prefix_id");
+
+            HashMap<Integer, ItemStack> items = new HashMap<>();
+
             if (RankAPI.getApi().getRankID(player) == 10) {
-                integerItemStackHashMap.put(10, new ItemBuilder(Material.BARRIER).setDisplayname(Component.text("Dark Red", NamedTextColor.DARK_RED)).setLocalizedName(Component.text("fail")).build());
+                items.put(10, new ItemBuilder(Material.BARRIER)
+                        .setDisplayName(Component.text("Dark Red", NamedTextColor.DARK_RED))
+                        .setCustomId(prefixKey, "fail")
+                        .build());
             } else {
-                integerItemStackHashMap.put(10, new ItemBuilder(Material.RED_CONCRETE).setDisplayname(Component.text("Dark Red", NamedTextColor.DARK_RED)).setLocalizedName(Component.text("dark_red")).build());
+                items.put(10, new ItemBuilder(Material.RED_CONCRETE)
+                        .setDisplayName(Component.text("Dark Red", NamedTextColor.DARK_RED))
+                        .setCustomId(prefixKey, "dark_red")
+                        .build());
             }
-            if ((RankAPI.getApi().getRankID(player) >= 9)) {
-                integerItemStackHashMap.put(11, new ItemBuilder(Material.BARRIER).setDisplayname(Component.text("Red", NamedTextColor.RED)).setLocalizedName(Component.text("fail")).build());
-            } else {
-                integerItemStackHashMap.put(11, new ItemBuilder(Material.RED_TERRACOTTA).setDisplayname(Component.text("Red", NamedTextColor.RED)).setLocalizedName(Component.text("red")).build());
-            }
-            integerItemStackHashMap.put(12, new ItemBuilder(Material.ORANGE_CONCRETE).setDisplayname(Component.text("Gold", NamedTextColor.GOLD)).setLocalizedName(Component.text("gold")).build());
-            if ((RankAPI.getApi().getRankID(player) >= 6)) {
-                integerItemStackHashMap.put(13, new ItemBuilder(Material.BARRIER).setDisplayname(Component.text("Yellow", NamedTextColor.YELLOW)).setLocalizedName(Component.text("fail")).build());
-            } else {
-                integerItemStackHashMap.put(13, new ItemBuilder(Material.YELLOW_CONCRETE).setDisplayname(Component.text("Yellow", NamedTextColor.YELLOW)).setLocalizedName(Component.text("yellow")).build());
-            }
-            integerItemStackHashMap.put(14, new ItemBuilder(Material.GREEN_CONCRETE).setDisplayname(Component.text("Dark Green", NamedTextColor.DARK_GREEN)).setLocalizedName(Component.text("dark_green")).build());
-            integerItemStackHashMap.put(15, new ItemBuilder(Material.LIME_CONCRETE).setDisplayname(Component.text("Green", NamedTextColor.GREEN)).setLocalizedName(Component.text("green")).build());
-            integerItemStackHashMap.put(16, new ItemBuilder(Material.LIGHT_BLUE_CONCRETE).setDisplayname(Component.text("Aqua", NamedTextColor.AQUA)).setLocalizedName(Component.text("aqua")).build());
 
-            integerItemStackHashMap.put(19, new ItemBuilder(Material.CYAN_CONCRETE).setDisplayname(Component.text("Dark Aqua", NamedTextColor.DARK_AQUA)).setLocalizedName(Component.text("dark_aqua")).build());
-            if ((RankAPI.getApi().getRankID(player) >= 8)) {
-                integerItemStackHashMap.put(20, new ItemBuilder(Material.BARRIER).setDisplayname(Component.text("Dark Blue", NamedTextColor.DARK_BLUE)).setLocalizedName(Component.text("fail")).build());
+            if (RankAPI.getApi().getRankID(player) >= 9) {
+                items.put(11, new ItemBuilder(Material.BARRIER)
+                        .setDisplayName(Component.text("Red", NamedTextColor.RED))
+                        .setCustomId(prefixKey, "fail")
+                        .build());
             } else {
-                integerItemStackHashMap.put(20, new ItemBuilder(Material.BLUE_CONCRETE).setDisplayname(Component.text("Dark Blue", NamedTextColor.DARK_BLUE)).setLocalizedName(Component.text("dark_blue")).build());
+                items.put(11, new ItemBuilder(Material.RED_TERRACOTTA)
+                        .setDisplayName(Component.text("Red", NamedTextColor.RED))
+                        .setCustomId(prefixKey, "red")
+                        .build());
             }
-            integerItemStackHashMap.put(21, new ItemBuilder(Material.LIGHT_BLUE_CONCRETE).setDisplayname(Component.text("Blue", NamedTextColor.BLUE)).setLocalizedName(Component.text("blue")).build());
-            integerItemStackHashMap.put(22, new ItemBuilder(Material.MAGENTA_CONCRETE).setDisplayname(Component.text("Light Purple", NamedTextColor.LIGHT_PURPLE)).setLocalizedName(Component.text("light_purple")).build());
-            if ((RankAPI.getApi().getRankID(player) >= 7)) {
-                integerItemStackHashMap.put(23, new ItemBuilder(Material.BARRIER).setDisplayname(Component.text("Dark Purple", NamedTextColor.DARK_PURPLE)).setLocalizedName(Component.text("fail")).build());
+
+            items.put(12, new ItemBuilder(Material.ORANGE_CONCRETE)
+                    .setDisplayName(Component.text("Gold", NamedTextColor.GOLD))
+                    .setCustomId(prefixKey, "gold")
+                    .build());
+
+            if (RankAPI.getApi().getRankID(player) >= 6) {
+                items.put(13, new ItemBuilder(Material.BARRIER)
+                        .setDisplayName(Component.text("Yellow", NamedTextColor.YELLOW))
+                        .setCustomId(prefixKey, "fail")
+                        .build());
             } else {
-                integerItemStackHashMap.put(23, new ItemBuilder(Material.PURPLE_CONCRETE).setDisplayname(Component.text("Dark Purple", NamedTextColor.DARK_PURPLE)).setLocalizedName(Component.text("dark_purple")).build());
+                items.put(13, new ItemBuilder(Material.YELLOW_CONCRETE)
+                        .setDisplayName(Component.text("Yellow", NamedTextColor.YELLOW))
+                        .setCustomId(prefixKey, "yellow")
+                        .build());
             }
-            integerItemStackHashMap.put(24, new ItemBuilder(Material.LIGHT_GRAY_CONCRETE).setDisplayname(Component.text("Gray", NamedTextColor.GRAY)).setLocalizedName(Component.text("gray")).build());
-            integerItemStackHashMap.put(25, new ItemBuilder(Material.GRAY_CONCRETE).setDisplayname(Component.text("Dark Gray", NamedTextColor.DARK_GRAY)).setLocalizedName(Component.text("dark_gray")).build());
 
-            integerItemStackHashMap.put(30, new ItemBuilder(Material.WHITE_CONCRETE).setDisplayname(Component.text("White", NamedTextColor.WHITE)).setLocalizedName(Component.text("white")).build());
-            integerItemStackHashMap.put(31, new ItemBuilder(Material.TNT).setDisplayname(Component.text("Reset Prefix", NamedTextColor.RED, TextDecoration.BOLD)).setLocalizedName(Component.text("reset")).build());
-            integerItemStackHashMap.put(32, new ItemBuilder(Material.BLACK_CONCRETE).setDisplayname(Component.text("Black", NamedTextColor.BLACK)).setLocalizedName(Component.text("black")).build());
+            items.put(14, new ItemBuilder(Material.GREEN_CONCRETE)
+                    .setDisplayName(Component.text("Dark Green", NamedTextColor.DARK_GREEN))
+                    .setCustomId(prefixKey, "dark_green")
+                    .build());
 
-            integerItemStackHashMap.put(2, new ItemBuilder(Material.PAPER).setDisplayname(Component.text("Bold", NamedTextColor.WHITE, TextDecoration.BOLD)).setLocalizedName(Component.text("bold")).setCustomModelData(2).build());
-            integerItemStackHashMap.put(3, new ItemBuilder(Material.PAPER).setDisplayname(Component.text("Italic", NamedTextColor.WHITE, TextDecoration.ITALIC)).setLocalizedName(Component.text("italic")).setCustomModelData(3).build());
-            integerItemStackHashMap.put(4, new ItemBuilder(Material.PAPER).setDisplayname(Component.text("Magic", NamedTextColor.WHITE, TextDecoration.OBFUSCATED)).setLocalizedName(Component.text("magic")).setCustomModelData(4).build());
-            integerItemStackHashMap.put(5, new ItemBuilder(Material.PAPER).setDisplayname(Component.text("Strikethrough", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH)).setLocalizedName(Component.text("strikethrough")).setCustomModelData(5).build());
-            integerItemStackHashMap.put(6, new ItemBuilder(Material.PAPER).setDisplayname(Component.text("Underline", NamedTextColor.WHITE, TextDecoration.UNDERLINED)).setLocalizedName(Component.text("underline")).setCustomModelData(6).build());
+            items.put(15, new ItemBuilder(Material.LIME_CONCRETE)
+                    .setDisplayName(Component.text("Green", NamedTextColor.GREEN))
+                    .setCustomId(prefixKey, "green")
+                    .build());
 
-            Inventory i = Bukkit.createInventory(null, 4 * 9, Component.text("             Prefix", NamedTextColor.DARK_GREEN, TextDecoration.BOLD));
-            for (Map.Entry<Integer, ItemStack> integerItemStackEntry : integerItemStackHashMap.entrySet()) {
-                i.setItem(integerItemStackEntry.getKey() , integerItemStackEntry.getValue());
+            items.put(16, new ItemBuilder(Material.LIGHT_BLUE_CONCRETE)
+                    .setDisplayName(Component.text("Aqua", NamedTextColor.AQUA))
+                    .setCustomId(prefixKey, "aqua")
+                    .build());
+
+            items.put(19, new ItemBuilder(Material.CYAN_CONCRETE)
+                    .setDisplayName(Component.text("Dark Aqua", NamedTextColor.DARK_AQUA))
+                    .setCustomId(prefixKey, "dark_aqua")
+                    .build());
+
+            if (RankAPI.getApi().getRankID(player) >= 8) {
+                items.put(20, new ItemBuilder(Material.BARRIER)
+                        .setDisplayName(Component.text("Dark Blue", NamedTextColor.DARK_BLUE))
+                        .setCustomId(prefixKey, "fail")
+                        .build());
+            } else {
+                items.put(20, new ItemBuilder(Material.BLUE_CONCRETE)
+                        .setDisplayName(Component.text("Dark Blue", NamedTextColor.DARK_BLUE))
+                        .setCustomId(prefixKey, "dark_blue")
+                        .build());
             }
-            player.openInventory(i);
+
+            items.put(21, new ItemBuilder(Material.LIGHT_BLUE_CONCRETE)
+                    .setDisplayName(Component.text("Blue", NamedTextColor.BLUE))
+                    .setCustomId(prefixKey, "blue")
+                    .build());
+
+            items.put(22, new ItemBuilder(Material.MAGENTA_CONCRETE)
+                    .setDisplayName(Component.text("Light Purple", NamedTextColor.LIGHT_PURPLE))
+                    .setCustomId(prefixKey, "light_purple")
+                    .build());
+
+            if (RankAPI.getApi().getRankID(player) >= 7) {
+                items.put(23, new ItemBuilder(Material.BARRIER)
+                        .setDisplayName(Component.text("Dark Purple", NamedTextColor.DARK_PURPLE))
+                        .setCustomId(prefixKey, "fail")
+                        .build());
+            } else {
+                items.put(23, new ItemBuilder(Material.PURPLE_CONCRETE)
+                        .setDisplayName(Component.text("Dark Purple", NamedTextColor.DARK_PURPLE))
+                        .setCustomId(prefixKey, "dark_purple")
+                        .build());
+            }
+
+            items.put(24, new ItemBuilder(Material.LIGHT_GRAY_CONCRETE)
+                    .setDisplayName(Component.text("Gray", NamedTextColor.GRAY))
+                    .setCustomId(prefixKey, "gray")
+                    .build());
+
+            items.put(25, new ItemBuilder(Material.GRAY_CONCRETE)
+                    .setDisplayName(Component.text("Dark Gray", NamedTextColor.DARK_GRAY))
+                    .setCustomId(prefixKey, "dark_gray")
+                    .build());
+
+            items.put(30, new ItemBuilder(Material.WHITE_CONCRETE)
+                    .setDisplayName(Component.text("White", NamedTextColor.WHITE))
+                    .setCustomId(prefixKey, "white")
+                    .build());
+
+            items.put(31, new ItemBuilder(Material.TNT)
+                    .setDisplayName(Component.text("Reset Prefix", NamedTextColor.RED, TextDecoration.BOLD))
+                    .setCustomId(prefixKey, "reset")
+                    .build());
+
+            items.put(32, new ItemBuilder(Material.BLACK_CONCRETE)
+                    .setDisplayName(Component.text("Black", NamedTextColor.BLACK))
+                    .setCustomId(prefixKey, "black")
+                    .build());
+
+            items.put(2, new ItemBuilder(Material.PAPER)
+                    .setDisplayName(Component.text("Bold", NamedTextColor.WHITE, TextDecoration.BOLD))
+                    .setCustomId(prefixKey, "bold")
+                    .setCustomModelData(2)
+                    .build());
+
+            items.put(3, new ItemBuilder(Material.PAPER)
+                    .setDisplayName(Component.text("Italic", NamedTextColor.WHITE, TextDecoration.ITALIC))
+                    .setCustomId(prefixKey, "italic")
+                    .setCustomModelData(3)
+                    .build());
+
+            items.put(4, new ItemBuilder(Material.PAPER)
+                    .setDisplayName(Component.text("Magic", NamedTextColor.WHITE, TextDecoration.OBFUSCATED))
+                    .setCustomId(prefixKey, "magic")
+                    .setCustomModelData(4)
+                    .build());
+
+            items.put(5, new ItemBuilder(Material.PAPER)
+                    .setDisplayName(Component.text("Strikethrough", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
+                    .setCustomId(prefixKey, "strikethrough")
+                    .setCustomModelData(5)
+                    .build());
+
+            items.put(6, new ItemBuilder(Material.PAPER)
+                    .setDisplayName(Component.text("Underline", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
+                    .setCustomId(prefixKey, "underline")
+                    .setCustomModelData(6)
+                    .build());
+
+            Inventory inv = Bukkit.createInventory(null, 4 * 9, Component.text("             Prefix", NamedTextColor.DARK_GREEN, TextDecoration.BOLD));
+            items.forEach(inv::setItem);
+            player.openInventory(inv);
             return;
         }
         switch (args[0].toLowerCase()) {
