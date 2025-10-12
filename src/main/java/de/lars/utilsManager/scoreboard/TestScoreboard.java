@@ -1,11 +1,11 @@
-package de.lars.utilsManager.scoreboard;
+package de.lars.utilsmanager.scoreboard;
 
 import de.lars.apiManager.coinAPI.CoinAPI;
 import de.lars.apiManager.languageAPI.LanguageAPI;
 import de.lars.apiManager.playersAPI.PlayerAPI;
 import de.lars.apiManager.questAPI.QuestAPI;
-import de.lars.utilsManager.Main;
-import de.lars.utilsManager.utils.RankStatements;
+import de.lars.utilsmanager.Main;
+import de.lars.utilsmanager.util.RankStatements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;

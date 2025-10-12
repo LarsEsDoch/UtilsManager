@@ -1,4 +1,4 @@
-package de.lars.utilsManager.scoreboard;
+package de.lars.utilsmanager.scoreboard;
 
 import org.bukkit.ChatColor;
 

@@ -1,7 +1,7 @@
-package de.lars.utilsManager.recipes;
+package de.lars.utilsmanager.recipes;
 
-import de.lars.utilsManager.Main;
-import de.lars.utilsManager.utils.ItemBuilder;
+import de.lars.utilsmanager.Main;
+import de.lars.utilsmanager.util.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 public class RecipeLoader implements Listener {
 

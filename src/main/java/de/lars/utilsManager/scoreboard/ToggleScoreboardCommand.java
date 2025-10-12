@@ -1,8 +1,8 @@
-package de.lars.utilsManager.scoreboard;
+package de.lars.utilsmanager.scoreboard;
 
 import de.lars.apiManager.languageAPI.LanguageAPI;
 import de.lars.apiManager.toggleAPI.ToggleAPI;
-import de.lars.utilsManager.utils.Statements;
+import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -15,7 +15,7 @@ public class ToggleScoreboardCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (!(stack.getExecutor() instanceof Player player)) {
-            stack.getSender().sendMessage(Component.text("Only player can send Messages.", NamedTextColor.RED));
+            stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
         if (ToggleAPI.getApi().getScoreboardToggle(player)) {

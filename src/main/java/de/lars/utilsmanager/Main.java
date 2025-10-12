@@ -2,12 +2,10 @@ package de.lars.utilsmanager;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import de.lars.apiManager.dataAPI.DataAPI;
-import de.lars.utilsmanager.ban.BanManager;
-import de.lars.utilsmanager.ban.KickManager;
+import de.lars.utilsmanager.features.moderation.BanManager;
+import de.lars.utilsmanager.features.moderation.KickManager;
 import de.lars.utilsmanager.entity.EntitySummons;
 import de.lars.utilsmanager.features.backpack.BackpackManager;
-import de.lars.utilsmanager.features.bank.BankText;
 import de.lars.utilsmanager.features.court.CourtManager;
 import de.lars.utilsmanager.features.freecam.FreecamListener;
 import de.lars.utilsmanager.features.maintenance.MaintenanceManager;
@@ -17,11 +15,11 @@ import de.lars.utilsmanager.features.timer.Timer;
 import de.lars.utilsmanager.integrations.discord.DiscordBot;
 import de.lars.utilsmanager.listener.player.BedListener;
 import de.lars.utilsmanager.listener.player.SpawnElytraListener;
-import de.lars.utilsmanager.listener.teleporter.FloorTeleporter;
+import de.lars.utilsmanager.listener.teleporter.FloorTeleporterListener;
 import de.lars.utilsmanager.listener.teleporter.TeleporterListener;
 import de.lars.utilsmanager.plugin.Registrar;
-import de.lars.utilsmanager.questsystem.QuestManager;
-import de.lars.utilsmanager.rank.RankManager;
+import de.lars.utilsmanager.quest.QuestManager;
+import de.lars.utilsmanager.features.rank.RankManager;
 import de.lars.utilsmanager.recipes.RecipeLoader;
 import de.lars.utilsmanager.tablist.TablistManager;
 import de.lars.utilsmanager.util.Statements;
@@ -32,18 +30,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
-    public static Main instance;
+    private static Main instance;
+    private ProtocolManager protocolManager;
+
     private Timer timer;
     private BackpackManager backpackManager;
     private RealTime realTime;
-    private BankText bankText;
     private TablistManager tablistManager;
     private RankManager rankManager;
     private EntitySummons entitySummons;
-    private QuestManager questManager;
     private SpawnElytraListener spawnElytraListener;
+    private QuestManager questManager;
     private BanManager banManager;
-    private FloorTeleporter floorTeleporter;
+    private FloorTeleporterListener floorTeleporterListener;
     private CourtManager courtManager;
     private TeleporterListener teleporterListener;
     private BedListener bedListener;
@@ -51,30 +50,45 @@ public final class Main extends JavaPlugin {
     private DiscordBot discordBot;
     private KickManager kickManager;
     private MaintenanceManager maintenanceManager;
-    private ProtocolManager protocolManager;
     private PlaytimeManager playtimeManager;
 
     @Override
     public void onLoad() {
-        if (protocolManager == null) {
-            protocolManager = ProtocolLibrary.getProtocolManager();
-        }
         instance = this;
+        protocolManager = ProtocolLibrary.getProtocolManager();
     }
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        initializeManagers();
+        initializeDiscordBot();
+        registerGameFeatures();
+        registerEventsAndCommands();
+        startBackgroundTasks();
+
+        logToConsole("UtilsManager enabled!", NamedTextColor.GREEN);
+    }
+
+    @Override
+    public void onDisable() {
+        Bukkit.getScheduler().cancelTasks(this);
+        backpackManager.save();
+        discordBot.disable();
+
+        logToConsole("UtilsManager successfully disabled!", NamedTextColor.DARK_RED);
+    }
+
+    private void initializeManagers() {
         backpackManager = new BackpackManager();
         tablistManager = new TablistManager();
         rankManager = new RankManager();
         timer = new Timer();
         realTime = new RealTime();
-        //bankText = new BankText();
         bedListener = new BedListener();
         entitySummons = new EntitySummons();
-        //questManager = new QuestManager();
         spawnElytraListener = new SpawnElytraListener();
-        floorTeleporter = new FloorTeleporter();
+        floorTeleporterListener = new FloorTeleporterListener();
         courtManager = new CourtManager();
         banManager = new BanManager();
         teleporterListener = new TeleporterListener();
@@ -82,46 +96,51 @@ public final class Main extends JavaPlugin {
         kickManager = new KickManager();
         maintenanceManager = new MaintenanceManager();
         playtimeManager = new PlaytimeManager();
-
-        saveDefaultConfig();
-
-        String botToken = getConfig().getString("discord.token");
-        String serverStatusChannelID = getConfig().getString("discord.serverStatusChannelID");
-        String playerStatusChannelID = getConfig().getString("discord.playerStatusChannelID") ;
-        String punishmentsChannelID = getConfig().getString("discord.punishmentsChannelID");
-
-        discordBot = new DiscordBot(botToken, serverStatusChannelID, playerStatusChannelID, punishmentsChannelID);
-
-        new RecipeLoader().registerRecipes();
-        //entitysSummons.EntitysSummons();
-        entitySummons.EntityHearths();
-        banManager.runchecking();
-        teleporterListener.checkTeleportTime();
-
-        Registrar.listenerRegistration(this);
-        Registrar.commandRegistration(this);
-        playtimeManager.updateTime();
-
-        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager enabled!", NamedTextColor.GREEN)));
+        questManager = new QuestManager();
     }
 
-    @Override
-    public void onDisable() {
-        Bukkit.getScheduler().cancelTasks(this);
+    private void initializeDiscordBot() {
+        String token = getConfig().getString("discord.token");
+        String serverStatusChannelId = getConfig().getString("discord.serverStatusChannelID");
+        String playerStatusChannelId = getConfig().getString("discord.playerStatusChannelID");
+        String punishmentsChannelId = getConfig().getString("discord.punishmentsChannelID");
 
-        // bankText.BankTextend();
-        backpackManager.save();
-        // entitysSummons.EntitysSummonsEnd();
-        if (!DataAPI.getApi().isMaintenanceActive()) {
-            //discordBot.sendOffMessage();
+        if (token == null || token.isBlank()) {
+            logToConsole("No Discord token found in config.yml!", NamedTextColor.RED);
+            return;
         }
 
-        discordBot.disable();
-        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("UtilsManager successful disabled!", NamedTextColor.DARK_RED)));
+        discordBot = new DiscordBot(token, serverStatusChannelId, playerStatusChannelId, punishmentsChannelId);
+    }
+
+    private void registerGameFeatures() {
+        new RecipeLoader().registerRecipes();
+        entitySummons.EntityHearths();
+    }
+
+    private void registerEventsAndCommands() {
+        Registrar.listenerRegistration(this);
+        Registrar.commandRegistration(this);
+    }
+
+    private void startBackgroundTasks() {
+        banManager.runchecking();
+        teleporterListener.checkTeleportTime();
+        playtimeManager.updateTime();
+    }
+
+    private void logToConsole(String message, NamedTextColor color) {
+        Bukkit.getConsoleSender().sendMessage(
+            Statements.getPrefix().append(Component.text(message, color))
+        );
     }
 
     public static Main getInstance() {
         return instance;
+    }
+
+    public ProtocolManager getProtocolManager() {
+        return protocolManager;
     }
 
     public BackpackManager getBackpackManager() {
@@ -144,7 +163,7 @@ public final class Main extends JavaPlugin {
         return tablistManager;
     }
 
-    public RankManager getRangManager() {
+    public RankManager getRankManager() {
         return rankManager;
     }
 

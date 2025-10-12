@@ -1,8 +1,8 @@
-package de.lars.utilsManager.tablist;
+package de.lars.utilsmanager.tablist;
 
 import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsManager.Main;
-import de.lars.utilsManager.utils.RankStatements;
+import de.lars.utilsmanager.Main;
+import de.lars.utilsmanager.util.RankStatements;
 import me.lucko.spark.api.Spark;
 import me.lucko.spark.api.SparkProvider;
 import me.lucko.spark.api.statistic.StatisticWindow;

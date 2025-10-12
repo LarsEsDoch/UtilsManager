@@ -1,12 +1,11 @@
-package de.lars.utilsManager.scoreboard;
+package de.lars.utilsmanager.scoreboard;
 
-import de.lars.utilsManager.Main;
+import de.lars.utilsmanager.Main;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
 import java.util.Objects;
