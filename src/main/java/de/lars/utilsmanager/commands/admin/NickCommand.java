@@ -42,8 +42,7 @@ public class NickCommand implements BasicCommand {
         player.customName(nickComponent);
         player.playerListName(nickComponent);
         player.setCustomNameVisible(true);
-
-        Main.lget
+        
         Main.getInstance().getTablistManager().setAllPlayerTeams();
 
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
