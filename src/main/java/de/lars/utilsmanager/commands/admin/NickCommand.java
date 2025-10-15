@@ -12,8 +12,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 public class NickCommand implements BasicCommand {
@@ -26,116 +24,48 @@ public class NickCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
+
+        if (!player.hasPermission("plugin.nick")) {
+            player.sendMessage(Statements.getNotAllowed(player));
+            return;
+        }
+
         if (args.length == 0) {
             sendUsage(player);
             return;
         }
 
-        if (!(player.hasPermission("plugin.nick"))) {
-            player.sendMessage(Statements.getNotAllowed(player));
-            return;
-        }
-
-        if (args[0] == null) {
-            sendUsage(player);
-            return;
-        }
-
         String nickname = args[0];
+        Component nickComponent = Component.text(nickname, NamedTextColor.GOLD);
 
-        Scoreboard scoreboard = player.getScoreboard();
-
-
-        player.setDisplayName(nickname);
-        player.setCustomName(nickname);
+        player.displayName(nickComponent);
+        player.customName(nickComponent);
+        player.playerListName(nickComponent);
         player.setCustomNameVisible(true);
-        player.setPlayerListName(nickname);
-        setPlayerTeam(player);
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), bukkitTask -> {
-            Main.getInstance().getTablistManager().setAllPlayerTeams();
-        }, 20);
+
+        Main.lget
+        Main.getInstance().getTablistManager().setAllPlayerTeams();
+
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
-            player.sendMessage(Statements.getPrefix().append(Component.text("Dein Nickname ist nun: ", NamedTextColor.WHITE))
-                    .append(Component.text(nickname, NamedTextColor.GOLD))
+            player.sendMessage(Statements.getPrefix()
+                    .append(Component.text("Dein Nickname ist nun: ", NamedTextColor.WHITE))
+                    .append(nickComponent)
                     .append(Component.text(".", NamedTextColor.WHITE)));
         } else {
-            player.sendMessage(Statements.getPrefix().append(Component.text("Your nickname is now: ", NamedTextColor.WHITE))
-                    .append(Component.text(nickname, NamedTextColor.GOLD))
+            player.sendMessage(Statements.getPrefix()
+                    .append(Component.text("Your nickname is now: ", NamedTextColor.WHITE))
+                    .append(nickComponent)
                     .append(Component.text(".", NamedTextColor.WHITE)));
         }
-    }
-
-    public void setPlayerTeam(Player player) {
-        Scoreboard scoreboard = player.getScoreboard();
-
-        for (Player target : Bukkit.getOnlinePlayers()) {
-            Integer rank = 5;
-            Integer colorType = RankAPI.getApi().getPrefixType(target);
-            NamedTextColor namedTextColor = getNamedTextColor(RankAPI.getApi().getPrefix(target));
-
-            if (colorType == 1) {
-                type = TextDecoration.BOLD;
-            }
-            if (colorType == 2) {
-                type = TextDecoration.ITALIC;
-            }
-            if (colorType == 3) {
-                type = TextDecoration.OBFUSCATED;
-            }
-            if (colorType == 4) {
-                type = TextDecoration.STRIKETHROUGH;
-            }
-            if (colorType == 5) {
-                type = TextDecoration.UNDERLINED;
-            }
-
-
-            Team scoreboardTeam = scoreboard.getTeam(rank+target.getCustomName());
-            if (scoreboardTeam == null) {
-                scoreboardTeam = scoreboard.registerNewTeam(rank+target.getCustomName());
-            }
-            scoreboardTeam.prefix(RankStatements.getRank(target));
-            scoreboardTeam.color(namedTextColor);
-            if (RankAPI.getApi().getStatus(target).isEmpty()) {
-                target.setPlayerListName(RankStatements.getRank(target) + target.getCustomName());
-            } else {
-                String input = RankAPI.getApi().getStatus(target);
-                String[] parts = input.split(",");
-                String status = parts[0];
-                Integer color = Integer.valueOf(parts[1]);
-                target.setPlayerListName(RankStatements.getRank(target) + target.getName() + NamedTextColor.GRAY + " [" + getNamedTextColor(color) + status + NamedTextColor.GRAY + "]");
-            }
-            scoreboardTeam.addEntry(target.getCustomName());
-
-        }
-    }
-
-    private static NamedTextColor getNamedTextColor(Integer prefixID) {
-        return switch (prefixID) {
-            case 0 -> NamedTextColor.BLACK;
-            case 1 -> NamedTextColor.DARK_BLUE;
-            case 2 -> NamedTextColor.DARK_GREEN;
-            case 3 -> NamedTextColor.DARK_AQUA;
-            case 4 -> NamedTextColor.DARK_RED;
-            case 5 -> NamedTextColor.DARK_PURPLE;
-            case 6 -> NamedTextColor.GOLD;
-            case 7 -> NamedTextColor.GRAY;
-            case 8 -> NamedTextColor.DARK_GRAY;
-            case 9 -> NamedTextColor.BLUE;
-            case 10 -> NamedTextColor.GREEN;
-            case 11 -> NamedTextColor.AQUA;
-            case 12 -> NamedTextColor.RED;
-            case 13 -> NamedTextColor.LIGHT_PURPLE;
-            case 14 -> NamedTextColor.YELLOW;
-            default -> NamedTextColor.WHITE;
-        };
     }
 
     private void sendUsage(Player player) {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
-            player.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/nick <Name>");
+            player.sendMessage(Component.text("Verwendung: ", NamedTextColor.GRAY)
+                    .append(Component.text("/nick <Name>", NamedTextColor.BLUE)));
         } else {
-            player.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/nick <name>");
+            player.sendMessage(Component.text("Use: ", NamedTextColor.GRAY)
+                    .append(Component.text("/nick <name>", NamedTextColor.BLUE)));
         }
     }
 }
