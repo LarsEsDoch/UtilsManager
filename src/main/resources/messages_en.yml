@@ -1,0 +1,73 @@
+# messages_en.yml - default messages (use & for color codes)
+prefix: "&8[&6UtilsManager&8] &r"
+
+# generic
+no-permission: "&cYou don't have permission to do that."
+only-player: "&cThis command can only be run by a player."
+player-not-found: "&cPlayer &e{player}&c not found."
+invalid-usage: "&cInvalid usage. &7{usage}"
+error-occurred: "&cAn error occurred. Check console."
+
+# commands / actions
+action-success: "&aAction completed."
+action-failed: "&cAction failed."
+
+# backpack
+backpack:
+  opened: "{prefix}&aOpened backpack of &e{player}"
+  saved: "{prefix}&aBackpack saved."
+  no-backpack: "{prefix}&cNo backpack found."
+
+# homes / teleportation
+home:
+  set: "{prefix}&aHome &e{home}&a set."
+  deleted: "{prefix}&aHome &e{home}&a deleted."
+  not-set: "{prefix}&cHome &e{home}&c is not set."
+  teleport: "{prefix}&aTeleporting to &e{home}&a..."
+
+spawn:
+  teleport: "{prefix}&aTeleporting to spawn..."
+
+# economy
+economy:
+  balance: "{prefix}&aYour balance: &e{amount}"
+  pay-success: "{prefix}&aYou paid &e{player} &a{amount}"
+  pay-received: "{prefix}&aYou received &e{amount} &afrom &e{player}"
+  shop-no-money: "{prefix}&cYou don't have enough money."
+
+# moderation
+ban:
+  banned: "{prefix}&cYou have been banned. Reason: &7{reason}"
+  ban-broadcast: "{prefix}&cPlayer &e{player}&c was banned by &e{executor}&c. Reason: &7{reason}"
+kick:
+  kicked: "{prefix}&cYou have been kicked. Reason: &7{reason}"
+
+# join/quit/messages
+join:
+  message: "&e{player} joined the server."
+quit:
+  message: "&e{player} left the server."
+
+# maintenance
+maintenance:
+  enabled: "{prefix}&cMaintenance mode enabled."
+  disabled: "{prefix}&aMaintenance mode disabled."
+  kick-message: "{prefix}&cServer is in maintenance. Try later."
+
+# scoreboard/tablist
+scoreboard:
+  title: "&6Server Stats"
+  line-player-count: "Players: &e{online}/{max}"
+
+# admin
+announce:
+  broadcast: "{prefix}&6Announcement: &r{message}"
+
+# timers & realtime
+timer:
+  started: "{prefix}&aTimer started for &e{time}s."
+  stopped: "{prefix}&cTimer stopped."
+
+# misc
+reload:
+  success: "{prefix}&aConfiguration reloaded."
