@@ -2,14 +2,15 @@ package de.lars.utilsmanager;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import de.lars.utilsmanager.features.moderation.BanManager;
-import de.lars.utilsmanager.features.moderation.KickManager;
 import de.lars.utilsmanager.entity.EntitySummons;
 import de.lars.utilsmanager.features.backpack.BackpackManager;
 import de.lars.utilsmanager.features.court.CourtManager;
 import de.lars.utilsmanager.features.freecam.FreecamListener;
 import de.lars.utilsmanager.features.maintenance.MaintenanceManager;
+import de.lars.utilsmanager.features.moderation.BanManager;
+import de.lars.utilsmanager.features.moderation.KickManager;
 import de.lars.utilsmanager.features.playtime.PlaytimeManager;
+import de.lars.utilsmanager.features.rank.RankManager;
 import de.lars.utilsmanager.features.realtime.RealTime;
 import de.lars.utilsmanager.features.timer.Timer;
 import de.lars.utilsmanager.integrations.discord.DiscordBot;
@@ -19,7 +20,6 @@ import de.lars.utilsmanager.listener.teleporter.FloorTeleporterListener;
 import de.lars.utilsmanager.listener.teleporter.TeleporterListener;
 import de.lars.utilsmanager.plugin.Registrar;
 import de.lars.utilsmanager.quest.QuestManager;
-import de.lars.utilsmanager.features.rank.RankManager;
 import de.lars.utilsmanager.recipes.RecipeLoader;
 import de.lars.utilsmanager.tablist.TablistManager;
 import de.lars.utilsmanager.util.Statements;
@@ -28,9 +28,9 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+public final class UtilsManager extends JavaPlugin {
 
-    private static Main instance;
+    private static UtilsManager instance;
     private ProtocolManager protocolManager;
 
     private Timer timer;
@@ -73,7 +73,6 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
-        backpackManager.save();
         discordBot.disable();
 
         logToConsole("UtilsManager successfully disabled!", NamedTextColor.DARK_RED);
@@ -124,7 +123,7 @@ public final class Main extends JavaPlugin {
     }
 
     private void startBackgroundTasks() {
-        banManager.runchecking();
+        banManager.run();
         teleporterListener.checkTeleportTime();
         playtimeManager.updateTime();
     }
@@ -135,7 +134,7 @@ public final class Main extends JavaPlugin {
         );
     }
 
-    public static Main getInstance() {
+    public static UtilsManager getInstance() {
         return instance;
     }
 
