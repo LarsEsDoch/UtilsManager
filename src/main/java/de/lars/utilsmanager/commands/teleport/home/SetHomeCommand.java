@@ -19,10 +19,10 @@ public class SetHomeCommand implements BasicCommand {
             return;
         }
 
-        //if (!(player.hasPermission("plugin.home"))) {
-        //    player.sendMessage(Statements.getNotAllowed(player));
-        //    return;
-        //}
+        if (!(player.hasPermission("plugin.home"))) {
+            player.sendMessage(Statements.getNotAllowed(player));
+            return;
+        }
         if (args.length == 0) {
             sendUsage(player);
             return;
@@ -44,16 +44,13 @@ public class SetHomeCommand implements BasicCommand {
 
          */
 
-        if (args.length == 1) {
-            sendUsage(player);
-            return;
-        }
-        if (args[1].contains("true") || args[1].contains("on") || args[1].contains("ja") || args[1].contains("yes") || args[1].contains("y") || args[1].contains("1")) {
+        if (args.length == 2) {
+            if (args[1].contains("true") || args[1].contains("on") || args[1].contains("ja") || args[1].contains("yes") || args[1].contains("y") || args[1].contains("1")) {
             isPublic = true;
             publicStringEn = Component.text("public ", NamedTextColor.BLUE);
             publicStringDe = Component.text("öffentlichen ", NamedTextColor.BLUE);
+            }
         }
-
         String HomeName = args[0];
 
         if (HomeAPI.getApi().doesHomeExist(HomeName)) {

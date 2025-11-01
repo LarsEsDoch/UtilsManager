@@ -23,10 +23,10 @@ public class DeleteHomeCommand implements BasicCommand {
             return;
         }
 
-        //if (!(player.hasPermission("plugin.home"))) {
-        //    player.sendMessage(Statements.getNotAllowed(player));
-        //    return;
-        //}
+        if (!(player.hasPermission("plugin.home"))) {
+            player.sendMessage(Statements.getNotAllowed(player));
+            return;
+        }
         if (args.length == 0) {
             sendUsage(player);
             return;

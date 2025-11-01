@@ -25,6 +25,4 @@ replay_pid*
 
 .idea/
 .gradle/
-config.yml
 out/
-java_websocket/
