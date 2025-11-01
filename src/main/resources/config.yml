@@ -1,0 +1,5 @@
+discord:
+  token: "Token of your discord bot"
+  serverStatusChannelID: "Id of the discord channel to broadcast server status"
+  playerStatusChannelID: "Id of the discord channel to broadcast player events"
+  punishmentsChannelID: "Id of the discord channel to broadcast player punishments"
