@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.teleport;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -26,7 +26,7 @@ public class SpawnCommand implements BasicCommand {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
-        if (BanAPI.getApi().isCriminal(player) == 5) {
+        if (CourtAPI.getApi().getStatus(player) == 5) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

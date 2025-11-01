@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.server;
 
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
-import de.lars.apiManager.dataAPI.DataAPI;
+import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -43,10 +43,10 @@ public class ServerPingListener implements Listener {
             event.motd(motd.append(Component.text("                  Info: ", NamedTextColor.GREEN)).append(Component.text("Whitelist enabled!", NamedTextColor.GOLD)));
             return;
         }
-        String spaces = DataAPI.getApi().getMaintenanceReason().length() > 80 ? " " : " ".repeat((60 - DataAPI.getApi().getMaintenanceReason().length()) / 2);
-        if (DataAPI.getApi().isMaintenanceActive()) {
+        String spaces = ServerSettingsAPI.getApi().getMaintenanceReason().length() > 80 ? " " : " ".repeat((60 - ServerSettingsAPI.getApi().getMaintenanceReason().length()) / 2);
+        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
             event.motd(motd.append(Component.text("             Info: ", NamedTextColor.GREEN)).append(Component.text("Server is in maintenance!", NamedTextColor.RED))
-                    .append(Component.text("\n " + spaces + DataAPI.getApi().getMaintenanceReason(), NamedTextColor.RED)));
+                    .append(Component.text("\n " + spaces + ServerSettingsAPI.getApi().getMaintenanceReason(), NamedTextColor.RED)));
             return;
         }
         if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {

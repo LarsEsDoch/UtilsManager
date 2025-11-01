@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.rank;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
@@ -11,8 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
 
 public class RankManager {
 
@@ -26,8 +25,8 @@ public class RankManager {
 
     private void run1() {
         for (Player target : Bukkit.getOnlinePlayers()) {
-            if (RankAPI.getApi().getRankID(target) == 10 || target.isOp()) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 10 || target.isOp()) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.addcoins", true);
                 attachment.setPermission("plugin.setcoins", true);
                 attachment.setPermission("plugin.backpack", true);
@@ -85,8 +84,8 @@ public class RankManager {
                 attachment.setPermission("plugin.freecam", true);
                 attachment.setPermission("plugin.maintenance", true);
             }
-            if (RankAPI.getApi().getRankID(target) == 9) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 9) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.addcoins", true);
                 attachment.setPermission("plugin.setcoins", true);
                 attachment.setPermission("plugin.backpack", true);
@@ -140,8 +139,8 @@ public class RankManager {
                 attachment.setPermission("plugin.freecam", true);
                 attachment.setPermission("plugin.maintenance", true);
             }
-            if (RankAPI.getApi().getRankID(target) == 8) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 8) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.addcoins", true);
                 attachment.setPermission("plugin.setcoins", true);
                 attachment.setPermission("plugin.backpack", true);
@@ -184,8 +183,8 @@ public class RankManager {
                 attachment.setPermission("plugin.freecam", true);
                 attachment.setPermission("plugin.maintenance", true);
             }
-            if (RankAPI.getApi().getRankID(target) == 7) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 7) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.addcoins", true);
                 attachment.setPermission("plugin.setcoins", true);
                 attachment.setPermission("plugin.backpack", true);
@@ -220,8 +219,8 @@ public class RankManager {
                 attachment.setPermission("plugin.freecam", true);
                 attachment.setPermission("plugin.maintenance", true);
             }
-            if (RankAPI.getApi().getRankID(target) == 6) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 6) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.backpack", true);
                 attachment.setPermission("plugin.buy", true);
                 attachment.setPermission("plugin.sell", true);
@@ -249,8 +248,8 @@ public class RankManager {
                 attachment.setPermission("plugin.search", true);
                 attachment.setPermission("plugin.freecam", true);
             }
-            if (RankAPI.getApi().getRankID(target) == 5) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 5) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.backpack", true);
                 attachment.setPermission("plugin.buy", true);
                 attachment.setPermission("plugin.sell", true);
@@ -275,8 +274,8 @@ public class RankManager {
                 attachment.setPermission("plugin.search", true);
                 attachment.setPermission("plugin.freecam", true);
             }
-            if (RankAPI.getApi().getRankID(target) == 4) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 4) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.backpack", true);
                 attachment.setPermission("plugin.buy", true);
                 attachment.setPermission("plugin.sell", true);
@@ -297,8 +296,8 @@ public class RankManager {
                 attachment.setPermission("plugin.search", true);
 
             }
-            if (RankAPI.getApi().getRankID(target) == 3) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 3) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.buy", true);
                 attachment.setPermission("plugin.sell", true);
                 attachment.setPermission("plugin.shop", true);
@@ -315,8 +314,8 @@ public class RankManager {
                 attachment.setPermission("minecraft.autocraft",true);
                 attachment.setPermission("plugin.search", true);
             }
-            if (RankAPI.getApi().getRankID(target) == 2) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 2) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.buy", true);
                 attachment.setPermission("plugin.sell", true);
                 attachment.setPermission("plugin.price", true);
@@ -330,8 +329,8 @@ public class RankManager {
                 attachment.setPermission("minecraft.autocraft",true);
 
             }
-            if (RankAPI.getApi().getRankID(target) == 1) {
-                PermissionAttachment attachment = target.addAttachment(Main.getInstance());
+            if (RankAPI.getApi().getRankId(target) == 1) {
+                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
                 attachment.setPermission("plugin.firstcoins", true);
                 attachment.setPermission("plugin.language", true);
                 attachment.setPermission("bukkit.command.version",false);
@@ -343,17 +342,11 @@ public class RankManager {
     }
 
     private void run(Player player) {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
-            if (RankAPI.getApi().getRankID(player) == 5 || RankAPI.getApi().getRankID(player) == 4 || RankAPI.getApi().getRankID(player) == 3 || RankAPI.getApi().getRankID(player) == 2) {
-                Date now = new Date();
-                now.setTime(0);
-
-                Date time = RankAPI.getApi().getRankDate(player).getTime();
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(time);
-                calendar.add(Calendar.DAY_OF_MONTH, RankAPI.getApi().getRankTime(player));
-                time = calendar.getTime();
-                if (time.compareTo(now) <= 0) {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            if (RankAPI.getApi().getRankId(player) == 5 || RankAPI.getApi().getRankId(player) == 4 || RankAPI.getApi().getRankId(player) == 3 || RankAPI.getApi().getRankId(player) == 2) {
+                Instant now = Instant.now();
+                Instant expiresAt = RankAPI.getApi().getExpiresAt(player);
+                if (expiresAt.compareTo(now) <= 0) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du bist nun kein ", NamedTextColor.RED))
@@ -365,7 +358,7 @@ public class RankManager {
                                 .append(RankStatements.getCleanRank(player))
                                 .append(Component.text(".", NamedTextColor.RED)));
                     }
-                    int rang = RankAPI.getApi().getRankID(player);
+                    int rankId = RankAPI.getApi().getRankId(player);
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.kick(Component.text("Du bist nun kein ", NamedTextColor.RED)
                                 .append(RankStatements.getCleanRank(player))
@@ -375,7 +368,7 @@ public class RankManager {
                                 .append(RankStatements.getCleanRank(player))
                                 .append(Component.text(".", NamedTextColor.RED)));
                     }
-                    RankAPI.getApi().setRankID(player, rang-1, 182, Calendar.getInstance());
+                    RankAPI.getApi().setRank(player, rankId-1, 182);
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du bist nun ein ", NamedTextColor.GREEN))

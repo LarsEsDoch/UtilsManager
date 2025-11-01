@@ -1,7 +1,8 @@
 package de.lars.utilsmanager.features.rank;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -12,7 +13,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class RankCommand implements BasicCommand {
 
@@ -58,7 +62,7 @@ public class RankCommand implements BasicCommand {
         }
 
         Player player = Bukkit.getPlayer(args[0]);
-        if (!Bukkit.getOnlinePlayers().contains(player) || player == null || !RankAPI.getApi().doesUserExist(player)) {
+        if (player == null) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
@@ -70,52 +74,52 @@ public class RankCommand implements BasicCommand {
         switch (args[1].toLowerCase()) {
             case "player": {
                 rankID = 1;
-                RankAPI.getApi().setPrefix(player, 7);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.GRAY);
                 break;
             }
             case "premium": {
                 rankID = 2;
-                RankAPI.getApi().setPrefix(player, 10);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.GREEN);
                 break;
             }
             case "supreme": {
                 rankID = 3;
-                RankAPI.getApi().setPrefix(player, 11);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.AQUA);
                 break;
             }
             case "titan": {
                 rankID = 4;
-                RankAPI.getApi().setPrefix(player, 9);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.BLUE);
                 break;
             }
             case "matrix": {
                 rankID = 5;
-                RankAPI.getApi().setPrefix(player, 6);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
                 break;
             }
             case "builder": {
                 rankID = 6;
-                RankAPI.getApi().setPrefix(player, 14);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.YELLOW);
                 break;
             }
             case "developer": {
                 rankID = 7;
-                RankAPI.getApi().setPrefix(player, 5);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
                 break;
             }
             case "team": {
                 rankID = 8;
-                RankAPI.getApi().setPrefix(player, 1);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_BLUE);
                 break;
             }
             case "admin": {
                 rankID = 9;
-                RankAPI.getApi().setPrefix(player, 12);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.RED);
                 break;
             }
             case "owner": {
                 rankID = 10;
-                RankAPI.getApi().setPrefix(player, 4);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 break;
             }
             default:
@@ -123,7 +127,7 @@ public class RankCommand implements BasicCommand {
                 break;
         }
 
-        RankAPI.getApi().setRankID(player, rankID, time, Calendar.getInstance());
+        RankAPI.getApi().setRank(player, rankID, time);
         if (rankID >= 5) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Rang von ", NamedTextColor.WHITE))

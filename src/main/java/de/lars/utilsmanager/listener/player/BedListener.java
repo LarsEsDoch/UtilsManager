@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apiManager.dataAPI.DataAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.timerAPI.TimerAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import de.lars.apimanager.apis.timerAPI.TimerAPI;
+import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -17,13 +17,13 @@ public class BedListener{
     }
 
     private void run() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
-            int time = (int) Bukkit.getWorlds().get(0).getTime();
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            int time = (int) Bukkit.getWorlds().getFirst().getTime();
             if (time < 12600 || time >= 23460) {
                 sleepingPlayers = 0;
                 return;
             }
-            if (DataAPI.getApi().isRealTimeActivated()) {
+            if (ServerSettingsAPI.getApi().isRealTimeEnabled()) {
                 return;
             }
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -61,7 +61,7 @@ public class BedListener{
                     }
                 }
             } else {
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), bukkitTask1 -> {
+                Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask1 -> {
                     Bukkit.getWorlds().get(0).setTime(0);
                 }, 1);
 

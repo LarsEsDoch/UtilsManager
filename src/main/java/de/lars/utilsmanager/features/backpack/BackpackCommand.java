@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.backpack;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -30,17 +30,22 @@ public class BackpackCommand implements BasicCommand {
             return;
         }
 
-        if (args.length == 0 || RankAPI.getApi().getRankID(player) < 9) {
-            Backpack backpack = Main.getInstance().getBackpackManager().getBackpack(player.getUniqueId());
-            player.openInventory(backpack.getInventory());
+        if (args.length == 0 || RankAPI.getApi().getRankId(player) < 9) {
+            UtilsManager.getInstance().getBackpackManager().openBackpack(player);
             return;
         }
 
         if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
             OfflinePlayer openPlayer = Bukkit.getOfflinePlayer(args[0]);
-            Backpack backpack = Main.getInstance().getBackpackManager().getBackpack(openPlayer.getUniqueId());
-
-            player.openInventory(backpack.getInventory());
+            if (openPlayer == null) {
+                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    player.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
+                } else {
+                    player.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
+                }
+                return;
+            }
+            UtilsManager.getInstance().getBackpackManager().openOfflineBackpack(openPlayer, player);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Rucksack von ", NamedTextColor.DARK_RED))
                         .append(Component.text(Objects.requireNonNull(openPlayer.getName()), NamedTextColor.WHITE))
@@ -62,7 +67,7 @@ public class BackpackCommand implements BasicCommand {
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (RankAPI.getApi().getRankID(player) < 9) return Collections.emptyList();
+        if (RankAPI.getApi().getRankId(player) < 9) return Collections.emptyList();
         if (args.length == 1 || args.length == 0) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {

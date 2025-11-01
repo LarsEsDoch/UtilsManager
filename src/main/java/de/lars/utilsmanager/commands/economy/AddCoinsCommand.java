@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -20,9 +20,7 @@ import java.util.List;
 
 public class AddCoinsCommand implements BasicCommand {
 
-    private int addcoins;
     private Player player;
-    private OfflinePlayer offlinePlayer;
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
@@ -59,13 +57,13 @@ public class AddCoinsCommand implements BasicCommand {
             }
         }
 
-        addcoins = Integer.parseInt(args[1]);
+        int addcoins = Integer.parseInt(args[1]);
         if (addcoins <= 0) {
             sendUsage(player);
             return;
         }
-        offlinePlayer = Bukkit.getPlayer(args[0]);
-        if (!CoinAPI.getApi().doesUserExist((Player) offlinePlayer)) {
+        OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[0]);
+        if (offlinePlayer == null) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
             } else {

@@ -1,10 +1,10 @@
 package de.lars.utilsmanager.scoreboard;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.playersAPI.PlayerAPI;
-import de.lars.apiManager.questAPI.QuestAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.playerAPI.PlayerAPI;
+import de.lars.apimanager.apis.questAPI.QuestAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -118,7 +118,7 @@ public class TestScoreboard extends ScoreboardBuilder {
     public boolean mode = false;
 
     private void run() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (mode) {
                 coins = CoinAPI.getApi().getCoins(player);
 
@@ -157,10 +157,10 @@ public class TestScoreboard extends ScoreboardBuilder {
             }
 
             if (mode) {
-                int amount = QuestAPI.getApi().getDailyQuestNumber(player);
-                int hasNumber = QuestAPI.getApi().getDailyQuestHasNumber(player);
+                int amount = QuestAPI.getApi().getProgress(player);
+                int hasNumber = QuestAPI.getApi().getProgress(player);
                 Component progressBar = getProgressBar(hasNumber, amount);
-                if (QuestAPI.getApi().getDailyQuestComplete(player)) {
+                if (QuestAPI.getApi().isDailyQuestComplete(player)) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         setScore(Component.text(">> ", NamedTextColor.GRAY)
                                 .append(Component.text("Abgeschlossen!", NamedTextColor.GREEN, TextDecoration.BOLD)), 1);

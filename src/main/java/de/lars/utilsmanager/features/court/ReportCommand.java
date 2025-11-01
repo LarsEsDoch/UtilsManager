@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.court;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -22,7 +22,7 @@ public class ReportCommand implements BasicCommand {
             return;
         }
         for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
-            if(BanAPI.getApi().isCriminal(onlinePlayer) != 0) {
+            if(CourtAPI.getApi().getStatus(onlinePlayer) != 0) {
                 if(LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
                     onlinePlayer.sendMessage(Statements.getPrefix().append(Component.text("Es wurde bereits jemand angeklagt!", NamedTextColor.RED)));
                 } else {
@@ -53,7 +53,9 @@ public class ReportCommand implements BasicCommand {
                     .append(RankStatements.getRank(player).append(Component.text(player.getName())))
                     .append(Component.text(".", NamedTextColor.WHITE)));
         }
-        BanAPI.getApi().setCriminal(player, reason, 1, sendplayer);
+        CourtAPI.getApi().setStatus(player, 1);
+        CourtAPI.getApi().setReason(player, reason);
+        CourtAPI.getApi().setProsecutor(player, sendplayer);
     }
 
     private void sendUsage(Player sender) {

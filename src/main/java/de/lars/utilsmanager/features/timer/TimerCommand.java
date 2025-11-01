@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.features.timer;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.timerAPI.ITimerAPI;
-import de.lars.apiManager.timerAPI.TimerAPI;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.timerAPI.ITimerAPI;
+import de.lars.apimanager.apis.timerAPI.TimerAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -30,7 +30,7 @@ public class TimerCommand implements BasicCommand {
             return;
         }
 
-        if (BanAPI.getApi().isCriminal(player) != 0) {
+        if (CourtAPI.getApi().getStatus(player) != 0) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix()
                         .append(Statements.getPrefix()
@@ -160,7 +160,7 @@ public class TimerCommand implements BasicCommand {
                 try {
 
                     timer.setRunning(player,false);
-                    if(timer.isTimer(player)) {
+                    if(timer.isTimerEnabled(player)) {
                         timer.setTime(player, Integer.parseInt(args[1]));
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix()
@@ -246,7 +246,7 @@ public class TimerCommand implements BasicCommand {
                         }
                     }
                 }
-                if (timer.isTimer(player)) {
+                if (timer.isTimerEnabled(player)) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer Modus ist bereits aktiviert.", NamedTextColor.RED)));
@@ -282,7 +282,7 @@ public class TimerCommand implements BasicCommand {
                         }
                     }
                 }
-                if (!timer.isTimer(player)) {
+                if (!timer.isTimerEnabled(player)) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Stoppuhr Modus ist bereits aktiviert.", NamedTextColor.RED)));

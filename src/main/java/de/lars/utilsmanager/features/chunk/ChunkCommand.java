@@ -1,9 +1,10 @@
 package de.lars.utilsmanager.features.chunk;
 
-import de.lars.apiManager.chunkAPI.ChunkAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.chunkAPI.ChunkAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.limitAPI.LimitAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -37,18 +38,18 @@ public class ChunkCommand implements BasicCommand {
         Component chunkComponent = Component.text(" (" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW);
         Component chunkComponentClean = Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE);
         if (args[0].equalsIgnoreCase("claimspawnchunks")) {
-            if (RankAPI.getApi().getRankID(player) == 10) {
+            if (RankAPI.getApi().getRankId(player) == 10) {
                 int minX = 2;
                 int minZ = -11;
                 int maxX = 38;
                 int maxZ = 18;
                 World world = Bukkit.getWorld("world");
-                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), bukkitTask -> {
+                Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                     for (int x = minX; x <= maxX; x++) {
                         for (int z = minZ; z <= maxZ; z++) {
                             assert world != null;
                             Chunk spawnChunk = world.getChunkAt(x, z);
-                            ChunkAPI.getApi().claimChunk(player, player.getName(), spawnChunk.getX() + "," + spawnChunk.getZ() + "," + loc.getWorld().getName(), "");
+                            ChunkAPI.getApi().claimChunk(player, chunk);
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du hast den Chunk ", NamedTextColor.WHITE))
@@ -68,8 +69,8 @@ public class ChunkCommand implements BasicCommand {
         }
         switch (args[0].toLowerCase()) {
             case "claim": {
-                if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
-                    if (ChunkAPI.getApi().getFreeChunks(player) == 0) {
+                if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
+                    if (LimitAPI.getApi().getChunkLimit(player) == 0) {
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Du kannst nun keine Chunks mehr beanspruchen! Du must zum Notar gehen und dir dort neue kaufen!", NamedTextColor.RED)));
@@ -84,10 +85,10 @@ public class ChunkCommand implements BasicCommand {
                                 .append(Component.text("Du hast den Chunk ", NamedTextColor.WHITE))
                                 .append(Component.text(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), NamedTextColor.DARK_BLUE))
                                 .append(Component.text(" beansprucht!", NamedTextColor.WHITE)));
-                        if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                        if (!(RankAPI.getApi().getRankId(player) > 8)) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Du kannst nun noch ", NamedTextColor.WHITE))
-                                    .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) - 1), NamedTextColor.GREEN))
+                                    .append(Component.text((LimitAPI.getApi().getChunkLimit(player) - 1), NamedTextColor.GREEN))
                                     .append(Component.text(" Chunks beanspruchen. Wenn du mehr brauchst kannst du diese beim Notar kaufen.", NamedTextColor.WHITE)));
                         }
                     } else {
@@ -95,20 +96,18 @@ public class ChunkCommand implements BasicCommand {
                                 .append(Component.text("You claimed the Chunk ", NamedTextColor.WHITE))
                                 .append(Component.text(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), NamedTextColor.DARK_BLUE))
                                 .append(Component.text(" !", NamedTextColor.WHITE)));
-                        if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                        if (!(RankAPI.getApi().getRankId(player) > 8)) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Now you can claim ", NamedTextColor.WHITE))
-                                    .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) - 1), NamedTextColor.GREEN))
+                                    .append(Component.text((LimitAPI.getApi().getChunkLimit(player) - 1), NamedTextColor.GREEN))
                                     .append(Component.text(" chunks. If you need more chunks you can buy them at the notary.", NamedTextColor.WHITE)));
                         }
                     }
-                    if (RankAPI.getApi().getRankID(player) > 8) {
-                        ChunkAPI.getApi().addFree(player, 1);
-                    }
-                    ChunkAPI.getApi().claimChunk(player, player.getName(), chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), "");
+                    LimitAPI.getApi().increaseChunkLimit(player, 1);
+                    ChunkAPI.getApi().claimChunk(player, chunk);
                     break;
                 }
-                if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString().contains(player.getUniqueId().toString())) {
+                if (ChunkAPI.getApi().getChunkOwner(chunk).toString().contains(player.getUniqueId().toString())) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(
                                 Component.text()
@@ -141,9 +140,9 @@ public class ChunkCommand implements BasicCommand {
 
                     return;
                 }
-                if (ChunkAPI.getApi().doesChunkHaveOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
-                    OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
-                    if (RankAPI.getApi().getRankID(player) > 8) {
+                if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
+                    OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
+                    if (RankAPI.getApi().getRankId(player) > 8) {
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(
                                     Component.text()
@@ -181,10 +180,8 @@ public class ChunkCommand implements BasicCommand {
                                             .build()
                             );
                         }
-                        if (RankAPI.getApi().getRankID(player) > 8) {
-                            ChunkAPI.getApi().addFree(player, 1);
-                        }
-                        ChunkAPI.getApi().claimChunk(player, player.getName(), chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), "");
+                        LimitAPI.getApi().increaseChunkLimit(player, 1);
+                        ChunkAPI.getApi().claimChunk(player, chunk);
                         break;
                     }
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -211,7 +208,7 @@ public class ChunkCommand implements BasicCommand {
 
                     return;
                 }
-                if (ChunkAPI.getApi().getFreeChunks(player) == 0) {
+                if (LimitAPI.getApi().getChunkLimit(player) == 0) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(
                                 Component.text()
@@ -235,10 +232,10 @@ public class ChunkCommand implements BasicCommand {
                             .append(Component.text("Du hast den Chunk ", NamedTextColor.WHITE))
                             .append(Component.text(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), NamedTextColor.DARK_BLUE))
                             .append(Component.text(" beansprucht!", NamedTextColor.WHITE)));
-                    if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                    if (!(RankAPI.getApi().getRankId(player) > 8)) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du kannst nun noch ", NamedTextColor.WHITE))
-                                .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) - 1), NamedTextColor.GREEN))
+                                .append(Component.text((LimitAPI.getApi().getChunkLimit(player) - 1), NamedTextColor.GREEN))
                                 .append(Component.text(" Chunks beanspruchen. Wenn du mehr brauchst kannst du diese beim Notar kaufen.", NamedTextColor.WHITE)));
                     }
                 } else {
@@ -246,40 +243,38 @@ public class ChunkCommand implements BasicCommand {
                             .append(Component.text("You claimed the Chunk ", NamedTextColor.WHITE))
                             .append(Component.text(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), NamedTextColor.DARK_BLUE))
                             .append(Component.text(" !", NamedTextColor.WHITE)));
-                    if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                    if (!(RankAPI.getApi().getRankId(player) > 8)) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Now you can claim ", NamedTextColor.WHITE))
-                                .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) - 1), NamedTextColor.GREEN))
+                                .append(Component.text((LimitAPI.getApi().getChunkLimit(player) - 1), NamedTextColor.GREEN))
                                 .append(Component.text(" chunks. If you need more chunks you can buy them at the notary.", NamedTextColor.WHITE)));
                     }
                 }
-                if (RankAPI.getApi().getRankID(player) > 8) {
-                    ChunkAPI.getApi().addFree(player, 1);
-                }
-                ChunkAPI.getApi().claimChunk(player, player.getName(), chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), "");
+                LimitAPI.getApi().increaseChunkLimit(player, 1);
+                ChunkAPI.getApi().claimChunk(player, chunk);
                 break;
             }
             case "sell": {
                 if (args.length > 1) {
                     if (args[1].equals("*")) {
-                        for (String chunkName : ChunkAPI.getApi().getChunks(player)) {
+                        for (Chunk sellChunk : ChunkAPI.getApi().getChunks(player)) {
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du hast den Chunk: ", NamedTextColor.WHITE))
-                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE))
+                                        .append(Component.text(" (" + sellChunk.getX() + "," + sellChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE))
                                         .append(Component.text(" verkauft.", NamedTextColor.WHITE)));
                             } else {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("You sold the chunk: ", NamedTextColor.WHITE))
-                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE))
+                                        .append(Component.text(" (" + sellChunk.getX() + "," + sellChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE))
                                         .append(Component.text(".", NamedTextColor.WHITE)));
                             }
-                            ChunkAPI.getApi().sellChunk(player, chunkName);
+                            ChunkAPI.getApi().unclaimChunk(player, sellChunk);
                         }
                     }
                 }
 
-                if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+                if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Chunk hat keinen Besitzer! ", NamedTextColor.RED))
@@ -291,16 +286,16 @@ public class ChunkCommand implements BasicCommand {
                     }
                     return;
                 }
-                if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString().contains(player.getUniqueId().toString())) {
+                if (ChunkAPI.getApi().getChunkOwner(chunk).toString().contains(player.getUniqueId().toString())) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Chunk ", NamedTextColor.WHITE))
                                 .append(chunkComponentClean)
                                 .append(Component.text(" verkauft!", NamedTextColor.WHITE)));
-                        if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                        if (!(RankAPI.getApi().getRankId(player) > 8)) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Du kannst nun noch ", NamedTextColor.WHITE))
-                                    .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) + 1), NamedTextColor.GREEN))
+                                    .append(Component.text((LimitAPI.getApi().getChunkLimit(player) + 1), NamedTextColor.GREEN))
                                     .append(Component.text(" Chunks beanspruchen. Wenn du mehr brauchst kannst du diese beim Notar kaufen.", NamedTextColor.WHITE)));
                         }
                     } else {
@@ -308,21 +303,19 @@ public class ChunkCommand implements BasicCommand {
                                 .append(Component.text("You sold the Chunk ", NamedTextColor.WHITE))
                                 .append(chunkComponentClean)
                                 .append(Component.text(" !", NamedTextColor.WHITE)));
-                        if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                        if (!(RankAPI.getApi().getRankId(player) > 8)) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Now you can claim ", NamedTextColor.WHITE))
-                                    .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) + 1), NamedTextColor.GREEN))
+                                    .append(Component.text((LimitAPI.getApi().getChunkLimit(player) + 1), NamedTextColor.GREEN))
                                     .append(Component.text(" chunks. If you need more chunks you can buy them at the notary.", NamedTextColor.WHITE)));
                         }
                     }
-                    if (RankAPI.getApi().getRankID(player) > 8) {
-                        ChunkAPI.getApi().removeFree(player, 1);
-                    }
-                    ChunkAPI.getApi().sellChunk(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName());
+                    LimitAPI.getApi().decreaseChunkLimit(player, 1);
+                    ChunkAPI.getApi().unclaimChunk(player, chunk);
                     break;
                 }
-                if (ChunkAPI.getApi().doesChunkHaveOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
-                    OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+                if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
+                    OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Chunk gehört ", NamedTextColor.RED))
@@ -341,10 +334,10 @@ public class ChunkCommand implements BasicCommand {
                             .append(Component.text("Du hast den Chunk ", NamedTextColor.WHITE))
                             .append(chunkComponentClean)
                             .append(Component.text(" verkauft!", NamedTextColor.WHITE)));
-                    if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                    if (!(RankAPI.getApi().getRankId(player) > 8)) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du kannst nun noch ", NamedTextColor.WHITE))
-                                .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) + 1), NamedTextColor.GREEN))
+                                .append(Component.text((LimitAPI.getApi().getChunkLimit(player) + 1), NamedTextColor.GREEN))
                                 .append(Component.text(" Chunks beanspruchen. Wenn du mehr brauchst kannst du diese beim Notar kaufen.", NamedTextColor.WHITE)));
                     }
                 } else {
@@ -352,17 +345,17 @@ public class ChunkCommand implements BasicCommand {
                             .append(Component.text("You sold the Chunk ", NamedTextColor.WHITE))
                             .append(chunkComponentClean)
                             .append(Component.text(" !", NamedTextColor.WHITE)));
-                    if (!(RankAPI.getApi().getRankID(player) > 8)) {
+                    if (!(RankAPI.getApi().getRankId(player) > 8)) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Now you can claim ", NamedTextColor.WHITE))
-                                .append(Component.text((ChunkAPI.getApi().getFreeChunks(player) + 1), NamedTextColor.GREEN))
+                                .append(Component.text((LimitAPI.getApi().getChunkLimit(player) + 1), NamedTextColor.GREEN))
                                 .append(Component.text(" chunks. If you need more chunks you can buy them at the notary.", NamedTextColor.WHITE)));
                     }
                 }
-                if (RankAPI.getApi().getRankID(player) > 8) {
-                    ChunkAPI.getApi().removeFree(player, 1);
+                if (RankAPI.getApi().getRankId(player) > 8) {
+                    LimitAPI.getApi().decreaseChunkLimit(player, 1);
                 }
-                ChunkAPI.getApi().sellChunk(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName());
+                ChunkAPI.getApi().unclaimChunk(player, chunk);
                 break;
             }
             case "list": {
@@ -410,37 +403,37 @@ public class ChunkCommand implements BasicCommand {
                                     return;
                                 }
                                 OfflinePlayer finalFriend = friend;
-                                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), bukkitTask -> {
-                                    for (String chunkName : ChunkAPI.getApi().getChunks(player)) {
+                                Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+                                    for (Chunk friendChunk : ChunkAPI.getApi().getChunks(player)) {
                                         if(all) {
-                                            if(!ChunkAPI.getApi().getFriends(chunkName).contains("*")) {
+                                            if(!ChunkAPI.getApi().getFriends(friendChunk).contains("*")) {
                                                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                                     player.sendMessage(Statements.getPrefix()
                                                             .append(Component.text("Du hast alle Spieler zu den Freunden des Chunks: ", NamedTextColor.WHITE))
-                                                            .append(Component.text(chunkName, NamedTextColor.DARK_BLUE))
+                                                            .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE))
                                                             .append(Component.text(" hinzugefügt.", NamedTextColor.WHITE)));
                                                 } else {
                                                     player.sendMessage(Statements.getPrefix()
                                                             .append(Component.text("You add all players to the friends of the chunk: ", NamedTextColor.WHITE))
-                                                            .append(Component.text(chunkName, NamedTextColor.DARK_BLUE))
+                                                            .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE))
                                                             .append(Component.text(" .", NamedTextColor.WHITE)));
                                                 }
-                                                ChunkAPI.getApi().addFriend(player, chunkName, "*");
+                                                ChunkAPI.getApi().addFriend(friendChunk, null);
                                             }
-                                        } else if(!ChunkAPI.getApi().getFriends(chunkName).contains(finalFriend.getUniqueId().toString())) {
-                                            ChunkAPI.getApi().addFriend(player, chunkName, String.valueOf(finalFriend.getUniqueId()));
+                                        } else if(!ChunkAPI.getApi().getFriends(friendChunk).contains(finalFriend.getUniqueId().toString())) {
+                                            ChunkAPI.getApi().addFriend(friendChunk, finalFriend);
                                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                                 player.sendMessage(Statements.getPrefix()
                                                         .append(Component.text("Du hast den Spieler ", NamedTextColor.WHITE))
                                                         .append(Component.text(finalFriend.getName(), NamedTextColor.GREEN))
                                                         .append(Component.text(" zu den Freunden dieses Chunks hinzugefügt. Chunk: ", NamedTextColor.WHITE))
-                                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE)));
+                                                        .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE)));
                                             } else {
                                                 player.sendMessage(Statements.getPrefix()
                                                         .append(Component.text("You add the player ", NamedTextColor.WHITE))
                                                         .append(Component.text(finalFriend.getName(), NamedTextColor.GREEN))
                                                         .append(Component.text(" to the friends of this chunk. Chunk:  ", NamedTextColor.WHITE))
-                                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE)));
+                                                        .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE)));
                                             }
                                         }
                                     }
@@ -470,35 +463,35 @@ public class ChunkCommand implements BasicCommand {
                                 }
 
                                 OfflinePlayer finalFriend = friend;
-                                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), bukkitTask -> {
-                                    for (String chunkName : ChunkAPI.getApi().getChunks(player)) {
+                                Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+                                    for (Chunk friendChunk : ChunkAPI.getApi().getChunks(player)) {
                                         if(all) {
                                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                                 player.sendMessage(Statements.getPrefix()
                                                         .append(Component.text("Du hast alle Spieler von den Freunden des Chunks: ", NamedTextColor.WHITE))
-                                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE))
+                                                        .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE))
                                                         .append(Component.text(" entfernt.", NamedTextColor.WHITE)));
                                             } else {
                                                 player.sendMessage(Statements.getPrefix()
                                                         .append(Component.text("You removed all players from the friends of the chunk: ", NamedTextColor.WHITE))
-                                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE))
+                                                        .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE))
                                                         .append(Component.text(" .", NamedTextColor.WHITE)));
                                             }
-                                            ChunkAPI.getApi().removeFriend(player, chunkName, "*");
-                                        } else if(ChunkAPI.getApi().getFriends(chunkName).contains(finalFriend.getUniqueId().toString())) {
-                                            ChunkAPI.getApi().removeFriend(player, chunkName, String.valueOf(finalFriend.getUniqueId()));
+                                            ChunkAPI.getApi().removeFriend(friendChunk, null);
+                                        } else if(ChunkAPI.getApi().getFriends(friendChunk).contains(finalFriend.getUniqueId().toString())) {
+                                            ChunkAPI.getApi().removeFriend(friendChunk, finalFriend);
                                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                                 player.sendMessage(Statements.getPrefix()
                                                         .append(Component.text("Du hast den Spieler ", NamedTextColor.WHITE))
                                                         .append(Component.text(finalFriend.getName(), NamedTextColor.GREEN))
                                                         .append(Component.text(" von den Freunden dieses Chunks entfernt. Chunk: ", NamedTextColor.WHITE))
-                                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE)));
+                                                        .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE)));
                                             } else {
                                                 player.sendMessage(Statements.getPrefix()
                                                         .append(Component.text("You removed the player ", NamedTextColor.WHITE))
                                                         .append(Component.text(finalFriend.getName(), NamedTextColor.GREEN))
                                                         .append(Component.text(" from the friends of this chunk. Chunk:  ", NamedTextColor.WHITE))
-                                                        .append(Component.text(chunkName, NamedTextColor.DARK_BLUE)));
+                                                        .append(Component.text(" (" + friendChunk.getX() + "," + friendChunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.DARK_BLUE)));
                                             }
                                         }
                                     }
@@ -512,7 +505,7 @@ public class ChunkCommand implements BasicCommand {
                         break;
                     }
                     case "list": {
-                        if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+                        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Der Chunk hat keinen Besitzer! ", NamedTextColor.RED))
@@ -524,8 +517,8 @@ public class ChunkCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if (!ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString().contains(player.getUniqueId().toString())) {
-                            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+                        if (!ChunkAPI.getApi().getChunkOwner(chunk).toString().contains(player.getUniqueId().toString())) {
+                            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Der Chunk gehört nicht dir! Besitzer: ", NamedTextColor.RED))
@@ -541,13 +534,13 @@ public class ChunkCommand implements BasicCommand {
                             }
                             return;
                         }
-                        List<String> friendList = ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName());
+                        List<String> friendList = ChunkAPI.getApi().getFriends(chunk);
                         Component friends = formatFriendList(friendList, player);
                         player.sendMessage(friends);
                         break;
                     }
                     case "add": {
-                        if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+                        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Der Chunk hat keinen Besitzer! ", NamedTextColor.RED))
@@ -559,8 +552,8 @@ public class ChunkCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if (!ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString().contains(player.getUniqueId().toString())) {
-                            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+                        if (!ChunkAPI.getApi().getChunkOwner(chunk).toString().contains(player.getUniqueId().toString())) {
+                            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Der Chunk gehört nicht dir! Besitzer: ", NamedTextColor.RED))
@@ -595,7 +588,7 @@ public class ChunkCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if(ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+                        if(ChunkAPI.getApi().getFriends(chunk).contains("*")) {
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Jeder ist vertraut und kann hier bauen!", NamedTextColor.RED)));
@@ -605,7 +598,7 @@ public class ChunkCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if(ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(friend.getUniqueId().toString())) {
+                        if(ChunkAPI.getApi().getFriends(chunk).contains(friend.getUniqueId().toString())) {
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Dieser Spieler ist bereits ein Freund, der hier bauen kann!", NamedTextColor.RED)));
@@ -625,7 +618,7 @@ public class ChunkCommand implements BasicCommand {
                                         .append(Component.text("You add all players to the friends of this chunk. Chunk: ", NamedTextColor.WHITE))
                                         .append(chunkComponentClean));
                             }
-                            ChunkAPI.getApi().addFriend(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), "*");
+                            ChunkAPI.getApi().addFriend(chunk, null);
                             return;
                         }
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -641,11 +634,11 @@ public class ChunkCommand implements BasicCommand {
                                     .append(Component.text(" to the friends of this chunk. Chunk: ", NamedTextColor.WHITE))
                                     .append(chunkComponentClean));
                         }
-                        ChunkAPI.getApi().addFriend(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), String.valueOf(friend.getUniqueId()));
+                        ChunkAPI.getApi().addFriend(chunk, friend);
                         break;
                     }
                     case "remove": {
-                        if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+                        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Der Chunk hat keinen Besitzer! ", NamedTextColor.RED))
@@ -657,8 +650,8 @@ public class ChunkCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if (!ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString().contains(player.getUniqueId().toString())) {
-                            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+                        if (!ChunkAPI.getApi().getChunkOwner(chunk).toString().contains(player.getUniqueId().toString())) {
+                            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Der Chunk gehört nicht dir! Besitzer: ", NamedTextColor.RED))
@@ -704,10 +697,10 @@ public class ChunkCommand implements BasicCommand {
                                         .append(Component.text("You removed all players from the friends of this chunk. Chunk: ", NamedTextColor.WHITE))
                                         .append(chunkComponentClean));
                             }
-                            ChunkAPI.getApi().removeFriend(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), "*");
+                            ChunkAPI.getApi().removeFriend(chunk, null);
                             return;
                         }
-                        if(!ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(friend.getUniqueId().toString())) {
+                        if(!ChunkAPI.getApi().getFriends(chunk).contains(friend.getUniqueId().toString())) {
                             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Dieser Spieler ist gar nicht ein Freund, der hier bauen kann!", NamedTextColor.RED)));
@@ -730,7 +723,7 @@ public class ChunkCommand implements BasicCommand {
                                     .append(Component.text(" from the friends of this chunk. Chunk: ", NamedTextColor.WHITE))
                                     .append(chunkComponentClean));
                         }
-                        ChunkAPI.getApi().removeFriend(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), String.valueOf(friend.getUniqueId()));
+                        ChunkAPI.getApi().removeFriend(chunk, friend);
                         break;
                     }
                     default:
@@ -740,7 +733,7 @@ public class ChunkCommand implements BasicCommand {
                 break;
             }
             case "free": {
-                if (RankAPI.getApi().getRankID(player) > 8) {
+                if (RankAPI.getApi().getRankId(player) > 8) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du kannst nun noch ", NamedTextColor.WHITE))
@@ -754,7 +747,7 @@ public class ChunkCommand implements BasicCommand {
                     }
                     return;
                 }
-                if (ChunkAPI.getApi().getFreeChunks(player) == 0) {
+                if (LimitAPI.getApi().getChunkLimit(player) == 0) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du kannst nun keine Chunks mehr beanspruchen! Du must zum Notar gehen und dir dort neue kaufen!", NamedTextColor.RED)));
@@ -766,12 +759,12 @@ public class ChunkCommand implements BasicCommand {
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du kannst nun noch ", NamedTextColor.WHITE))
-                            .append(Component.text((ChunkAPI.getApi().getFreeChunks(player)), NamedTextColor.GREEN))
+                            .append(Component.text((LimitAPI.getApi().getChunkLimit(player)), NamedTextColor.GREEN))
                             .append(Component.text(" Chunks beantragen. Wenn du mehr brauchst kannst du diese beim Notar kaufen.", NamedTextColor.WHITE)));
                 } else {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("You can claim ", NamedTextColor.WHITE))
-                            .append(Component.text((ChunkAPI.getApi().getFreeChunks(player)), NamedTextColor.GREEN))
+                            .append(Component.text((LimitAPI.getApi().getChunkLimit(player)), NamedTextColor.GREEN))
                             .append(Component.text(" chunks. If you need more chunks you can buy them at the notary.", NamedTextColor.WHITE)));
                 }
                 break;
@@ -781,17 +774,18 @@ public class ChunkCommand implements BasicCommand {
                 String chunkname;
                 Component friends;
                 String flags;
-                if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+                if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
                     owner = "---";
-                    chunkname = chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName();
+                    chunkname = " (" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")";
                     friends = Component.text("---", NamedTextColor.GRAY);
                     flags = "---";
                 } else {
-                    owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())).getName();
-                    chunkname = chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName();
-                    List<String> friendList = ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName());
+                    owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk)).getName();
+                    chunkname = " (" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")";
+                    List<String> friendList = ChunkAPI.getApi().getFriends(chunk);
                     friends = formatFriendListInfo(friendList);
-                    if (ChunkAPI.getApi().getEntitySpawning(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
+                    //ChunkAPI.getApi().getFlags()
+                    if (true) {
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             flags = "EntitySpawning: Aktiviert";
                         } else {
@@ -934,7 +928,7 @@ public class ChunkCommand implements BasicCommand {
                                     return;
                                 }
                                 if (Objects.equals(args[3], "true")) {
-                                    if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+                                    if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
                                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                             player.sendMessage(Statements.getPrefix()
                                                     .append(Component.text("Der Chunk hat keinen Besitzer! ", NamedTextColor.RED))
@@ -946,7 +940,7 @@ public class ChunkCommand implements BasicCommand {
                                         }
                                         return;
                                     }
-                                    if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString().contains(player.getUniqueId().toString())) {
+                                    if (ChunkAPI.getApi().getChunkOwner(chunk).toString().contains(player.getUniqueId().toString())) {
                                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                             player.sendMessage(Component.text()
                                                     .append(Statements.getPrefix())
@@ -966,11 +960,11 @@ public class ChunkCommand implements BasicCommand {
                                                     .append(chunkComponentClean));
                                         }
 
-                                        ChunkAPI.getApi().setEntitySpawning(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), true);
+                                        ChunkAPI.getApi().setFlags(chunk, "{\"entityspawning\": true}");
                                         break;
                                     }
-                                    if (ChunkAPI.getApi().doesChunkHaveOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
-                                        OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+                                    if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
+                                        OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                             player.sendMessage(Statements.getPrefix()
                                                     .append(Component.text("Der Chunk gehört nicht dir! Besitzer: ", NamedTextColor.RED))
@@ -1005,10 +999,10 @@ public class ChunkCommand implements BasicCommand {
                                                 .append(chunkComponentClean));
                                     }
 
-                                    ChunkAPI.getApi().setEntitySpawning(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), true);
+                                    ChunkAPI.getApi().setFlags(chunk, "{\"entityspawning\": true}");
                                     break;
                                 } else {
-                                    if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+                                    if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
                                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                             player.sendMessage(Statements.getPrefix()
                                                     .append(Component.text("Der Chunk hat keinen Besitzer! ", NamedTextColor.RED))
@@ -1020,7 +1014,7 @@ public class ChunkCommand implements BasicCommand {
                                         }
                                         return;
                                     }
-                                    if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString().contains(player.getUniqueId().toString())) {
+                                    if (ChunkAPI.getApi().getChunkOwner(chunk).toString().contains(player.getUniqueId().toString())) {
                                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                             player.sendMessage(Component.text()
                                                     .append(Statements.getPrefix())
@@ -1040,11 +1034,11 @@ public class ChunkCommand implements BasicCommand {
                                                     .append(chunkComponentClean));
                                         }
 
-                                        ChunkAPI.getApi().setEntitySpawning(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), false);
+                                        ChunkAPI.getApi().setFlags(chunk, "{\"entityspawning\": false}");
                                         break;
                                     }
-                                    if (ChunkAPI.getApi().doesChunkHaveOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
-                                        OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+                                    if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
+                                        OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                             player.sendMessage(Statements.getPrefix()
                                                     .append(Component.text("Der Chunk gehört nicht dir! Besitzer: ", NamedTextColor.RED))
@@ -1079,7 +1073,7 @@ public class ChunkCommand implements BasicCommand {
                                                 .append(chunkComponentClean));
                                     }
 
-                                    ChunkAPI.getApi().setEntitySpawning(player, chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName(), false);
+                                    ChunkAPI.getApi().setFlags(chunk, "{\"entityspawning\": false}");
                                     break;
                                 }
                             }
@@ -1095,7 +1089,8 @@ public class ChunkCommand implements BasicCommand {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Verfügbare Flags: ", NamedTextColor.WHITE))
                                     .append(Component.text("EntitySpawning", NamedTextColor.BLUE)));
-                            if(ChunkAPI.getApi().getEntitySpawning(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
+                            //ChunkAPI.getApi().getEntitySpawning(chunk)
+                            if(true) {
                                 entitySpawning = "EntitySpawning";
                             }
                             player.sendMessage(Statements.getPrefix()
@@ -1106,7 +1101,8 @@ public class ChunkCommand implements BasicCommand {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Available Flags:", NamedTextColor.WHITE))
                                     .append(Component.text("EntitySpawning", NamedTextColor.BLUE)));
-                            if(ChunkAPI.getApi().getEntitySpawning(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
+                            //ChunkAPI.getApi().getEntitySpawning(chunk)
+                            if(true) {
                                 entitySpawning = "EntitySpawning";
                             }
                             player.sendMessage(Statements.getPrefix()

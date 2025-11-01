@@ -1,9 +1,10 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -22,6 +23,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.Collections;
 
 public class ShopListener implements Listener {
 
@@ -420,18 +423,18 @@ public class ShopListener implements Listener {
             if (id == null) return;
 
             if (id.equalsIgnoreCase("reset")) {
-                int rankId = RankAPI.getApi().getRankID(player);
+                int rankId = RankAPI.getApi().getRankId(player);
 
                 switch (rankId) {
-                    case 5 -> RankAPI.getApi().setPrefix(player, 6);
-                    case 6 -> RankAPI.getApi().setPrefix(player, 14);
-                    case 7 -> RankAPI.getApi().setPrefix(player, 5);
-                    case 8 -> RankAPI.getApi().setPrefix(player, 1);
-                    case 9 -> RankAPI.getApi().setPrefix(player, 12);
-                    case 10 -> RankAPI.getApi().setPrefix(player, 4);
+                    case 5 -> PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
+                    case 6 -> PrefixAPI.getApi().setColor(player, NamedTextColor.YELLOW);
+                    case 7 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_PURPLE);
+                    case 8 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_GRAY);
+                    case 9 -> PrefixAPI.getApi().setColor(player, NamedTextColor.RED);
+                    case 10 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 }
 
-                RankAPI.getApi().setPrefixType(player, 0);
+                PrefixAPI.getApi().setDecoration(player, Collections.emptySet());
 
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD));
@@ -439,7 +442,7 @@ public class ShopListener implements Listener {
                     player.sendMessage(Component.text("You’ve reset your prefix.", NamedTextColor.GOLD));
                 }
 
-                Main.getInstance().getTablistManager().setAllPlayerTeams();
+                UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
                 return;
             }
 

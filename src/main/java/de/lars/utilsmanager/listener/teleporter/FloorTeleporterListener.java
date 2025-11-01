@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.teleporter;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -25,7 +25,7 @@ public class FloorTeleporterListener implements Listener {
     private Map<UUID, Double> lastY = new HashMap<>();
 
     public FloorTeleporterListener() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("ported")) {
                     return;
@@ -74,14 +74,14 @@ public class FloorTeleporterListener implements Listener {
                     } else {
                         player.teleport(new Location(world, player.getLocation().getBlockX() + 0.5, y + 0.50, player.getLocation().getBlockZ() + 0.5).setDirection(player.getLocation().getDirection()));
                     }
-                    PermissionAttachment attachment = player.addAttachment(Main.getInstance());
+                    PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
                     attachment.setPermission("ported", true);
                     new BukkitRunnable() {
                         @Override
                         public void run() {
                             attachment.setPermission("ported", false);
                         }
-                    }.runTaskLater(Main.getInstance(), 10);
+                    }.runTaskLater(UtilsManager.getInstance(), 10);
                     return;
                 }
             }
@@ -109,14 +109,14 @@ public class FloorTeleporterListener implements Listener {
                     } else {
                         player.teleport(new Location(world, player.getLocation().getBlockX() + 0.5, y + 0.50, player.getLocation().getBlockZ() + 0.5).setDirection(player.getLocation().getDirection()));
                     }
-                    PermissionAttachment attachment = player.addAttachment(Main.getInstance());
+                    PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
                     attachment.setPermission("ported", true);
                     new BukkitRunnable() {
                         @Override
                         public void run() {
                             attachment.setPermission("ported", false);
                         }
-                    }.runTaskLater(Main.getInstance(), 10);
+                    }.runTaskLater(UtilsManager.getInstance(), 10);
                     return;
                 }
             }

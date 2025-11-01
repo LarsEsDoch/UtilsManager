@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.commands.teleport.home;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.homeAPI.HomeAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.apimanager.apis.homeAPI.HomeAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -27,21 +27,21 @@ public class HomeCommand implements BasicCommand {
         }
 
 
-        if (!(player.hasPermission("plugin.home"))) {
-            player.sendMessage(Statements.getNotAllowed(player));
-            return;
-        }
+        //if (!(player.hasPermission("plugin.home"))) {
+        //    player.sendMessage(Statements.getNotAllowed(player));
+        //    return;
+        //}
         if (args.length == 0) {
             sendUsage(player);
             return;
         }
-        if (BanAPI.getApi().isCriminal(player) == 5) {
+        if (CourtAPI.getApi().getStatus(player) == 5) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
 
         String HomeName = args[0];
-        if (!HomeAPI.getApi().doesHomeExist(player, HomeName)) {
+        if (!HomeAPI.getApi().doesHomeExist(HomeName)) {
             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Home ", NamedTextColor.RED))
                         .append(Component.text(HomeName, NamedTextColor.YELLOW))
@@ -55,8 +55,6 @@ public class HomeCommand implements BasicCommand {
         }
         Integer id = HomeAPI.getApi().getHomeId(player, HomeName);
         Location loc = HomeAPI.getApi().getHomeLocation(id);
-        loc.setPitch(player.getLocation().getPitch());
-        loc.setYaw(player.getLocation().getYaw());
         player.teleport(loc);
         if(LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest zum Homepunkt ", NamedTextColor.AQUA))

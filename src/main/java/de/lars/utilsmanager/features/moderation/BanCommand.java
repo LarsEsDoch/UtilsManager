@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.features.moderation;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.banAPI.BanAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -44,14 +44,6 @@ public class BanCommand implements BasicCommand {
             }
             return;
         }
-        if (!BanAPI.getApi().doesUserExist(player)) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                sendplayer.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
-            } else {
-                sendplayer.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
-            }
-            return;
-        }
         for (String arg : args) {
             try {
                 Integer.parseInt(args[1]);
@@ -70,8 +62,8 @@ public class BanCommand implements BasicCommand {
         for (int i = 2; i < args.length; i++) {
             reason.append(args[i]).append(" ");
         }
-        if(RankAPI.getApi().getRankID(sendplayer) == 8) {
-            if(RankAPI.getApi().getRankID(player) > 8) {
+        if(RankAPI.getApi().getRankId(sendplayer) == 8) {
+            if(RankAPI.getApi().getRankId(player) > 8) {
                 if(LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du darfst diesen Spieler nicht bannen!", NamedTextColor.RED)));
                 } else {
@@ -89,8 +81,8 @@ public class BanCommand implements BasicCommand {
                 return;
             }
         }
-        if(RankAPI.getApi().getRankID(sendplayer) == 9) {
-            if(RankAPI.getApi().getRankID(player) > 9) {
+        if(RankAPI.getApi().getRankId(sendplayer) == 9) {
+            if(RankAPI.getApi().getRankId(player) > 9) {
                 if(LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du darfst diesen Spieler nicht bannen!", NamedTextColor.RED)));
                 } else {
@@ -127,7 +119,7 @@ public class BanCommand implements BasicCommand {
         }
         BanAPI.getApi().setBanned(player, reason.toString(), time);
         String message = "Der Spieler " + RankStatements.getUnformattedRank(player) + player.getName() + " wurde von" + RankStatements.getUnformattedRank(player) + player.getName() + " mit dem Grund " + reason + " für 7 Tage gebannt!";
-        Main.getInstance().getDiscordBot().sendPunishmentMessage(message);
+        UtilsManager.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
 
     private void sendUsage(Player player) {
@@ -145,7 +137,7 @@ public class BanCommand implements BasicCommand {
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (RankAPI.getApi().getRankID(player) < 9) return Collections.emptyList();
+        if (RankAPI.getApi().getRankId(player) < 9) return Collections.emptyList();
         if (args.length == 1 || args.length == 0) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {

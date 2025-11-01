@@ -1,13 +1,14 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -50,18 +51,10 @@ public class PayCommand implements BasicCommand {
             return;
         }
         sendercoins = CoinAPI.getApi().getCoins(sendplayer);
-        Player sendPlayer = Bukkit.getPlayer(args[0]);
+        OfflinePlayer sendPlayer = Bukkit.getPlayer(args[0]);
         if (sendPlayer == null) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 player.sendMessage( NamedTextColor.RED + "Der Spieler existiert nicht!");
-            } else {
-                player.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
-            }
-            return;
-        }
-        if (!CoinAPI.getApi().doesUserExist(player)) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                player.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
             } else {
                 player.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
             }

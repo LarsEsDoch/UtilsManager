@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.features.moderation;
 
-import de.lars.utilsmanager.Main;
+import de.lars.utilsmanager.UtilsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -13,7 +13,7 @@ public class KickManager {
     private Map<String, Integer> times = new HashMap<>();
 
     public KickManager() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (String kickedPlayer: reasons.keySet()) {
                 times.put(kickedPlayer, times.get(kickedPlayer)-1);
                 if (times.get(kickedPlayer) <= 0) {

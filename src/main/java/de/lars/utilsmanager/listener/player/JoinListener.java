@@ -1,15 +1,14 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apiManager.backpackAPI.BackpackAPI;
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.playersAPI.PlayerAPI;
-import de.lars.apiManager.questAPI.QuestAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.apiManager.timerAPI.TimerAPI;
-import de.lars.apiManager.toggleAPI.ToggleAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.limitAPI.LimitAPI;
+import de.lars.apimanager.apis.playerAPI.PlayerAPI;
+import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.scoreboard.TestScoreboard;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
@@ -43,45 +42,34 @@ public class JoinListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Main.getInstance().getQuestManager().sendDailyQuests(player);
+        UtilsManager.getInstance().getQuestManager().sendDailyQuests(player);
         if (ToggleAPI.getApi().getScoreboardToggle(player)) {
             new TestScoreboard(player);
         }
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 50, 0));
 
-        if (!PlayerAPI.getApi().doesUserExist(player) ||
-                !CoinAPI.getApi().doesUserExist(player) ||
-                !BackpackAPI.getApi().doesUserExist(player) ||
-                !BanAPI.getApi().doesUserExist(player) ||
-                !BanAPI.getApi().doesUserExist(player) ||
-                !LanguageAPI.getApi().doesUserExist(player) ||
-                !BanAPI.getApi().doesUserExist(player) ||
-                !QuestAPI.getApi().doesUserExist(player) ||
-                !RankAPI.getApi().doesUserExist(player) ||
-                !TimerAPI.getApi().doesUserExist(player) ||
-                !ToggleAPI.getApi().doesUserExist(player) ||
-                !player.hasPlayedBefore()) {
+        if (!player.hasPlayedBefore()) {
             player.teleport(new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), bukkitTask -> {
+            Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask -> {
                 firstJoin(player);
             }, 1);
         } else {
             if (ToggleAPI.getApi().getBedToggle(player)) {
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
+            } else {
                 Location loc = new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0);
                 player.teleport(loc);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
-            } else {
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
             }
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> showTitleGe(player), 35);
+                Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> showTitleGe(player), 35);
                 Component message = Component.text("Willkommen zurück!")
                         .color(NamedTextColor.GOLD);
                 player.sendMessage(Statements.getPrefix().append(message));
             } else {
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> showTitle(player), 35);
+                Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> showTitle(player), 35);
                 Component message = Component.text("Welcome back!")
                         .color(NamedTextColor.GOLD);
                 player.sendMessage(Statements.getPrefix().append(message));
@@ -125,10 +113,10 @@ public class JoinListener implements Listener {
                             .append(Component.text(" joined the server.", NamedTextColor.WHITE)));
                 }
             }
-            Main.getInstance().getRankManager().setRanks(player);
-            Main.getInstance().getRankManager().setPerm();
-            Main.getInstance().getTablistManager().setTabList(player);
-            Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), bukkitTask -> {
+            UtilsManager.getInstance().getRankManager().setRanks(player);
+            UtilsManager.getInstance().getRankManager().setPerm();
+            UtilsManager.getInstance().getTablistManager().setTabList(player);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                 StringBuilder message;
 
                 if (Bukkit.getOnlinePlayers().size() > 1) {
@@ -140,8 +128,8 @@ public class JoinListener implements Listener {
                     message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs ist aktuell nur er online.");
                 }
 
-                Main.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
-                Main.getInstance().getTablistManager().setAllPlayerTeams();
+                UtilsManager.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
+                UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
             }, 20);
         }
 
@@ -152,11 +140,9 @@ public class JoinListener implements Listener {
     public void firstJoin(Player player) {
         LanguageAPI.getApi().setLanguage(player, 2);
 
-        RankAPI.getApi().setRankID(player, 5, 30, Calendar.getInstance());
-        RankAPI.getApi().setPrefix(player, 6);
-        //RankAPI.getApi().setPrefix(player, 7);
-        BackpackAPI.getApi().setSlots(player, 27);
-        ToggleAPI.getApi().setBedToggle(player, false);
+        RankAPI.getApi().setRank(player, 5, 30);
+        PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
+        LimitAPI.getApi().setSlots(player, 27);
 
 
 
@@ -174,16 +160,16 @@ public class JoinListener implements Listener {
             }
         }
         player.sendMessage(Statements.getPrefix().append(Component.text("Willkommen auf diesem Server! Habe Spaß und genieße es.", NamedTextColor.GOLD, TextDecoration.BOLD)));
-        Main.getInstance().getRankManager().setRanks(player);
-        Main.getInstance().getRankManager().setPerm();
-        Main.getInstance().getTablistManager().setTabList(player);
+        UtilsManager.getInstance().getRankManager().setRanks(player);
+        UtilsManager.getInstance().getRankManager().setPerm();
+        UtilsManager.getInstance().getTablistManager().setTabList(player);
         Component LanguageText = getLanguageText();
         player.sendMessage(LanguageText);
         player.sendMessage(Statements.getPrefix().append(Component.text("Falls du Hilfe brauchst nutze die Serverfunktion: ", NamedTextColor.GOLD))
                 .append(Component.text("/help ", NamedTextColor.GRAY))
                 .append(Component.text("oder [Hilfe hier]", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("/help"))));
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), bukkitTask -> {
-            Main.getInstance().getTablistManager().setAllPlayerTeams();
+        Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
             showTitleFi(player);
         }, 20);
     }
@@ -208,10 +194,10 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoinCriminal(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Integer criminal = BanAPI.getApi().isCriminal(player);
+        Integer criminal = CourtAPI.getApi().getStatus(player);
         if (criminal == 5) {
-            Integer cell = BanAPI.getApi().getCell(player);
-            BanAPI.getApi().setLockTime(player, BanAPI.getApi().getCriminalTime(player) - 1);
+            Integer cell = CourtAPI.getApi().getCell(player);
+            CourtAPI.getApi().setTime(player, CourtAPI.getApi().getTime(player) - 1);
             switch (cell) {
                 case 1: {
                     Location cell1 = new Location(Bukkit.getWorld("world"), -6.5, 103.5, 29.5);
@@ -426,7 +412,7 @@ public class JoinListener implements Listener {
                                 .append(Component.text(PlayerAPI.getApi().getPlaytime(player) / 3600 + " Hours", NamedTextColor.LIGHT_PURPLE));
                         player.showTitle(Title.title(time, Component.text(""), times));
                     }
-                }.runTaskLaterAsynchronously(Main.getInstance(), 100);
+                }.runTaskLaterAsynchronously(UtilsManager.getInstance(), 100);
             }
 
         }).start();
@@ -525,7 +511,7 @@ public class JoinListener implements Listener {
                                 .append(Component.text(PlayerAPI.getApi().getPlaytime(player) / 3600 + " Stunden", NamedTextColor.LIGHT_PURPLE));
                         player.showTitle(Title.title(time, Component.text(""), times));
                     }
-                }.runTaskLaterAsynchronously(Main.getInstance(), 100);
+                }.runTaskLaterAsynchronously(UtilsManager.getInstance(), 100);
             }
         }).start();
     }

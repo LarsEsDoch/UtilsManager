@@ -1,15 +1,27 @@
 package de.lars.utilsmanager.features.court;
 
-import de.lars.apiManager.banAPI.BanAPI;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.timerAPI.TimerAPI;
+import de.lars.utilsmanager.UtilsManager;
+import de.lars.utilsmanager.util.RankStatements;
+import de.lars.utilsmanager.util.Statements;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class CourtManager {
@@ -26,20 +38,30 @@ public class CourtManager {
         checkCriminal();
     }
 
+    /**
+     * Status-Codes:
+     * 0 = NONE (frei)
+     * 1 = CRIMINAL (angeklagt)
+     * 2 = WAITING (wartet auf Gericht)
+     * 3 = ON_COURT (vor Gericht)
+     * 4 = ON_LOCK (wird eingesperrt)
+     * 5 = LOCKED (eingesperrt)
+     */
+
     public void checkCriminal() {
-        /*Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player: Bukkit.getOnlinePlayers()) {
-                Integer criminal = BanAPI.getApi().isCriminal(player);
+                Integer criminal = CourtAPI.getApi().getStatus(player);
                 if (criminal == 1) {
                     if (isPlayerOffline(player.getUniqueId().toString())) {
-                        BanAPI.getApi().setOnLock(player);
+                        CourtAPI.getApi().setStatus(player, 4);
                         return;
                     }
-                    if (isPlayerOffline(BanAPI.getApi().getProsecutor(player))) {
-                        BanAPI.getApi().setUnlocked(player);
+                    if (isPlayerOffline(CourtAPI.getApi().getProsecutor(player))) {
+                        CourtAPI.getApi().resetPlayer(player);
                         return;
                     }
-                    UUID prosecutorUUID = UUID.fromString(BanAPI.getApi().getProsecutor(player));
+                    UUID prosecutorUUID = UUID.fromString(CourtAPI.getApi().getProsecutor(player));
                     Player prosecutor = Bukkit.getPlayer(prosecutorUUID);
                     for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
                         if (onlineplayer == player) {
@@ -56,7 +78,7 @@ public class CourtManager {
                                     .append(Component.text(" angeklagt!", NamedTextColor.WHITE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Sein genannter Grund ist: ", NamedTextColor.WHITE))
-                                    .append(Component.text(BanAPI.getApi().getCriminalReason(player), NamedTextColor.BLUE)));
+                                    .append(Component.text(CourtAPI.getApi().getReason(player), NamedTextColor.BLUE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Die Gerichtsversammlung beginnt in 60 Sekunden. Kommst du?", NamedTextColor.WHITE)));
 
@@ -88,7 +110,7 @@ public class CourtManager {
                                     .append(Component.text("!", NamedTextColor.WHITE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("His said reason is: ", NamedTextColor.WHITE))
-                                    .append(Component.text(BanAPI.getApi().getCriminalReason(player), NamedTextColor.BLUE)));
+                                    .append(Component.text(CourtAPI.getApi().getReason(player), NamedTextColor.BLUE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("The court meeting begins in 60 seconds. Do you come?", NamedTextColor.WHITE)));
 
@@ -110,31 +132,32 @@ public class CourtManager {
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("|----------------------------------|", NamedTextColor.DARK_GRAY)));
                         }
-                        BanAPI.getApi().setOnWait(player);
+                        CourtAPI.getApi().setStatus(player, 2);
                     }
                 }
+                Integer timeToCourt = CourtAPI.getApi().getTime(player);
                 if (criminal == 2) {
-                    timetocourt--;
-                    if (isPlayerOffline(BanAPI.getApi().getProsecutor(player))) {
-                        BanAPI.getApi().setUnlocked(player);
+                    timeToCourt--;
+                    if (isPlayerOffline(CourtAPI.getApi().getProsecutor(player))) {
+                        CourtAPI.getApi().resetPlayer(player);
                         return;
                     }
                     if (isPlayerOffline(player.getUniqueId().toString())) {
-                        BanAPI.getApi().setOnLock(player);
+                        CourtAPI.getApi().setStatus(player, 4);
                         return;
                     }
                 }
-                if (timetocourt == 0) {
+                if (timeToCourt == 0) {
                     if (criminal == 3) {
                         return;
                     }
-                    timetocourt = 60;
-                    if (isPlayerOffline(BanAPI.getApi().getProsecutor(player))) {
-                        BanAPI.getApi().setUnlocked(player);
+                    timeToCourt = 60;
+                    if (isPlayerOffline(CourtAPI.getApi().getProsecutor(player))) {
+                        CourtAPI.getApi().resetPlayer(player);
                         return;
                     }
                     if (isPlayerOffline(player.getUniqueId().toString())) {
-                        BanAPI.getApi().setOnLock(player);
+                        CourtAPI.getApi().setStatus(player, 4);
                         return;
                     }
                     World world = Bukkit.getWorld("world");
@@ -148,7 +171,7 @@ public class CourtManager {
                     armorStandCriminal.setGravity(false);
                     armorStandCriminal.addPassenger(player);
 
-                    UUID prosecutorUUID = UUID.fromString(BanAPI.getApi().getProsecutor(player));
+                    UUID prosecutorUUID = UUID.fromString(CourtAPI.getApi().getProsecutor(player));
                     Player prosecutor = Bukkit.getPlayer(prosecutorUUID);
                     Location placeProsecutor = new Location(world, -75, 132, 173);
                     placeProsecutor.setYaw(-180);
@@ -530,7 +553,7 @@ public class CourtManager {
 
                         }
                     }
-                    BanAPI.getApi().setOnCourt(player);
+                    CourtAPI.getApi().setStatus(player, 1);
 
                     for (Player member: members) {
                         if (LanguageAPI.getApi().getLanguage(member) == 2) {
@@ -572,9 +595,9 @@ public class CourtManager {
                     prosecutor.sendMessage(Statements.getPrefix().append(Component.text("Die Verhandlung hat begonnen!", NamedTextColor.LIGHT_PURPLE)));
                 }
                 if (criminal == 3) {
-                    Player prosecutor = Bukkit.getPlayer(BanAPI.getApi().getProsecutor(player));
-                    if (isPlayerOffline(BanAPI.getApi().getProsecutor(player))) {
-                        BanAPI.getApi().setUnlocked(player);
+                    Player prosecutor = Bukkit.getPlayer(CourtAPI.getApi().getProsecutor(player));
+                    if (isPlayerOffline(CourtAPI.getApi().getProsecutor(player))) {
+                        CourtAPI.getApi().resetPlayer(player);
 
                         for (Player member: members) {
                             TimerAPI.getApi().setRunning(member, false);
@@ -589,7 +612,7 @@ public class CourtManager {
                         return;
                     }
                     if (isPlayerOffline(player.getUniqueId().toString())) {
-                        BanAPI.getApi().setOnLock(player);
+                        CourtAPI.getApi().setStatus(player, 4);
                         for (Player member: members) {
                             TimerAPI.getApi().setRunning(member, false);
                             TimerAPI.getApi().setTime(member, 0);
@@ -609,7 +632,7 @@ public class CourtManager {
                     }
 
                     if (TimerAPI.getApi().getTime(player) <= 0) {
-                        BanAPI.getApi().setOnLock(player);
+                        CourtAPI.getApi().setStatus(player, 4);
                     }
                 }
                 if (criminal == 4) {
@@ -619,7 +642,7 @@ public class CourtManager {
                         TimerAPI.getApi().setTimer(member, false);
                         TimerAPI.getApi().setOff(member, true);
                     }
-                    UUID prosecutorUUID = UUID.fromString(BanAPI.getApi().getProsecutor(player));
+                    UUID prosecutorUUID = UUID.fromString(CourtAPI.getApi().getProsecutor(player));
                     Player prosecutor = Bukkit.getPlayer(prosecutorUUID);
                     TimerAPI.getApi().setOff(player, true);
                     TimerAPI.getApi().setTimer(player, false);
@@ -645,7 +668,7 @@ public class CourtManager {
                                         .append(Component.text(" vor 3 Minuten angeklagt!", NamedTextColor.WHITE)));
                                 onlineplayer.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Sein genannter Grund ist: ", NamedTextColor.WHITE))
-                                        .append(Component.text(BanAPI.getApi().getCriminalReason(player), NamedTextColor.BLUE)));
+                                        .append(Component.text(CourtAPI.getApi().getReason(player), NamedTextColor.BLUE)));
                                 onlineplayer.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Die Mehrheit war für die Freilassung von ", NamedTextColor.WHITE))
                                         .append(RankStatements.getRank(player)));
@@ -667,7 +690,7 @@ public class CourtManager {
                                         .append(Component.text(" since 3 minutes!", NamedTextColor.WHITE)));
                                 onlineplayer.sendMessage(Statements.getPrefix()
                                         .append(Component.text("His said reason is: ", NamedTextColor.WHITE))
-                                        .append(Component.text(BanAPI.getApi().getCriminalReason(player), NamedTextColor.BLUE)));
+                                        .append(Component.text(CourtAPI.getApi().getReason(player), NamedTextColor.BLUE)));
                                 onlineplayer.sendMessage(Statements.getPrefix()
                                         .append(Component.text("The majority supported the release of ", NamedTextColor.WHITE))
                                         .append(RankStatements.getRank(player)));
@@ -679,7 +702,7 @@ public class CourtManager {
                                 onlineplayer.sendMessage(Statements.getPrefix()
                                         .append(Component.text("|----------------------------------|", NamedTextColor.DARK_GRAY)));
                             }
-                            BanAPI.getApi().setUnlocked(player);
+                            CourtAPI.getApi().resetPlayer(player);
                         }
                         break;
                     }
@@ -698,7 +721,7 @@ public class CourtManager {
                                     .append(Component.text(" vor 3 Minuten angeklagt!", NamedTextColor.WHITE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Sein genannter Grund ist: ", NamedTextColor.WHITE))
-                                    .append(Component.text(BanAPI.getApi().getCriminalReason(player), NamedTextColor.BLUE)));
+                                    .append(Component.text(CourtAPI.getApi().getReason(player), NamedTextColor.BLUE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Die Mehrheit war für die Bestrafung von ", NamedTextColor.WHITE))
                                     .append(RankStatements.getRank(player)));
@@ -720,7 +743,7 @@ public class CourtManager {
                                     .append(Component.text(" since 3 minutes!", NamedTextColor.WHITE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("His said reason is: ", NamedTextColor.WHITE))
-                                    .append(Component.text(BanAPI.getApi().getCriminalReason(player), NamedTextColor.BLUE)));
+                                    .append(Component.text(CourtAPI.getApi().getReason(player), NamedTextColor.BLUE)));
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("The majority supported the punishment of ", NamedTextColor.WHITE))
                                     .append(RankStatements.getRank(player)));
@@ -738,34 +761,36 @@ public class CourtManager {
                     TimerAPI.getApi().setTime(player, 600);
                     TimerAPI.getApi().setTimer(player, true);
                     TimerAPI.getApi().setRunning(player,true);
-                    player.addAttachment(Main.getInstance()).setPermission("worldedit.navigation.jumpto.command", false);
-                    PermissionAttachment attachment = player.addAttachment(Main.getInstance());
+                    player.addAttachment(UtilsManager.getInstance()).setPermission("worldedit.navigation.jumpto.command", false);
+                    PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
                     attachment.setPermission("plugin.addcoins", true);
+                    CourtAPI.getApi().setStatus(player, 5);
+                    CourtAPI.getApi().setTime(player, 600);
                     switch (cell) {
                         case 1: {
                             Location cell1 = new Location(Bukkit.getWorld("world"), -6.5, 103.5, 29.5);
                             player.teleport(cell1);
-                            BanAPI.getApi().setLocked(player, 600, 1);
+                            CourtAPI.getApi().setCell(player, 1);
                         }
                         case 2: {
                             Location cell2 = new Location(Bukkit.getWorld("world"), -6.5, 112.5, 24.5);
                             player.teleport(cell2);
-                            BanAPI.getApi().setLocked(player, 600, 2);
+                            CourtAPI.getApi().setCell(player, 2);
                         }
                         case 3: {
                             Location cell3 = new Location(Bukkit.getWorld("world"), -2.5, 107.5, 20.5);
                             player.teleport(cell3);
-                            BanAPI.getApi().setLocked(player, 600, 3);
+                            CourtAPI.getApi().setCell(player, 3);
                         }
                         case 4: {
                             Location cell4 = new Location(Bukkit.getWorld("world"), 3.5, 111.5, 18.5);
                             player.teleport(cell4);
-                            BanAPI.getApi().setLocked(player, 600, 4);
+                            CourtAPI.getApi().setCell(player, 4);
                         }
                         case 5: {
                             Location cell5 = new Location(Bukkit.getWorld("world"), -0.5, 115.5, 25.5);
                             player.teleport(cell5);
-                            BanAPI.getApi().setLocked(player, 600, 5);
+                            CourtAPI.getApi().setCell(player, 5);
                         }
 
                         default:
@@ -773,27 +798,28 @@ public class CourtManager {
                     }
                 }
                 if (criminal == 5) {
-                    BanAPI.getApi().setLockTime(player, BanAPI.getApi().getCriminalTime(player) - 1);
-                    if (BanAPI.getApi().getCriminalTime(player) == 0) {
-                        BanAPI.getApi().setUnlocked(player);
-                        player.addAttachment(Main.getInstance()).setPermission("worldedit.navigation.jumpto.command", true);
+                    CourtAPI.getApi().setTime(player, CourtAPI.getApi().getTime(player) - 1);
+                    if (CourtAPI.getApi().getTime(player) == 0) {
+                        CourtAPI.getApi().resetPlayer(player);
+                        player.addAttachment(UtilsManager.getInstance()).setPermission("worldedit.navigation.jumpto.command", true);
                         player.performCommand("/spawn");
                     }
                 }
             }
         }, 20, 20);
-
-         */
     }
 
     public boolean isPlayerOffline(String playerUUIDString) {
+        if (playerUUIDString == null) {
+            return true;
+        }
         UUID playerUUID = UUID.fromString(playerUUIDString);
         Player player = Bukkit.getPlayer(playerUUID);
         return player == null;
     }
 
     public Integer join(Player player) {
-        if (BanAPI.getApi().isCriminal(player) != 0) {
+        if (CourtAPI.getApi().getStatus(player) != 0) {
             return 3;
         }
         if (members.size() >= 24) {

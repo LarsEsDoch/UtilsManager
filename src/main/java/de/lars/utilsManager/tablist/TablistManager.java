@@ -1,7 +1,9 @@
 package de.lars.utilsmanager.tablist;
 
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.apimanager.apis.statusAPI.StatusAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import me.lucko.spark.api.Spark;
 import me.lucko.spark.api.SparkProvider;
@@ -16,6 +18,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class TablistManager{
+
 
     int cases = 1;
     static TextDecoration type;
@@ -35,8 +38,8 @@ public class TablistManager{
         Spark spark = SparkProvider.get();
         DoubleStatistic<StatisticWindow.TicksPerSecond> tpsInstance = spark.tps();
         DoubleStatistic<StatisticWindow.CpuUsage> cpuUsage = spark.cpuSystem();
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
-            if (RankAPI.getApi().getRankID(player) > 8) {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            if (RankAPI.getApi().getRankId(player) > 8) {
 
                 cases = cases + 1;
 
@@ -119,8 +122,8 @@ public class TablistManager{
         Scoreboard scoreboard = player.getScoreboard();
 
         for (Player target : Bukkit.getOnlinePlayers()) {
-            Integer rank = RankAPI.getApi().getRankID(target);
-            NamedTextColor namedTextColor = getNamedTextColor(RankAPI.getApi().getPrefix(target));
+            Integer rank = RankAPI.getApi().getRankId(target);
+            NamedTextColor namedTextColor = PrefixAPI.getApi().getColor(target);
 
             Team scoreboardTeam = scoreboard.getTeam(rank+target.getName());
             if (scoreboardTeam == null) {
@@ -129,40 +132,15 @@ public class TablistManager{
             scoreboardTeam.displayName(RankStatements.getRank(target));
             scoreboardTeam.prefix(RankStatements.getCleanRankLong(target));
             scoreboardTeam.color(namedTextColor);
-            if (RankAPI.getApi().getStatus(target).isEmpty()) {
+            if (StatusAPI.getApi().getStatus(target).isBlank()) {
                 target.playerListName(RankStatements.getRank(target));
             } else {
-                String input = RankAPI.getApi().getStatus(target);
-                String[] parts = input.split(",");
-                String status = parts[0];
-                Integer color = Integer.valueOf(parts[1]);
                 target.playerListName(RankStatements.getRank(target).append(Component.text(" [", NamedTextColor.GRAY))
-                        .append(Component.text(status, getNamedTextColor(color)))
+                        .append(Component.text(StatusAPI.getApi().getStatus(target), StatusAPI.getApi().getColor(target)))
                         .append(Component.text("]", NamedTextColor.GRAY)));
             }
             scoreboardTeam.addEntry(target.getName());
 
         }
-    }
-
-    private static NamedTextColor getNamedTextColor(Integer prefixID) {
-        return switch (prefixID) {
-            case 0 -> NamedTextColor.BLACK;
-            case 1 -> NamedTextColor.DARK_BLUE;
-            case 2 -> NamedTextColor.DARK_GREEN;
-            case 3 -> NamedTextColor.DARK_AQUA;
-            case 4 -> NamedTextColor.DARK_RED;
-            case 5 -> NamedTextColor.DARK_PURPLE;
-            case 6 -> NamedTextColor.GOLD;
-            case 7 -> NamedTextColor.GRAY;
-            case 8 -> NamedTextColor.DARK_GRAY;
-            case 9 -> NamedTextColor.BLUE;
-            case 10 -> NamedTextColor.GREEN;
-            case 11 -> NamedTextColor.AQUA;
-            case 12 -> NamedTextColor.RED;
-            case 13 -> NamedTextColor.LIGHT_PURPLE;
-            case 14 -> NamedTextColor.YELLOW;
-            default -> NamedTextColor.WHITE;
-        };
     }
 }

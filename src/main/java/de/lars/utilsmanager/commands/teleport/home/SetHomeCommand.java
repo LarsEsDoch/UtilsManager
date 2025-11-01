@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.teleport.home;
 
-import de.lars.apiManager.homeAPI.HomeAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.homeAPI.HomeAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -19,10 +19,10 @@ public class SetHomeCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.home"))) {
-            player.sendMessage(Statements.getNotAllowed(player));
-            return;
-        }
+        //if (!(player.hasPermission("plugin.home"))) {
+        //    player.sendMessage(Statements.getNotAllowed(player));
+        //    return;
+        //}
         if (args.length == 0) {
             sendUsage(player);
             return;
@@ -30,7 +30,7 @@ public class SetHomeCommand implements BasicCommand {
         Boolean isPublic = false;
         Component publicStringEn = Component.text("");
         Component publicStringDe = Component.text("");
-        /*if (RankAPI.getApi().getRankID(player) >= 9) {
+        /*if (RankAPI.getApi().getRankId(player) >= 9) {
             if (args.length == 1) {
                 sendUsage(player);
                 return;
@@ -56,7 +56,7 @@ public class SetHomeCommand implements BasicCommand {
 
         String HomeName = args[0];
 
-        if (HomeAPI.getApi().doesHomeExist(player, HomeName)) {
+        if (HomeAPI.getApi().doesHomeExist(HomeName)) {
             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Home ", NamedTextColor.RED))
                         .append(Component.text(HomeName, NamedTextColor.YELLOW))
@@ -88,7 +88,7 @@ public class SetHomeCommand implements BasicCommand {
     }
 
     private void sendUsage(Player sender) {
-        /*if (RankAPI.getApi().getRankID(sender) >= 9) {
+        /*if (RankAPI.getApi().getRankId(sender) >= 9) {
             if (LanguageAPI.getApi().getLanguage(sender) == 2) {
                 sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                         .append(Component.text(": ", NamedTextColor.DARK_GRAY))

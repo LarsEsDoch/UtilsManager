@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.freecam;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -24,7 +24,7 @@ public class FreeCamCloseCommand implements BasicCommand {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
-        FreecamListener freecamListener = Main.getInstance().getFreecamListener();
+        FreecamListener freecamListener = UtilsManager.getInstance().getFreecamListener();
 
         if (!freecamListener.getFreeCamUser().containsKey(player.getName())) return;
         player.teleport(freecamListener.freeCamUser.get(player.getName()));

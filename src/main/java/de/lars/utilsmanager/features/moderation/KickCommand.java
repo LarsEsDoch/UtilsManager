@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.moderation;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -74,7 +74,7 @@ public class KickCommand implements BasicCommand {
                     .append(Component.text(reason.toString(), NamedTextColor.RED));
         }
 
-        if (RankAPI.getApi().getRankID(kickPlayer) > RankAPI.getApi().getRankID(player)) {
+        if (RankAPI.getApi().getRankId(kickPlayer) > RankAPI.getApi().getRankId(player)) {
             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du darfst diesen Spieler nicht kicken!", NamedTextColor.RED)));
             } else {
@@ -108,7 +108,7 @@ public class KickCommand implements BasicCommand {
             }
             kickPlayer.kick(reasonComponent);
         } else {
-            Main.getInstance().getKickManager().setKicked(kickPlayer, reason.toString(), time);
+            UtilsManager.getInstance().getKickManager().setKicked(kickPlayer, reason.toString(), time);
             int seconds = time % 60;
             int minutes = (time / 60) % 60;
             int hours = (time / 3600);
@@ -164,7 +164,7 @@ public class KickCommand implements BasicCommand {
         }
 
         String message = "Der Spieler " + RankStatements.getUnformattedRank(player) + player.getName() + " wurde " + timeString + reasonString + "gekickt !";
-        Main.getInstance().getDiscordBot().sendPunishmentMessage(message);
+        UtilsManager.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
 
     private void sendUsage(CommandSender sender) {
@@ -179,7 +179,7 @@ public class KickCommand implements BasicCommand {
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (RankAPI.getApi().getRankID(player) < 9) return Collections.emptyList();
+        if (RankAPI.getApi().getRankId(player) < 9) return Collections.emptyList();
         if (args.length == 1 || args.length == 0) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {

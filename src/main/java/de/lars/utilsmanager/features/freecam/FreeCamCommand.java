@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.freecam;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -32,7 +32,7 @@ public class FreeCamCommand implements BasicCommand {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
-        FreecamListener freecamListener = Main.getInstance().getFreecamListener();
+        FreecamListener freecamListener = UtilsManager.getInstance().getFreecamListener();
         if (freecamListener.getFreeCamUser().containsKey(player.getName())) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist bereits im Kamera Modus!", NamedTextColor.RED)));

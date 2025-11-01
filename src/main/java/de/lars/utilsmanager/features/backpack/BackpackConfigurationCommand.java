@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.backpack;
 
-import de.lars.apiManager.backpackAPI.BackpackAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.limitAPI.LimitAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -40,7 +40,7 @@ public class BackpackConfigurationCommand implements BasicCommand {
             player.sendMessage(Statements.getPrefix().append(Component.text("The backpackslots are now ", NamedTextColor.WHITE))
                     .append(Component.text(slots, NamedTextColor.GREEN)));
         }
-        BackpackAPI.getApi().setSlots(player, slots);
+        LimitAPI.getApi().setSlots(player, slots);
     }
 
     private void sendUsage(CommandSender sender) {

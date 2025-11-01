@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.court;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -31,9 +31,9 @@ public class CourtCommand implements BasicCommand {
         Boolean CourtOnWaiting = false;
         Boolean CourtonGoing = false;
         for (Player onlineplayer: Bukkit.getOnlinePlayers()) {
-            if (BanAPI.getApi().isCriminal(onlineplayer) == 2 || BanAPI.getApi().isCriminal(onlineplayer) == 3) {
+            if (CourtAPI.getApi().getStatus(onlineplayer) == 2 || CourtAPI.getApi().getStatus(onlineplayer) == 3) {
                 criminal = onlineplayer;
-                prosecutor = Bukkit.getPlayer(BanAPI.getApi().getProsecutor(onlineplayer));
+                prosecutor = Bukkit.getPlayer(CourtAPI.getApi().getProsecutor(onlineplayer));
                 CourtOnWaiting = true;
                 break;
             }
@@ -57,7 +57,7 @@ public class CourtCommand implements BasicCommand {
                         }
                         return;
                     }
-                    if (Main.getInstance().getCourtManager().join(player) == 507) {
+                    if (UtilsManager.getInstance().getCourtManager().join(player) == 507) {
                         if(LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix().append(Component.text("Du kommst bereits zur Gerichtsversammlung!", NamedTextColor.RED)));
                         } else {
@@ -65,7 +65,7 @@ public class CourtCommand implements BasicCommand {
                         }
                         return;
                     }
-                    if (Main.getInstance().getCourtManager().join(player) == 404) {
+                    if (UtilsManager.getInstance().getCourtManager().join(player) == 404) {
                         if(LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix().append(Component.text("Mehr Spieler können nicht der Gerichtsversammlung kommen!", NamedTextColor.RED)));
                         } else {
@@ -84,7 +84,7 @@ public class CourtCommand implements BasicCommand {
                                 .append(RankStatements.getRank(criminal))
                                 .append(Component.text(".", NamedTextColor.WHITE)));
                     }
-                    Main.getInstance().getCourtManager().join(player);
+                    UtilsManager.getInstance().getCourtManager().join(player);
                     break;
                 }
                 case "pas": {
@@ -104,7 +104,7 @@ public class CourtCommand implements BasicCommand {
                         }
                         return;
                     }
-                    if (Main.getInstance().getCourtManager().pas(player) == 507) {
+                    if (UtilsManager.getInstance().getCourtManager().pas(player) == 507) {
                         if(LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix().append(Component.text("Du kommst gar nicht zur Gerichtsversammlung!", NamedTextColor.RED)));
                         } else {
@@ -117,7 +117,7 @@ public class CourtCommand implements BasicCommand {
                     } else {
                         player.sendMessage(Statements.getPrefix().append(Component.text("You won't come to the court meeting anymore!", NamedTextColor.RED)));
                     }
-                    Main.getInstance().getCourtManager().pas(player);
+                    UtilsManager.getInstance().getCourtManager().pas(player);
                     break;
                 }
                 default:
@@ -144,21 +144,21 @@ public class CourtCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if (Main.getInstance().getCourtManager().witness(player) == -1) {
+                        if (UtilsManager.getInstance().getCourtManager().witness(player) == -1) {
                             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("Mehr Zeugen kann es nicht geben!", NamedTextColor.RED)));
                             } else {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("There can't be more witnesses!", NamedTextColor.RED)));
                             }
                         }
-                        if (Main.getInstance().getCourtManager().witness(player) == 1) {
+                        if (UtilsManager.getInstance().getCourtManager().witness(player) == 1) {
                             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun nicht mehr auf dem Zeugen Stuhl.", NamedTextColor.BLUE)));
                             } else {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("You are no longer on the witness chair.", NamedTextColor.BLUE)));
                             }
                         }
-                        if (Main.getInstance().getCourtManager().witness(player) == 0) {
+                        if (UtilsManager.getInstance().getCourtManager().witness(player) == 0) {
                             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun auf dem Zeugen Stuhl.", NamedTextColor.BLUE)));
                             } else {
@@ -184,7 +184,7 @@ public class CourtCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if (Main.getInstance().getCourtManager().judged(player) == 0) {
+                        if (UtilsManager.getInstance().getCourtManager().judged(player) == 0) {
                             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bereits abgestimmt!", NamedTextColor.RED)));
                             } else {
@@ -216,7 +216,7 @@ public class CourtCommand implements BasicCommand {
                             }
                             return;
                         }
-                        if (Main.getInstance().getCourtManager().free(player) == 0) {
+                        if (UtilsManager.getInstance().getCourtManager().free(player) == 0) {
                             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bereits abgestimmt!", NamedTextColor.RED)));
                             } else {

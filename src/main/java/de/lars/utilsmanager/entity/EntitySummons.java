@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.entity;
 
-import de.lars.utilsmanager.Main;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -148,7 +148,7 @@ public class EntitySummons {
     }
 
     public void EntityHearths() {
-        Bukkit.getScheduler().runTaskTimer(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
                     if (!(entity instanceof Monster)) continue;

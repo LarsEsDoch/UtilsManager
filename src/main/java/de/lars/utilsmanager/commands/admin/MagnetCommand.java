@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.admin;
 
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
@@ -13,12 +13,12 @@ public class MagnetCommand implements BasicCommand {
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        if (RankAPI.getApi().getRankID((Player) stack.getSender()) < 9) {
+        if (RankAPI.getApi().getRankId((Player) stack.getSender()) < 9) {
             return;
         }
         Player player = Bukkit.getPlayer(args[1]);
         Integer RADIUS = 15;
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             player.getNearbyEntities(RADIUS, RADIUS, RADIUS)
                 .stream()
                 .filter(livingEntity -> !livingEntity.equals(player))

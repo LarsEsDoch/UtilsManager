@@ -1,16 +1,13 @@
 package de.lars.utilsmanager.commands.admin;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
-import de.lars.utilsmanager.util.RankStatements;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +39,8 @@ public class NickCommand implements BasicCommand {
         player.customName(nickComponent);
         player.playerListName(nickComponent);
         player.setCustomNameVisible(true);
-        
-        Main.getInstance().getTablistManager().setAllPlayerTeams();
+
+        UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
 
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix()

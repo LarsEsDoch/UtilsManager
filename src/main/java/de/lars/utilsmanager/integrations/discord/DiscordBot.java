@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.integrations.discord;
 
-import de.lars.apiManager.dataAPI.DataAPI;
+import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import de.lars.utilsmanager.util.Statements;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -61,7 +61,7 @@ public class DiscordBot {
     }
 
     public void sendStatusMessage(String message) {
-        if (DataAPI.getApi().isMaintenanceActive()) return;
+        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
         TextChannel channel = jda.getTextChannelById(serverStatusChannelID);
         if (channel != null) {
             channel.sendMessage(message).queue();
@@ -69,7 +69,7 @@ public class DiscordBot {
     }
 
     public void sendPlayerMessage(String message) {
-        if (DataAPI.getApi().isMaintenanceActive()) return;
+        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
         TextChannel channel = jda.getTextChannelById(playerStatusChannelID);
         if (channel != null) {
             channel.sendMessage(message).queue();
@@ -77,7 +77,7 @@ public class DiscordBot {
     }
 
     public void sendPunishmentMessage(String message) {
-        if (DataAPI.getApi().isMaintenanceActive()) return;
+        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
         TextChannel channel = jda.getTextChannelById(punishmentsChannelID);
         if (channel != null) {
             channel.sendMessage(message).queue();

@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.timer;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.timerAPI.TimerAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.timerAPI.TimerAPI;
+import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -51,11 +51,11 @@ public class Timer {
                 player.sendActionBar(hourminsec);
             }
 
-            if (TimerAPI.getApi().isTimer(player)) {
+            if (TimerAPI.getApi().isTimerEnabled(player)) {
                 playSound(player, time);
             }
         } else {
-            if (TimerAPI.getApi().isTimer(player)) {
+            if (TimerAPI.getApi().isTimerEnabled(player)) {
                 TimerAPI.getApi().setRunning(player, false);
                 TimerAPI.getApi().setTime(player, 0);
                 TimerAPI.getApi().setTimer(player, false);
@@ -108,11 +108,11 @@ public class Timer {
                 } else {
                     onlineplayer.sendActionBar(hourminsec);
                 }
-                if (TimerAPI.getApi().isTimer(player)) {
+                if (TimerAPI.getApi().isTimerEnabled(player)) {
                     playSound(onlineplayer, time);
                 }
             } else {
-                if (TimerAPI.getApi().isTimer(player)) {
+                if (TimerAPI.getApi().isTimerEnabled(player)) {
                     TimerAPI.getApi().setRunning(player, false);
                     TimerAPI.getApi().setTime(player, 0);
                     TimerAPI.getApi().setTimer(player, false);
@@ -133,7 +133,7 @@ public class Timer {
 
 
     private void run() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (TimerAPI.getApi().isOff(player)) {
                     return;
@@ -141,7 +141,7 @@ public class Timer {
                 if (TimerAPI.getApi().isPublic(player)) {
                     sendActionBarPublic(player);
                     if (TimerAPI.getApi().isRunning(player)) {
-                        if(TimerAPI.getApi().isTimer(player)) {
+                        if(TimerAPI.getApi().isTimerEnabled(player)) {
                             TimerAPI.getApi().setTime(player, TimerAPI.getApi().getTime(player) - 1);
                         } else {
                             TimerAPI.getApi().setTime(player, TimerAPI.getApi().getTime(player) + 1);
@@ -154,7 +154,7 @@ public class Timer {
                 }
                 sendActionBar(player);
                 if (TimerAPI.getApi().isRunning(player)) {
-                    if(TimerAPI.getApi().isTimer(player)) {
+                    if(TimerAPI.getApi().isTimerEnabled(player)) {
                         TimerAPI.getApi().setTime(player, TimerAPI.getApi().getTime(player) - 1);
                     } else {
                         TimerAPI.getApi().setTime(player, TimerAPI.getApi().getTime(player) + 1);

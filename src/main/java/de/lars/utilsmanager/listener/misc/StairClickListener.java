@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import de.lars.utilsmanager.UtilsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,18 +33,18 @@ public class StairClickListener implements Listener {
         if(!Objects.requireNonNull(event.getItem()).getType().equals(Material.PAPER)) return;
         player = event.getPlayer();
         for (Player player2: Bukkit.getOnlinePlayers()) {
-            Integer criminal = BanAPI.getApi().isCriminal(player2);
+            Integer criminal = CourtAPI.getApi().getStatus(player2);
             if (criminal == 3) {
                 return;
             }
-            if (Bukkit.getPlayer(BanAPI.getApi().getProsecutor(player2)) == player) {
+            if (Bukkit.getPlayer(CourtAPI.getApi().getProsecutor(player2)) == player) {
                 return;
             }
         }
-        if (Main.getInstance().getCourtManager().witnesser.contains(player)) {
+        if (UtilsManager.getInstance().getCourtManager().witnesser.contains(player)) {
             return;
         }
-        if (Main.getInstance().getCourtManager().members.contains(player)){
+        if (UtilsManager.getInstance().getCourtManager().members.contains(player)){
             return;
         }
         ItemMeta itemMeta = Objects.requireNonNull(event.getItem()).getItemMeta();
@@ -115,7 +115,7 @@ public class StairClickListener implements Listener {
 
         if (entity instanceof Player && dismounted instanceof ArmorStand) {
             for (Player player: Bukkit.getOnlinePlayers()) {
-                Integer criminal = BanAPI.getApi().isCriminal(player);
+                Integer criminal = CourtAPI.getApi().getStatus(player);
                 if (criminal == 3) {
                     event.setCancelled(true);
                     return;

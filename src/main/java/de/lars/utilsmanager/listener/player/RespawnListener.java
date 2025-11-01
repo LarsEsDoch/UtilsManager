@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.toggleAPI.ToggleAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -26,6 +26,13 @@ public class RespawnListener implements Listener {
         Location loc = new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0);
 
         if (ToggleAPI.getApi().getBedToggle(player) || !respawnLocation.equals(bedSpawn)) {
+            if (LanguageAPI.getApi().getLanguage(player ) == 2) {
+            player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest an deinem eigenen Respawn Punkt wiederbelebt.", NamedTextColor.GOLD)));
+            } else {
+                player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at you're own respawn point.", NamedTextColor.GOLD)));
+            }
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
+        } else {
             event.setRespawnLocation(loc);
             if (LanguageAPI.getApi().getLanguage(player ) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest am Offiziellen Spawn wiederbelebt.", NamedTextColor.GOLD)));
@@ -33,13 +40,6 @@ public class RespawnListener implements Listener {
                 player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at the official Spawn.", NamedTextColor.GOLD)));
             }
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
-        } else {
-            if (LanguageAPI.getApi().getLanguage(player ) == 2) {
-            player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest an deinem eigenen Respawn Punkt wiederbelebt.", NamedTextColor.GOLD)));
-            } else {
-                player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at you're own respawn point.", NamedTextColor.GOLD)));
-            }
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
         }
     }
 

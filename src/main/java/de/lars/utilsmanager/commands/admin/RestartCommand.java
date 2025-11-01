@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.admin;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -75,7 +75,7 @@ public class RestartCommand implements BasicCommand {
                     .append(Component.text(" seconds!", NamedTextColor.GOLD)));
         }
 
-        Bukkit.getScheduler().runTaskTimer(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
             if (delay == 120 || delay == 90 || delay == 60 || delay == 30 || delay == 10 || delay == 5 || delay == 4 || delay == 3 || delay == 2 || delay == 1) {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {

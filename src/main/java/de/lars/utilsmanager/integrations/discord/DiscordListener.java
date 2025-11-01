@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.integrations.discord;
 
-import de.lars.utilsmanager.Main;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import net.dv8tion.jda.api.entities.Member;
@@ -79,7 +79,7 @@ public class DiscordListener extends ListenerAdapter {
         int maxPlayers = Bukkit.getMaxPlayers();
         long maxMemory = Runtime.getRuntime().maxMemory() / (1024 * 1024);
         long usedMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
-        LocalDateTime nowTime = Main.getInstance().getDiscordBot().getStartTime();
+        LocalDateTime nowTime = UtilsManager.getInstance().getDiscordBot().getStartTime();
         LocalDateTime endTime = LocalDateTime.now();
 
         String message = "🌍 Server ist online!\n" +
@@ -110,7 +110,7 @@ public class DiscordListener extends ListenerAdapter {
         String name = Objects.requireNonNull(event.getOption("name")).getAsString();
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
 
-        Bukkit.getScheduler().runTask(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTask(UtilsManager.getInstance(), bukkitTask -> {
             offlinePlayer.setWhitelisted(true);
         });
         event.reply("✅ `" + name + "` wurde zur Whitelist hinzugefügt.").setEphemeral(true).queue();
@@ -120,7 +120,7 @@ public class DiscordListener extends ListenerAdapter {
         String name = Objects.requireNonNull(event.getOption("name")).getAsString();
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
 
-        Bukkit.getScheduler().runTask(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTask(UtilsManager.getInstance(), bukkitTask -> {
             offlinePlayer.setWhitelisted(false);
         });
         event.reply("❌ `" + name + "` wurde von der Whitelist entfernt.").setEphemeral(true).queue();

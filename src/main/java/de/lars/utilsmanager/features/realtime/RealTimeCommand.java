@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.realtime;
 
-import de.lars.apiManager.dataAPI.DataAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -19,7 +19,7 @@ public class RealTimeCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        RealTime realTime = Main.getInstance().getRealTime();
+        RealTime realTime = UtilsManager.getInstance().getRealTime();
         if (!(player.hasPermission("plugin.realtime"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
@@ -29,15 +29,15 @@ public class RealTimeCommand implements BasicCommand {
             player.sendMessage(NamedTextColor.DARK_RED + "ERROR");
         }
 
-        if (!DataAPI.getApi().isRealTimeActivated()) {
-            DataAPI.getApi().setRealTimeActivated(true);
+        if (!ServerSettingsAPI.getApi().isRealTimeEnabled()) {
+            ServerSettingsAPI.getApi().setRealTimeEnabled(true);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Component.text("Die echte Zeit ist nun aktiviert.", NamedTextColor.GRAY));
             } else {
                 player.sendMessage(Component.text("The real Time is now enabled.", NamedTextColor.GRAY));
             }
         } else {
-            DataAPI.getApi().setRealTimeActivated(false);
+            ServerSettingsAPI.getApi().setRealTimeEnabled(false);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Component.text("Die echte Zeit ist nun deaktiviert.", NamedTextColor.RED));
             } else {

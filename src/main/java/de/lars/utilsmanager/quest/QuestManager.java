@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.quest;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.questAPI.QuestAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.questAPI.QuestAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,10 +19,21 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 
 public class QuestManager implements Listener {
+
+    String[] questsDe = {"Werfe 10 Eier", "Bekomme 2 mal Hühner aus einem Ei-Wurf", "Triff dich 5 mal mit einem Pfeil", "Lasse 3 Bäume wachsen", "Esse 10 rohe Kartoffeln nacheinander",
+                "Bekomme 10 mal Flint aus gravel", "Ziehe eine Schwarze Leder Rüstung an", "Esse 4 mal ein Keks und trinke danach Milch", "Töte 20 Zombies", "Fische 2 mal Rüstung", "Laufe 1000 Blöcke",
+                "Füttere 2 Pferde mit Gold-Äpfeln", "Nimm eine Blazze an die Leine mit einer Angel", "Koche 5 verschiedene Arten von Nahrung", "Ernte eine Ackerfläche von 100 Blöcken",
+                "Zähme 10 Wölfe", "Fange 5 Pufferfische", "3 Red-cats füttern und zähmen", "Töte 5 Ghasts mit ihren eigenen Feuerbällen", "Töte ein Eisengolem mit einem Kuchen", "Sammle 64 Äpfel",
+                "Erreiche Level 50"};
+    String[] questsEn = {"Throw 10 Eggs", "Get chickens from one egg litter twice", "Hit yourself 5 times with an arrow", "Grow 3 trees", "Eat 10 raw potatoes in a row",
+            "Get Flint from gravel 10 times", "Put on black leather armor", "Eat a cookie 4 times and then drink milk", "Kill 20 zombies", "Fish 2 times armor", "Run 1000 blocks",
+            "Feed 2 horses with gold apples", "Put a Blazze on a line with a fishing rod", "Cook 5 different types of food", "Harvest a field of 100 blocks",
+            "Tame 10 wolves", "Catch 5 puffer fish", "Feed and tame 3 red-cats", "Kill 5 Ghasts with their own fireballs", "Kill an Iron Golem with a Cake", "Collect 64 apples",
+            "Reach level 50"};
 
     public QuestManager() {
         long hours;
@@ -58,7 +69,7 @@ public class QuestManager implements Listener {
         }
         for (Player player : Bukkit.getOnlinePlayers()) {
             String quest = generateQuest(player);
-            if (!QuestAPI.getApi().getDailyQuestComplete(player)) {
+            if (!QuestAPI.getApi().isDailyQuestComplete(player)) {
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Deine tägliche Aufgabe ist: ", NamedTextColor.WHITE))
                             .append(Component.text(quest, NamedTextColor.GOLD)));
@@ -81,7 +92,7 @@ public class QuestManager implements Listener {
 
     public void sendDailyQuests(Player player) {
         String quest = generateQuest(player);
-        if (!QuestAPI.getApi().getDailyQuestComplete(player)) {
+        if (!QuestAPI.getApi().isDailyQuestComplete(player)) {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             long hours;
@@ -189,14 +200,14 @@ public class QuestManager implements Listener {
                     .append(Component.text((100 + 25 * (QuestAPI.getApi().getStreak(player)+1)) + "$", NamedTextColor.DARK_GREEN))
                     .append(Component.text(" !", NamedTextColor.GREEN)));
         }
-        CoinAPI.getApi().addGift(player, String.valueOf(100 + (25 * (QuestAPI.getApi().getStreak(player)+1))));
+        CoinAPI.getApi().addGift(player, 100 + (25 * (QuestAPI.getApi().getStreak(player)+1)));
         QuestAPI.getApi().setQuestComplete(player, true);
         QuestAPI.getApi().setStreak(player, QuestAPI.getApi().getStreak(player)+1);
     }
 
     public void startDailyQuests() {
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (Calendar.HOUR_OF_DAY == 6 && Calendar.MINUTE == 0) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     String quest = generateQuest(player);
@@ -216,20 +227,7 @@ public class QuestManager implements Listener {
         Integer quest;
         Integer streak;
         Boolean complete;
-        Date now = new Date();
-        now.setMinutes(0);
-        now.setSeconds(0);
-        now.setHours(0);
-        String[] questsDe = {"Werfe 10 Eier", "Bekomme 2 mal Hühner aus einem Ei-Wurf", "Triff dich 5 mal mit einem Pfeil", "Lasse 3 Bäume wachsen", "Esse 10 rohe Kartoffeln nacheinander",
-                "Bekomme 10 mal Flint aus gravel", "Ziehe eine Schwarze Leder Rüstung an", "Esse 4 mal ein Keks und trinke danach Milch", "Töte 20 Zombies", "Fische 2 mal Rüstung", "Laufe 1000 Blöcke",
-                "Füttere 2 Pferde mit Gold-Äpfeln", "Nimm eine Blazze an die Leine mit einer Angel", "Koche 5 verschiedene Arten von Nahrung", "Ernte eine Ackerfläche von 100 Blöcken",
-                "Zähme 10 Wölfe", "Fange 5 Pufferfische", "3 Red-cats füttern und zähmen", "Töte 5 Ghasts mit ihren eigenen Feuerbällen", "Töte ein Eisengolem mit einem Kuchen", "Sammle 64 Äpfel",
-                "Erreiche Level 50"};
-        String[] questsEn = {"Throw 10 Eggs", "Get chickens from one egg litter twice", "Hit yourself 5 times with an arrow", "Grow 3 trees", "Eat 10 raw potatoes in a row",
-                "Get Flint from gravel 10 times", "Put on black leather armor", "Eat a cookie 4 times and then drink milk", "Kill 20 zombies", "Fish 2 times armor", "Run 1000 blocks",
-                "Feed 2 horses with gold apples", "Put a Blazze on a line with a fishing rod", "Cook 5 different types of food", "Harvest a field of 100 blocks",
-                "Tame 10 wolves", "Catch 5 puffer fish", "Feed and tame 3 red-cats", "Kill 5 Ghasts with their own fireballs", "Kill an Iron Golem with a Cake", "Collect 64 apples",
-                "Reach level 50"};
+        Instant now = Instant.now();
         if (Calendar.HOUR_OF_DAY < 6) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 return questsDe[QuestAPI.getApi().getDailyQuest(player)];
@@ -237,7 +235,7 @@ public class QuestManager implements Listener {
                 return questsEn[QuestAPI.getApi().getDailyQuest(player)];
             }
         } else {
-            complete = QuestAPI.getApi().getDailyQuestComplete(player);
+            complete = QuestAPI.getApi().isDailyQuestComplete(player);
             streak = QuestAPI.getApi().getStreak(player);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 if (QuestAPI.getApi().getQuestDate(player).compareTo(now) < 0) {
@@ -259,8 +257,8 @@ public class QuestManager implements Listener {
                     }
                 }
                 return questsDe[quest];
-            } else {
-                if (QuestAPI.getApi().getQuestDate(player).compareTo(now) < 0) {
+            } else {Instant questDate = QuestAPI.getApi().getQuestDate(player);
+                if (questDate == null || questDate.compareTo(now) < 0) {
                     if (!complete) {
                         quest = 0;
                         QuestAPI.getApi().setStreak(player, 0);
@@ -284,88 +282,95 @@ public class QuestManager implements Listener {
     }
 
     private void setQuest(Player player, Integer quest) {
+        String questName = "";
+        if (LanguageAPI.getApi().getLanguage(player) == 1) {
+            questName = questsEn[quest];
+        } else {
+            questName = questsDe[quest];
+        }
+
         if (quest == 0) {
-            QuestAPI.getApi().setQuest(player, quest, 10);
+            QuestAPI.getApi().setQuest(player, quest, 10, questName);
         }
         if (quest == 1) {
-            QuestAPI.getApi().setQuest(player, quest, 2);
+            QuestAPI.getApi().setQuest(player, quest, 2, questName);
         }
         if (quest == 2) {
-            QuestAPI.getApi().setQuest(player, quest, 5);
+            QuestAPI.getApi().setQuest(player, quest, 5, questName);
         }
         if (quest == 3) {
-            QuestAPI.getApi().setQuest(player, quest, 3);
+            QuestAPI.getApi().setQuest(player, quest, 3, questName);
         }
         if (quest == 4) {
-            QuestAPI.getApi().setQuest(player, quest, 10);
+            QuestAPI.getApi().setQuest(player, quest, 10, questName);
         }
         if (quest == 5) {
-            QuestAPI.getApi().setQuest(player, quest, 10);
+            QuestAPI.getApi().setQuest(player, quest, 10, questName);
         }
         if (quest == 6) {
-            QuestAPI.getApi().setQuest(player, quest, 1);
+            QuestAPI.getApi().setQuest(player, quest, 1, questName);
         }
         if (quest == 7) {
-            QuestAPI.getApi().setQuest(player, quest, 4);
+            QuestAPI.getApi().setQuest(player, quest, 4, questName);
         }
         if (quest == 8) {
-            QuestAPI.getApi().setQuest(player, quest, 20);
+            QuestAPI.getApi().setQuest(player, quest, 20, questName);
         }
         if (quest == 9) {
-            QuestAPI.getApi().setQuest(player, quest, 2);
+            QuestAPI.getApi().setQuest(player, quest, 2, questName);
         }
         if (quest == 10) {
-            QuestAPI.getApi().setQuest(player, quest, 1000);
+            QuestAPI.getApi().setQuest(player, quest, 1000, questName);
         }
         if (quest == 11) {
-            QuestAPI.getApi().setQuest(player, quest, 2);
+            QuestAPI.getApi().setQuest(player, quest, 2, questName);
         }
         if (quest == 12) {
-            QuestAPI.getApi().setQuest(player, quest, 1);
+            QuestAPI.getApi().setQuest(player, quest, 1, questName);
         }
         if (quest == 13) {
-            QuestAPI.getApi().setQuest(player, quest, 5);
+            QuestAPI.getApi().setQuest(player, quest, 5, questName);
         }
         if (quest == 14) {
-            QuestAPI.getApi().setQuest(player, quest, 100);
+            QuestAPI.getApi().setQuest(player, quest, 100, questName);
         }
         if (quest == 15) {
-            QuestAPI.getApi().setQuest(player, quest, 10);
+            QuestAPI.getApi().setQuest(player, quest, 10, questName);
         }
         if (quest == 16) {
-            QuestAPI.getApi().setQuest(player, quest, 5);
+            QuestAPI.getApi().setQuest(player, quest, 5, questName);
         }
         if (quest == 17) {
-            QuestAPI.getApi().setQuest(player, quest, 3);
+            QuestAPI.getApi().setQuest(player, quest, 3, questName);
         }
         if (quest == 18) {
-            QuestAPI.getApi().setQuest(player, quest, 5);
+            QuestAPI.getApi().setQuest(player, quest, 5, questName);
         }
         if (quest == 19) {
-            QuestAPI.getApi().setQuest(player, quest, 1);
+            QuestAPI.getApi().setQuest(player, quest, 1, questName);
         }
         if (quest == 20) {
-            QuestAPI.getApi().setQuest(player, quest, 64);
+            QuestAPI.getApi().setQuest(player, quest, 64, questName);
         }
         if (quest == 21) {
-            QuestAPI.getApi().setQuest(player, quest, 50);
+            QuestAPI.getApi().setQuest(player, quest, 50, questName);
         }
     }
 
     public void Completer() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (QuestAPI.getApi().getDailyQuestComplete(player)) {
+                if (QuestAPI.getApi().isDailyQuestComplete(player)) {
                     return;
                 }
-                int number = QuestAPI.getApi().getDailyQuestNumber(player);
-                int hasnumber = QuestAPI.getApi().getDailyQuestHasNumber(player);
+                int number = QuestAPI.getApi().getProgress(player);
+                int hasnumber = QuestAPI.getApi().getProgress(player);
                 if (hasnumber > number || hasnumber == number) {
                     setComplete(player);
                 }
 
                 if (QuestAPI.getApi().getDailyQuest(player) == 21) {
-                    QuestAPI.getApi().setDailyhasnumber(player, player.getLevel());
+                    QuestAPI.getApi().setProgress(player, player.getLevel());
                 }
 
                 if (QuestAPI.getApi().getDailyQuest(player) == 2) {
@@ -373,7 +378,7 @@ public class QuestManager implements Listener {
                     ItemStack apple = new ItemStack(Material.APPLE);
                     int existing = inventory.all(Material.APPLE).values().stream()
                             .mapToInt(ItemStack::getAmount).sum();
-                    QuestAPI.getApi().setDailyhasnumber(player, existing);
+                    QuestAPI.getApi().setProgress(player, existing);
                 }
 
                 if (QuestAPI.getApi().getDailyQuest(player) == 6) {
@@ -381,7 +386,7 @@ public class QuestManager implements Listener {
                     ItemStack cactus = new ItemStack(Material.CACTUS);
                     int existing = inventory.all(Material.CACTUS).values().stream()
                             .mapToInt(ItemStack::getAmount).sum();
-                    QuestAPI.getApi().setDailyhasnumber(player, existing);
+                    QuestAPI.getApi().setProgress(player, existing);
                 }
             }
         }, 40, 40);
@@ -395,7 +400,7 @@ public class QuestManager implements Listener {
             if (event.getHitEntity() instanceof Player) {
                 if (event.getHitEntity() == event.getEntity().getShooter()); {
                     if (QuestAPI.getApi().getDailyQuest(player) == 2) {
-                        QuestAPI.getApi().addDailyhasnumber(player, 1);
+                        QuestAPI.getApi().increaseProgress(player, 1);
                     }
                 }
             }
@@ -416,7 +421,7 @@ public class QuestManager implements Listener {
                     || material == Material.OAK_LOG || material == Material.BIRCH_LOG || material == Material.SPRUCE_LOG
                     || material == Material.JUNGLE_LOG || material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG)) {
                 if (QuestAPI.getApi().getDailyQuest(player) == 3) {
-                    QuestAPI.getApi().addDailyhasnumber(player, 1);
+                    QuestAPI.getApi().increaseProgress(player, 1);
                 }
             }
         }
@@ -430,7 +435,7 @@ public class QuestManager implements Listener {
             Player player = ((Zombie) entity).getKiller();
             if (player != null) {
                 if (QuestAPI.getApi().getDailyQuest(player) == 8) {
-                    QuestAPI.getApi().addDailyhasnumber(player, 1);
+                    QuestAPI.getApi().increaseProgress(player, 1);
                 }
             }
         }
@@ -442,14 +447,14 @@ public class QuestManager implements Listener {
             Player player = (Player) event.getEntity().getShooter();
             if (QuestAPI.getApi().getDailyQuest(player) == 0) {
                 if (event.getEntity().getShooter() instanceof Player) {
-                    QuestAPI.getApi().addDailyhasnumber(player, 1);
+                    QuestAPI.getApi().increaseProgress(player, 1);
                 }
             }
             if (QuestAPI.getApi().getDailyQuest(player) == 1) {
                 Egg egg = (Egg) event.getEntity();
                 if (egg.getShooter() instanceof Player) {
                     if (event.getEntity() instanceof Chicken) {
-                        QuestAPI.getApi().addDailyhasnumber(player, 1);
+                        QuestAPI.getApi().increaseProgress(player, 1);
                     }
                 }
             }

@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.scoreboard;
 
-import de.lars.utilsmanager.Main;
+import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -36,7 +36,7 @@ public abstract class ScoreboardBuilder {
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         final int[] rgb = {1};
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (mode) {
                 switch (rgb[0]) {
                     case 1:

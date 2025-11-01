@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.player;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;

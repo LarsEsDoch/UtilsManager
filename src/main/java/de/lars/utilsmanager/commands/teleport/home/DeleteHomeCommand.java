@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.teleport.home;
 
-import de.lars.apiManager.homeAPI.HomeAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.homeAPI.HomeAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -23,10 +23,10 @@ public class DeleteHomeCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.home"))) {
-            player.sendMessage(Statements.getNotAllowed(player));
-            return;
-        }
+        //if (!(player.hasPermission("plugin.home"))) {
+        //    player.sendMessage(Statements.getNotAllowed(player));
+        //    return;
+        //}
         if (args.length == 0) {
             sendUsage(player);
             return;
@@ -55,7 +55,7 @@ public class DeleteHomeCommand implements BasicCommand {
                     .append(Component.text(HomeName, NamedTextColor.RED))
                     .append(Component.text("!", NamedTextColor.YELLOW)));
         }
-        HomeAPI.getApi().deleteHome(player, HomeAPI.getApi().getHomeId(player, HomeName));
+        HomeAPI.getApi().deleteHome(HomeAPI.getApi().getHomeId(player, HomeName));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -48,7 +48,7 @@ public class ClaimGiftCommand implements BasicCommand {
                     .append(Component.text("$.", NamedTextColor.BLUE)));
         }
         CoinAPI.getApi().addCoins(player, Integer.parseInt(gift));
-        CoinAPI.getApi().removeGift(player,gift);
+        CoinAPI.getApi().removeGift(player, Integer.parseInt(gift));
         if (!CoinAPI.getApi().getGifts(player).isEmpty()) {
             player.sendMessage(" ");
             player.performCommand("gifts");

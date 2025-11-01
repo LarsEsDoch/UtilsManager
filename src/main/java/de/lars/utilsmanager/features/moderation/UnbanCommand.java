@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.moderation;
 
-import de.lars.apiManager.banAPI.BanAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.banAPI.BanAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public class UnbanCommand implements BasicCommand {
 
@@ -32,7 +31,7 @@ public class UnbanCommand implements BasicCommand {
         }
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-        if (!BanAPI.getApi().doesUserExist(offlinePlayer)) {
+        if (offlinePlayer == null) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED)));
             } else {
@@ -49,7 +48,7 @@ public class UnbanCommand implements BasicCommand {
                     .append(Component.text(offlinePlayer.getName(), NamedTextColor.GREEN))
                     .append(Component.text(".", NamedTextColor.WHITE)));
         }
-        BanAPI.getApi().setUnBaned(offlinePlayer);
+        BanAPI.getApi().setUnBanned(offlinePlayer);
     }
 
     @Override
@@ -58,11 +57,11 @@ public class UnbanCommand implements BasicCommand {
         if (!(player.hasPermission("plugin.ban"))) {
             return Collections.emptyList();
         }
-        List<String> players = BanAPI.getApi().getBannedPlayers();
+        /*List<String> players = BanAPI.getApi().getBannedPlayer();
         if (args.length == 0 || args.length == 1) {
 
             return players;
-        }
+        } */
         return Collections.emptyList();
     }
 

@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -48,7 +48,7 @@ public class SetCoinsCommand implements BasicCommand {
 
         setcoins = Integer.parseInt(args[1]);
         player = Bukkit.getPlayer(args[0]);
-        if (!CoinAPI.getApi().doesUserExist((Player) player)) {
+        if (player == null) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 sendplayer.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
             } else {

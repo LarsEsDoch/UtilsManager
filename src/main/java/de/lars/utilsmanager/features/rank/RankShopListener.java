@@ -1,23 +1,19 @@
 package de.lars.utilsmanager.features.rank;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.Calendar;
 
 public class RankShopListener implements Listener {
 
@@ -78,7 +74,7 @@ public class RankShopListener implements Listener {
                 default -> { return; }
             }
 
-            RankAPI.getApi().setRankID(player, rankID, durationDays, Calendar.getInstance());
+            RankAPI.getApi().setRank(player, rankID, durationDays);
             CoinAPI.getApi().removeCoins(player, price);
 
             String rankName = switch (id) {

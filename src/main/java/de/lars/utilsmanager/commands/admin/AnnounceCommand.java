@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.admin;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -70,7 +70,7 @@ public class AnnounceCommand implements BasicCommand {
             }
         } else if (delay != 0 & repeat == 1) {
 
-            Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), bukkitTask -> {
+            Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     onlinePlayer.sendMessage(Statements.getPrefix()
                             .append(Component.text("Server", NamedTextColor.GOLD))
@@ -100,7 +100,7 @@ public class AnnounceCommand implements BasicCommand {
             int[] timesDid = {0};
 
             int finalRepeat = repeat;
-            Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+            Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     onlinePlayer.sendMessage(Statements.getPrefix()
                             .append(Component.text("Server", NamedTextColor.GOLD))

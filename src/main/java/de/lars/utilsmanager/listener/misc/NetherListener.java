@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.World;

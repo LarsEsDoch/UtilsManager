@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apiManager.coinAPI.CoinAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -41,8 +41,8 @@ public class GiftCommand implements BasicCommand {
                 .append(Component.text(" ]", NamedTextColor.DARK_GRAY))
                 .append(Component.text("                    ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH)));
         player.sendMessage(" ");
-        for (String gift: CoinAPI.getApi().getGifts(player)) {
-            String giftString = formatter.format(Integer.parseInt(gift));
+        for (Integer gift: CoinAPI.getApi().getGifts(player)) {
+            String giftString = formatter.format(gift);
             Component GiftClickText = Component.text("[Anfordern]", NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/claimgift " + gift));
             Component GiftClickTextE = Component.text("[Claim]", NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/claimgift " + gift));
             ComponentBuilder GiftText = Component.text().append(Statements.getPrefix().append(Component.text(">> " + giftString + "$ ", NamedTextColor.GOLD)));

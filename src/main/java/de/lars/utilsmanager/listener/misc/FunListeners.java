@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -34,7 +34,7 @@ public class FunListeners implements Listener {
     private Map<Player, Integer> tntList = new HashMap<>();
 
     public FunListeners() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (java.time.LocalDateTime.now().getMinute() == 0 && java.time.LocalDateTime.now().getSecond() == 0) {
                 tntList.replaceAll((player, value) -> 0);
             }
@@ -164,7 +164,7 @@ public class FunListeners implements Listener {
                 event.setCancelled(true);
                 Bukkit.getWorld("world").loadChunk(-1, 1);
                 entity.teleport(new Location(Bukkit.getWorld("world"), -1, 128.5, 31));
-                Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+                Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                     if (!entityList.containsKey(player)) bukkitTask.cancel();
                     Objects.requireNonNull(Bukkit.getWorld("world")).loadChunk(-1, 1);
                 }, 20, 20);
@@ -248,7 +248,7 @@ public class FunListeners implements Listener {
         World world = event.getClickedBlock().getLocation().getWorld();
         Vector center = event.getClickedBlock().getLocation().toVector();
         int radius = 50;
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     for (int z = -radius; z <= radius; z++) {

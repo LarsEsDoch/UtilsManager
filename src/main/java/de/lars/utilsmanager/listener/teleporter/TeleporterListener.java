@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.teleporter;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -90,6 +90,6 @@ public class TeleporterListener implements Listener {
                     return;
                 }
             }
-        }.runTaskTimer(Main.getInstance(), 20,20);
+        }.runTaskTimer(UtilsManager.getInstance(), 20,20);
     }
 }

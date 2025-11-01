@@ -1,8 +1,9 @@
 package de.lars.utilsmanager.commands.player;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.ItemBuilder;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -37,7 +38,7 @@ public class PrefixCommand implements BasicCommand {
 
             HashMap<Integer, ItemStack> items = new HashMap<>();
 
-            if (RankAPI.getApi().getRankID(player) == 10) {
+            if (RankAPI.getApi().getRankId(player) == 10) {
                 items.put(10, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Dark Red", NamedTextColor.DARK_RED))
                         .setCustomId(prefixKey, "fail")
@@ -49,7 +50,7 @@ public class PrefixCommand implements BasicCommand {
                         .build());
             }
 
-            if (RankAPI.getApi().getRankID(player) >= 9) {
+            if (RankAPI.getApi().getRankId(player) >= 9) {
                 items.put(11, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Red", NamedTextColor.RED))
                         .setCustomId(prefixKey, "fail")
@@ -66,7 +67,7 @@ public class PrefixCommand implements BasicCommand {
                     .setCustomId(prefixKey, "gold")
                     .build());
 
-            if (RankAPI.getApi().getRankID(player) >= 6) {
+            if (RankAPI.getApi().getRankId(player) >= 6) {
                 items.put(13, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Yellow", NamedTextColor.YELLOW))
                         .setCustomId(prefixKey, "fail")
@@ -98,7 +99,7 @@ public class PrefixCommand implements BasicCommand {
                     .setCustomId(prefixKey, "dark_aqua")
                     .build());
 
-            if (RankAPI.getApi().getRankID(player) >= 8) {
+            if (RankAPI.getApi().getRankId(player) >= 8) {
                 items.put(20, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Dark Blue", NamedTextColor.DARK_BLUE))
                         .setCustomId(prefixKey, "fail")
@@ -120,7 +121,7 @@ public class PrefixCommand implements BasicCommand {
                     .setCustomId(prefixKey, "light_purple")
                     .build());
 
-            if (RankAPI.getApi().getRankID(player) >= 7) {
+            if (RankAPI.getApi().getRankId(player) >= 7) {
                 items.put(23, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Dark Purple", NamedTextColor.DARK_PURPLE))
                         .setCustomId(prefixKey, "fail")
@@ -194,7 +195,7 @@ public class PrefixCommand implements BasicCommand {
         }
         switch (args[0].toLowerCase()) {
             case "black": {
-                RankAPI.getApi().setPrefix(player, 0);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.BLACK);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -209,7 +210,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "dark_blue": {
-                RankAPI.getApi().setPrefix(player, 1);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_BLUE);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -224,7 +225,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "dark_green": {
-                RankAPI.getApi().setPrefix(player, 2);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_GREEN);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -239,7 +240,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "dark_aqua": {
-                RankAPI.getApi().setPrefix(player, 3);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_AQUA);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -254,7 +255,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "dark_red": {
-                RankAPI.getApi().setPrefix(player, 4);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -269,7 +270,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "dark_purple": {
-                RankAPI.getApi().setPrefix(player, 5);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_PURPLE);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -284,7 +285,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "gold": {
-                RankAPI.getApi().setPrefix(player, 6);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -299,7 +300,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "gray": {
-                RankAPI.getApi().setPrefix(player, 7);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.GRAY);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -314,7 +315,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "dark_gray": {
-                RankAPI.getApi().setPrefix(player, 8);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_GRAY);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -329,7 +330,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "blue": {
-                RankAPI.getApi().setPrefix(player, 9);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.BLUE);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -344,7 +345,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "green": {
-                RankAPI.getApi().setPrefix(player, 10);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.GREEN);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -359,7 +360,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "aqua": {
-                RankAPI.getApi().setPrefix(player, 11);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.AQUA);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -374,7 +375,7 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
             case "red": {
-                RankAPI.getApi().setPrefix(player, 12);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.RED);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -390,7 +391,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "light_purple": {
-                RankAPI.getApi().setPrefix(player, 13);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.LIGHT_PURPLE);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -406,7 +407,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "yellow": {
-                RankAPI.getApi().setPrefix(player, 14);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.YELLOW);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -422,7 +423,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "white": {
-                RankAPI.getApi().setPrefix(player, 15);
+                PrefixAPI.getApi().setColor(player, NamedTextColor.WHITE);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
@@ -438,7 +439,12 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "bold": {
-                RankAPI.getApi().setPrefixType(player, 1);
+                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.BOLD)) {
+                    PrefixAPI.getApi().removeDecoration(player, TextDecoration.BOLD);
+                } else {
+                    PrefixAPI.getApi().setDecoration(player, TextDecoration.BOLD);
+                }
+
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
@@ -454,7 +460,11 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "italic": {
-                RankAPI.getApi().setPrefixType(player, 2);
+                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.ITALIC)) {
+                    PrefixAPI.getApi().removeDecoration(player, TextDecoration.ITALIC);
+                } else {
+                    PrefixAPI.getApi().setDecoration(player, TextDecoration.ITALIC);
+                }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
@@ -469,8 +479,12 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
 
-            case "magic": {
-                RankAPI.getApi().setPrefixType(player, 3);
+            case "obfuscated": {
+                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.OBFUSCATED)) {
+                    PrefixAPI.getApi().removeDecoration(player, TextDecoration.OBFUSCATED);
+                } else {
+                    PrefixAPI.getApi().setDecoration(player, TextDecoration.OBFUSCATED);
+                }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
@@ -486,7 +500,11 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "strikethrough": {
-                RankAPI.getApi().setPrefixType(player, 4);
+                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.STRIKETHROUGH)) {
+                    PrefixAPI.getApi().removeDecoration(player, TextDecoration.STRIKETHROUGH);
+                } else {
+                    PrefixAPI.getApi().setDecoration(player, TextDecoration.STRIKETHROUGH);
+                }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
@@ -501,8 +519,12 @@ public class PrefixCommand implements BasicCommand {
                 break;
             }
 
-            case "underline": {
-                RankAPI.getApi().setPrefixType(player, 5);
+            case "underlined": {
+                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.UNDERLINED)) {
+                    PrefixAPI.getApi().removeDecoration(player, TextDecoration.UNDERLINED);
+                } else {
+                    PrefixAPI.getApi().setDecoration(player, TextDecoration.UNDERLINED);
+                }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
@@ -518,30 +540,25 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "reset": {
-                if (RankAPI.getApi().getRankID(player) == 5) {
-                    RankAPI.getApi().setPrefix(player,6);
-                    RankAPI.getApi().setPrefixType(player, 0);
+                if (RankAPI.getApi().getRankId(player) == 5) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.GOLD);
                 }
-                if (RankAPI.getApi().getRankID(player) == 6) {
-                    RankAPI.getApi().setPrefix(player,14);
-                    RankAPI.getApi().setPrefixType(player, 0);
+                if (RankAPI.getApi().getRankId(player) == 6) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.YELLOW);
                 }
-                if (RankAPI.getApi().getRankID(player) == 7) {
-                    RankAPI.getApi().setPrefix(player,5);
-                    RankAPI.getApi().setPrefixType(player, 0);
+                if (RankAPI.getApi().getRankId(player) == 7) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.DARK_PURPLE);
                 }
-                if (RankAPI.getApi().getRankID(player) == 8) {
-                    RankAPI.getApi().setPrefix(player,1);
-                    RankAPI.getApi().setPrefixType(player, 0);
+                if (RankAPI.getApi().getRankId(player) == 8) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.BLACK);
                 }
-                if (RankAPI.getApi().getRankID(player) == 9) {
-                    RankAPI.getApi().setPrefix(player,12);
-                    RankAPI.getApi().setPrefixType(player, 0);
+                if (RankAPI.getApi().getRankId(player) == 9) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.RED);
                 }
-                if (RankAPI.getApi().getRankID(player) == 10) {
-                    RankAPI.getApi().setPrefix(player, 4);
-                    RankAPI.getApi().setPrefixType(player, 0);
+                if (RankAPI.getApi().getRankId(player) == 10) {
+                    PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 }
+                PrefixAPI.getApi().setDecoration(player, Collections.emptySet());
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD)));
                 } else {
@@ -553,7 +570,7 @@ public class PrefixCommand implements BasicCommand {
                 sendUsage(player);
                 break;
         }
-        Main.getInstance().getTablistManager().setAllPlayerTeams();
+        UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
     }
 
     @Override

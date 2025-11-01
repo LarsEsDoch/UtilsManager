@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.admin;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -81,7 +81,7 @@ public class FreezeCommand implements BasicCommand {
                     twenty = 0;
                 }
             }
-        }.runTaskTimer(Main.getInstance(), 1,1);
+        }.runTaskTimer(UtilsManager.getInstance(), 1,1);
     }
 
     @Override

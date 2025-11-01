@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -37,7 +37,7 @@ public class SpawnElytraListener implements Listener {
     }
 
     public void run() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             world.getPlayers().forEach(player -> {
                 if (player.getGameMode() != GameMode.SURVIVAL) return;
                 player.setAllowFlight(isInSpawnRadius(player));
@@ -45,7 +45,7 @@ public class SpawnElytraListener implements Listener {
                     player.setAllowFlight(false);
                     player.setGliding(false);
                     boosted.remove(player);
-                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> {
                         flying.remove(player);
                     }, 5);
                 }

@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.features.chunk;
 
-import de.lars.apiManager.chunkAPI.ChunkAPI;
-import de.lars.apiManager.languageAPI.LanguageAPI;
-import de.lars.apiManager.rankAPI.RankAPI;
-import de.lars.utilsmanager.Main;
+import de.lars.apimanager.apis.chunkAPI.ChunkAPI;
+import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -35,10 +35,10 @@ public class ChunkOwnerListener implements Listener {
         Chunk chunk = event.getBlock().getChunk();
         Player player = event.getPlayer();
         Location loc = player.getLocation();
-        if (RankAPI.getApi().getRankID(player) >= 9) {
+        if (RankAPI.getApi().getRankId(player) >= 9) {
             return;
         }
-        if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
             /*
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "Der Chunk hat keinen Besitzer!" + NamedTextColor.YELLOW + "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")");
@@ -49,19 +49,19 @@ public class ChunkOwnerListener implements Listener {
             }*/
             return;
         }
-        if (ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+        if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
             return;
         }
-        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString(), player.getUniqueId().toString())) {
-            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
         }
@@ -72,34 +72,34 @@ public class ChunkOwnerListener implements Listener {
         Chunk chunk = event.getBlock().getChunk();
         Player player = event.getPlayer();
         Location loc = player.getLocation();
-        if (RankAPI.getApi().getRankID(player) >= 9) {
+        if (RankAPI.getApi().getRankId(player) >= 9) {
             return;
         }
-        if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
             /*
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "Der Chunk hat keinen Besitzer!" + NamedTextColor.YELLOW + "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")");
+                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "Der Chunk hat keinen Besitzer!" + NamedTextColor.YELLOW + "(" + chunk + ")");
                 player.sendMessage(Statements.getPrefix() + NamedTextColor.WHITE + "Du kannst ihn beanspruchen mit" + NamedTextColor.GREEN + " /chunk claim!");
             } else {
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "This chunk has no owner!" + NamedTextColor.YELLOW + "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")");
+                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "This chunk has no owner!" + NamedTextColor.YELLOW + "(" + chunk + ")");
                 player.sendMessage(Statements.getPrefix() + NamedTextColor.WHITE + "You can claim it with" + NamedTextColor.GREEN + " /chunk claim!");
             }
             */
             return;
         }
-        if (ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+        if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
             return;
         }
-        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString(), player.getUniqueId().toString())) {
-            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
         }
@@ -116,41 +116,40 @@ public class ChunkOwnerListener implements Listener {
             return;
         }
         Chunk chunk = event.getClickedBlock().getChunk();
-        if (checkClaimed(chunk.getX(), chunk.getZ(), chunk.getWorld().getName())) {
+        if (checkClaimed(chunk)) {
             /*
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "Der Chunk hat keinen Besitzer!" + NamedTextColor.YELLOW + "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")");
+                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "Der Chunk hat keinen Besitzer!" + NamedTextColor.YELLOW + "(" + chunk + ")");
                 player.sendMessage(Statements.getPrefix() + NamedTextColor.WHITE + "Du kannst ihn beanspruchen mit" + NamedTextColor.GREEN + " /chunk claim!");
             } else {
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "This chunk has no owner!" + NamedTextColor.YELLOW + "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")");
+                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "This chunk has no owner!" + NamedTextColor.YELLOW + "(" + chunk + ")");
                 player.sendMessage(Statements.getPrefix() + NamedTextColor.WHITE + "You can claim it with" + NamedTextColor.GREEN + " /chunk claim!");
             }
             */
             return;
         }
-        if (ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+        if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
             return;
         }
-        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString(), player.getUniqueId().toString())) {
-            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
         }
     }
 
-    public boolean checkClaimed(int x, int z, String world) {
-        String chunkString = x+ "," + z + "," + world;
+    public boolean checkClaimed(Chunk chunk) {
         AtomicBoolean check = new AtomicBoolean(false);
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), bukkitTask -> {
-            check.set(ChunkAPI.getApi().getChunkOwner(chunkString) == null);
+        Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            check.set(ChunkAPI.getApi().getChunkOwner(chunk) == null);
         });
         return check.get();
     }
@@ -164,26 +163,26 @@ public class ChunkOwnerListener implements Listener {
             Player player = (Player) event.getEntity();
             Location loc = player.getLocation();
             Chunk chunk = event.getEntity().getLocation().getChunk();
-            if (RankAPI.getApi().getRankID(player) >= 9) {
+            if (RankAPI.getApi().getRankId(player) >= 9) {
                 return;
             }
-            if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+            if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
 
                 return;
             }
-            if (ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+            if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
                 return;
             }
-            if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString(), player.getUniqueId().toString())) {
-                OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+            if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+                OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
                 }
                 event.setCancelled(true);
             }
@@ -209,26 +208,26 @@ public class ChunkOwnerListener implements Listener {
                 loc = Objects.requireNonNull(event.getHitBlock()).getLocation();
             }
             Chunk chunk = event.getEntity().getLocation().getChunk();
-            if (RankAPI.getApi().getRankID(player) >= 9) {
+            if (RankAPI.getApi().getRankId(player) >= 9) {
                 return;
             }
-            if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+            if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
 
                 return;
             }
-            if (ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+            if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
                 return;
             }
-            if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString(), player.getUniqueId().toString())) {
-                OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+            if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+                OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
                 }
                 event.setCancelled(true);
             }
@@ -246,26 +245,26 @@ public class ChunkOwnerListener implements Listener {
         }
         Location loc = Objects.requireNonNull(event.getHitEntity()).getLocation();
         Chunk chunk = event.getEntity().getLocation().getChunk();
-        if (RankAPI.getApi().getRankID(player) >= 9) {
+        if (RankAPI.getApi().getRankId(player) >= 9) {
             return;
         }
-        if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
 
             return;
         }
-        if (ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+        if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
             return;
         }
-        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString(), player.getUniqueId().toString())) {
-            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+        if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
         }
@@ -277,26 +276,26 @@ public class ChunkOwnerListener implements Listener {
             Player player = (Player) event.getDamager();
             Location loc = player.getLocation();
             Chunk chunk = event.getEntity().getLocation().getChunk();
-            if (RankAPI.getApi().getRankID(player) >= 9) {
+            if (RankAPI.getApi().getRankId(player) >= 9) {
                 return;
             }
-            if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+            if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
 
                 return;
             }
-            if (ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).contains("*")) {
+            if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
                 return;
             }
-            if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()).toString(), player.getUniqueId().toString())) {
-                OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()));
+            if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+                OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
                 }
                 event.setCancelled(true);
             }
@@ -310,10 +309,10 @@ public class ChunkOwnerListener implements Listener {
         if(!(event.getEntity() instanceof Animals)) {
             return;
         }
-        /*if (ChunkAPI.getApi().getChunkOwner(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName()) == null) {
+        /*if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
             return;
         }
-        if (!ChunkAPI.getApi().getEntitySpawning(chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName())) {
+        if (!ChunkAPI.getApi().getEntitySpawning(chunk)) {
             event.setCancelled(true);
         }*/
     }
