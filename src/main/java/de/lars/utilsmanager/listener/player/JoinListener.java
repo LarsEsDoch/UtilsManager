@@ -9,7 +9,7 @@ import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.scoreboard.TestScoreboard;
+import de.lars.utilsmanager.scoreboard.Scoreboard;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
@@ -44,7 +44,7 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         UtilsManager.getInstance().getQuestManager().sendDailyQuests(player);
         if (ToggleAPI.getApi().getScoreboardToggle(player)) {
-            new TestScoreboard(player);
+            new Scoreboard(player);
         }
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 50, 0));
