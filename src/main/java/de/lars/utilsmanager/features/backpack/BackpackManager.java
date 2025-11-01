@@ -1,63 +1,100 @@
 package de.lars.utilsmanager.features.backpack;
 
-import de.lars.apiManager.backpackAPI.BackpackAPI;
+import de.lars.apimanager.apis.backpackAPI.BackpackAPI;
+import de.lars.apimanager.apis.limitAPI.LimitAPI;
+import de.lars.utilsmanager.UtilsManager;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Base64;
 
-public class BackpackManager {
+public class BackpackManager implements Listener {
+    public void openBackpack(Player player) {
+        BackpackAPI.getApi().getBackpackAsync(player).thenAccept(data -> {
+            Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
+                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getSlots(player), Component.text("§6Backpack"));
 
-    private final Map<UUID, Backpack> map;
+                if (data != null && !data.isEmpty()) {
+                    ItemStack[] items = deserializeItems(data);
+                    inv.setContents(items);
+                }
 
-    public BackpackManager() {
-        map = new HashMap<>();
-
-        load();
-    }
-
-    public Backpack getBackpack(UUID uuid) {
-        if(map.containsKey(uuid)) {
-            return map.get(uuid);
-        }
-
-        Backpack backpack = new Backpack(uuid);
-        map.put(uuid, backpack);
-        return backpack;
-    }
-
-    public void setBackpack(UUID uuid, Backpack backpack) {
-        map.put(uuid, backpack);
-    }
-
-    private void load() {
-        List<String> uuids = BackpackAPI.getApi().getUUIDs();
-
-
-        uuids.forEach(s -> {
-            UUID uuid = UUID.fromString(s);
-            String base64 = BackpackAPI.getApi().getBackpack(Bukkit.getOfflinePlayer(uuid));
-            if (Objects.equals("", base64)) {
-                map.put(uuid, new Backpack(uuid));
-                return;
-            }
-
-
-            try {
-                map.put(uuid, new Backpack(uuid, base64));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                player.openInventory(inv);
+            });
         });
     }
 
-    public void save() {
+    public void openOfflineBackpack(OfflinePlayer offlinePlayer, Player player) {
+        BackpackAPI.getApi().getBackpackAsync(offlinePlayer).thenAccept(data -> {
+            Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
+                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getSlots(offlinePlayer), Component.text("§6Backpack"));
 
-        List<String> uuids = new ArrayList<>();
+                if (data != null && !data.isEmpty()) {
+                    ItemStack[] items = deserializeItems(data);
+                    inv.setContents(items);
+                }
 
-        for (UUID uuid : map.keySet()) {
-            uuids.add(uuid.toString());
-            BackpackAPI.getApi().setBackpack(Bukkit.getOfflinePlayer(uuid), getBackpack(uuid).toBase64());
+                player.openInventory(inv);
+            });
+        });
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getView().title().equals(Component.text("§6Backpack"))) {
+            Player player = (Player) event.getPlayer();
+            Inventory inv = event.getInventory();
+
+            String data = serializeItems(inv.getContents());
+
+            BackpackAPI.getApi().setBackpackAsync(player, data)
+                .exceptionally(ex -> {
+                    Bukkit.getLogger().severe("Failed to save backpack for " + player.getName() + ": " + ex.getMessage());
+                    return null;
+                });
+        }
+    }
+
+    public String serializeItems (ItemStack[]items){
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+             dataOutput.writeInt(items.length);
+
+             for (ItemStack item : items) {
+                 dataOutput.writeObject(item);
+             }
+             dataOutput.flush();
+
+             return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+        } catch (IOException e) {
+             throw new IllegalStateException("Failed to serialize items", e);
+        }
+    }
+    public ItemStack[] deserializeItems (String base64){
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(base64));
+             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
+             int size = dataInput.readInt();
+             ItemStack[] items = new ItemStack[size];
+
+             for (int i = 0; i < size; i++) {
+                 items[i] = (ItemStack) dataInput.readObject();
+             }
+
+             return items;
+        } catch (IOException | ClassNotFoundException e) {
+             throw new IllegalStateException("Failed to deserialize items", e);
         }
     }
 }
