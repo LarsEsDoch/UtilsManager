@@ -1,6 +1,7 @@
 package de.lars.utilsmanager.commands.admin;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.util.CheckPlayers;
 import de.lars.utilsmanager.util.RankStatements;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -30,14 +31,7 @@ public class FeedCommand implements BasicCommand {
         }
 
         player = Bukkit.getPlayer(args[0]);
-        if (!Bukkit.getOnlinePlayers().contains(player) || player == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
-            } else {
-                sendplayer.sendMessage(Component.text("The Player doesn't exist!", NamedTextColor.RED));
-            }
-            return;
-        }
+        if (CheckPlayers.checkPlayer(sendplayer, player)) return;
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest gefüttert!", NamedTextColor.GREEN)));
         } else {

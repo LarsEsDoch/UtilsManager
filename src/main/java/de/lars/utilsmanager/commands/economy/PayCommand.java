@@ -2,6 +2,7 @@ package de.lars.utilsmanager.commands.economy;
 
 import de.lars.apimanager.apis.coinAPI.CoinAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.util.CheckPlayers;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -51,15 +52,8 @@ public class PayCommand implements BasicCommand {
             return;
         }
         sendercoins = CoinAPI.getApi().getCoins(sendplayer);
-        OfflinePlayer sendPlayer = Bukkit.getPlayer(args[0]);
-        if (sendPlayer == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                player.sendMessage( NamedTextColor.RED + "Der Spieler existiert nicht!");
-            } else {
-                player.sendMessage(NamedTextColor.RED + "The Player doesn't exist!");
-            }
-            return;
-        }
+        OfflinePlayer recipient = Bukkit.getPlayer(args[0]);
+        if (CheckPlayers.checkOfflinePlayer(sendplayer, recipient)) return;
         if (paying > sendercoins) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld zum überweisen!");
