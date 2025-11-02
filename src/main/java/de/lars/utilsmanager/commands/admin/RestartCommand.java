@@ -48,9 +48,9 @@ public class RestartCommand implements BasicCommand {
 
         if (delay > 120) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendMessage(NamedTextColor.RED + "Du kannst diese Nummer nicht benutzten! Max allowed is 120!");
+                player.sendMessage(Component.text("Du kannst diese Nummer nicht benutzten! Max allowed is 120!", NamedTextColor.RED));
             } else {
-                player.sendMessage(NamedTextColor.RED + "Cant use this number! Der maximal zulässige Wert beträgt 120!");
+                player.sendMessage(Component.text("Cant use this number! Der maximal zulässige Wert beträgt 120!", NamedTextColor.RED));
             }
             return;
         }

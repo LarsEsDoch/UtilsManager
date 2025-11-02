@@ -38,9 +38,9 @@ public class BanCommand implements BasicCommand {
         player = Bukkit.getPlayer(args[0]);
         if (player == null) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                sendplayer.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
+                sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
-                sendplayer.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
+                sendplayer.sendMessage(Component.text("This player dosen't exits!", NamedTextColor.RED));
             }
             return;
         }

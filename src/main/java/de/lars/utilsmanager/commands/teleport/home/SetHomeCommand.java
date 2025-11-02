@@ -111,11 +111,11 @@ public class SetHomeCommand implements BasicCommand {
         if (LanguageAPI.getApi().getLanguage(sender) == 2) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/sethome <Name> <Öffentlich>", NamedTextColor.BLUE)));
+                    .append(Component.text("/sethome <Name> (<Öffentlich>)", NamedTextColor.BLUE)));
         } else {
             sender.sendMessage(Component.text("Use", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/sethome <name> <public>", NamedTextColor.BLUE)));
+                    .append(Component.text("/sethome <name> (<public>)", NamedTextColor.BLUE)));
         }
     }
 }

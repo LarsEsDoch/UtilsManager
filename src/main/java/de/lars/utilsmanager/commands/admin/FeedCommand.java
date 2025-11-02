@@ -34,7 +34,7 @@ public class FeedCommand implements BasicCommand {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
-                sendplayer.sendMessage(Component.text("The Player dosent exist!", NamedTextColor.RED));
+                sendplayer.sendMessage(Component.text("The Player doesn't exist!", NamedTextColor.RED));
             }
             return;
         }
@@ -45,10 +45,10 @@ public class FeedCommand implements BasicCommand {
         }
         player.setFoodLevel(20);
         if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler " + RankStatements.getRank(player) + player.getName(), NamedTextColor.GREEN))
+            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
                     .append(Component.text(" gefüttert!", NamedTextColor.GREEN)));
         } else {
-            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You feed the player " + RankStatements.getRank(player) + player.getName(), NamedTextColor.GREEN))
+            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You feed the player ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
                     .append(Component.text("!", NamedTextColor.GREEN)));
         }
     }

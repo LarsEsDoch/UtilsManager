@@ -37,7 +37,7 @@ public class InvseeCommand implements BasicCommand {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
-                sendplayer.sendMessage(Component.text("The Player dosent exist!", NamedTextColor.RED));
+                sendplayer.sendMessage(Component.text("The Player doesn't exist!", NamedTextColor.RED));
             }
             return;
         }

@@ -5,6 +5,7 @@ import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -47,9 +48,9 @@ public class FreezeCommand implements BasicCommand {
         Player player = Bukkit.getPlayer(args[0]);
         if (player == null) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                sendplayer.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
+                sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
-                sendplayer.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
+                sendplayer.sendMessage(Component.text("This player dosen't exits!", NamedTextColor.RED));
             }
             return;
         }

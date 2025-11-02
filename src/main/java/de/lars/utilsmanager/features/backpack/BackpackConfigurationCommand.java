@@ -8,6 +8,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +19,7 @@ public class BackpackConfigurationCommand implements BasicCommand {
     private Player player;
 
     @Override
-    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
         if (!(stack.getExecutor() instanceof Player player)) {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
@@ -40,7 +42,9 @@ public class BackpackConfigurationCommand implements BasicCommand {
             player.sendMessage(Statements.getPrefix().append(Component.text("The backpackslots are now ", NamedTextColor.WHITE))
                     .append(Component.text(slots, NamedTextColor.GREEN)));
         }
-        LimitAPI.getApi().setSlots(player, slots);
+        for (OfflinePlayer offlinePlayer: Bukkit.getOfflinePlayers()) {
+            LimitAPI.getApi().setSlots(offlinePlayer, slots);
+        }
     }
 
     private void sendUsage(CommandSender sender) {

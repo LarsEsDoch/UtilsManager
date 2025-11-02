@@ -56,7 +56,7 @@ public class PayCommand implements BasicCommand {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
                 player.sendMessage( NamedTextColor.RED + "Der Spieler existiert nicht!");
             } else {
-                player.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
+                player.sendMessage(NamedTextColor.RED + "The Player doesn't exist!");
             }
             return;
         }

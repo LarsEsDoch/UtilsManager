@@ -32,17 +32,17 @@ public class HealCommand implements BasicCommand {
         player = Bukkit.getPlayer(args[0]);
         if (!Bukkit.getOnlinePlayers().contains(player)) {
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                sendplayer.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
+                sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
-                sendplayer.sendMessage(NamedTextColor.RED + "The Player dosent exist!");
+                sendplayer.sendMessage(Component.text("This player dosen't exits!", NamedTextColor.RED));
             }
             return;
         }
         if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler " + RankStatements.getRank(player) + player.getName(), NamedTextColor.GREEN))
+            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
                     .append(Component.text(" geheilt!", NamedTextColor.GREEN)));
         } else {
-            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You healed the player " + RankStatements.getRank(player) + player.getName(), NamedTextColor.GREEN))
+            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You healed the player ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
                     .append(Component.text("!", NamedTextColor.GREEN)));
         }
         if (LanguageAPI.getApi().getLanguage(player) == 2) {

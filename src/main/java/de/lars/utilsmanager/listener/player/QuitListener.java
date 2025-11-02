@@ -33,12 +33,12 @@ public class QuitListener implements Listener {
             if (Bukkit.getOnlinePlayers().isEmpty()) {
                 message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs ist jetzt kein Spieler mehr online.");
             } if(Bukkit.getOnlinePlayers().size() == 1) {
-                message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs ist jetzt nur noch 1 Spieler online.\\n");
+                message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs ist jetzt nur noch 1 Spieler online.\n");
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                     message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
                 }
             } if (Bukkit.getOnlinePlayers().size() > 1) {
-                message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs sind jetzt nur noch " + (Bukkit.getOnlinePlayers().size()) + " Spieler online.\\n");
+                message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs sind jetzt nur noch " + (Bukkit.getOnlinePlayers().size()) + " Spieler online.\n");
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                     message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
                 }
