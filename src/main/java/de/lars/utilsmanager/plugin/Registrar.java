@@ -10,6 +10,7 @@ import de.lars.utilsmanager.commands.teleport.home.HomeCommand;
 import de.lars.utilsmanager.commands.teleport.home.SetHomeCommand;
 import de.lars.utilsmanager.features.backpack.BackpackCommand;
 import de.lars.utilsmanager.features.backpack.BackpackConfigurationCommand;
+import de.lars.utilsmanager.features.backpack.BackpackManager;
 import de.lars.utilsmanager.features.bank.BankTextListener;
 import de.lars.utilsmanager.features.chunk.ChunkCommand;
 import de.lars.utilsmanager.features.court.CourtCommand;
@@ -45,6 +46,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class Registrar {
 
@@ -70,10 +72,11 @@ public class Registrar {
         pluginManager.registerEvents(new MaintenanceListener(), plugin);
         pluginManager.registerEvents(new RecipeLoader(), plugin);
         pluginManager.registerEvents(new NetherListener(), plugin);
+        pluginManager.registerEvents(new BackpackManager(), plugin);
     }
 
     public static void commandRegistration(JavaPlugin plugin) {
-        LifecycleEventManager<Plugin> manager = plugin.getLifecycleManager();
+        LifecycleEventManager<@NotNull Plugin> manager = plugin.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("timer", "Control the timer for yourself", new TimerCommand());
