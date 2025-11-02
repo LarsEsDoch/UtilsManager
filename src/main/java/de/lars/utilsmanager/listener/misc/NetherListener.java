@@ -21,7 +21,7 @@ public class NetherListener implements Listener {
         if (event.getTo().getWorld().getEnvironment() == World.Environment.NETHER) {
             Calendar date = Calendar.getInstance();
             Calendar finaldate = Calendar.getInstance();
-            finaldate.set(2025, Calendar.NOVEMBER, 7, 21, 0);
+            finaldate.set(2025, Calendar.NOVEMBER, 2, 21, 20);
             if (date.before(finaldate)) {
                 long millis = finaldate.getTimeInMillis() - date.getTimeInMillis();
                 long seconds = millis / 1000;
@@ -41,7 +41,7 @@ public class NetherListener implements Listener {
         if (event.getTo().getWorld().getEnvironment() == World.Environment.THE_END) {
             Calendar date = Calendar.getInstance();
             Calendar finaldate = Calendar.getInstance();
-            finaldate.set(2025, Calendar.NOVEMBER, 14, 21, 0);
+            finaldate.set(2025, Calendar.NOVEMBER, 7, 21, 0);
             if (date.before(finaldate)) {
                 long millis = finaldate.getTimeInMillis() - date.getTimeInMillis();
                 long seconds = millis / 1000;

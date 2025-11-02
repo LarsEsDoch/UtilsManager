@@ -157,7 +157,23 @@ public class MaintenanceCommand implements BasicCommand {
             }
 
             case "reason": {
+                if (args.length < 3) {
+                    sendUsage(player);
+                    return;
+                }
 
+                StringBuilder reason = new StringBuilder();
+                for (int i = 2; i < args.length; i++) {
+                    reason.append(args[i]).append(" ");
+                }
+                ServerSettingsAPI.getApi().setMaintenanceReasonAsync(reason.toString());
+                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    player.sendMessage(Statements.getPrefix()
+                            .append(Component.text("Der Wartungsgrund wurde erfolgreich aktualisiert!", NamedTextColor.GREEN)));
+                } else {
+                    player.sendMessage(Statements.getPrefix()
+                            .append(Component.text("The maintenance reason was successfully updated!", NamedTextColor.GREEN)));
+                }
             }
         }
     }
@@ -168,12 +184,12 @@ public class MaintenanceCommand implements BasicCommand {
             sender.sendMessage(Component.text("Verwendung").color(NamedTextColor.GRAY)
                     .append(Component.text(": ").color(NamedTextColor.DARK_GRAY))
                     .append(Component.text("/maintenance ").color(NamedTextColor.BLUE))
-                    .append(Component.text("on <Zeit> <Grund>/off/time (<Zeitänderung>)/reason (<Grundänderung>)", NamedTextColor.BLUE)));
+                    .append(Component.text("on <Start Zeit> <Voraussichtliche Zeit> <Maximale Zeit> <Grund>, off, startTime (<Zeitänderung>), reason (<Grundänderung>)", NamedTextColor.BLUE)));
         } else {
             sender.sendMessage(Component.text("Use").color(NamedTextColor.GRAY)
                     .append(Component.text(": ").color(NamedTextColor.DARK_GRAY))
                     .append(Component.text("/maintenance ").color(NamedTextColor.BLUE))
-                    .append(Component.text("on <time> <reason>/off/time (<Time change>)/reason (<Reason change>)", NamedTextColor.BLUE)));
+                    .append(Component.text("on <start time> <estimated time> <max time> <reason>, off, startTime (<Time change>), reason (<Reason change>)", NamedTextColor.BLUE)));
         }
     }
 }
