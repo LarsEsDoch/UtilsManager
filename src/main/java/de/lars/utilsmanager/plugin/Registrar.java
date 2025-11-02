@@ -13,6 +13,7 @@ import de.lars.utilsmanager.features.backpack.BackpackConfigurationCommand;
 import de.lars.utilsmanager.features.backpack.BackpackManager;
 import de.lars.utilsmanager.features.bank.BankTextListener;
 import de.lars.utilsmanager.features.chunk.ChunkCommand;
+import de.lars.utilsmanager.features.chunk.ChunkOwnerListener;
 import de.lars.utilsmanager.features.court.CourtCommand;
 import de.lars.utilsmanager.features.court.ReportCommand;
 import de.lars.utilsmanager.features.freecam.FreeCamCloseCommand;
@@ -66,7 +67,7 @@ public class Registrar {
         pluginManager.registerEvents(new BanListener(), plugin);
         pluginManager.registerEvents(new StairClickListener(), plugin);
         pluginManager.registerEvents(new FloorTeleporterListener(), plugin);
-        //pluginManager.registerEvents(new ChunkOwnerListener(), plugin);
+        pluginManager.registerEvents(new ChunkOwnerListener(), plugin);
         pluginManager.registerEvents(new ServerPingListener(), plugin);
         pluginManager.registerEvents(new FreecamListener(), plugin);
         pluginManager.registerEvents(new MaintenanceListener(), plugin);
@@ -299,6 +300,11 @@ public class Registrar {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
+            commands.register("sr", "Restart the server after a period of time", new RestartCommand());
+        });
+
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
             commands.register("sudo", "Make a player perform a command or send a message", new SudoCommand());
         });
 
@@ -325,6 +331,16 @@ public class Registrar {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("msg", "Message another player", new MsgCommand());
+        });
+
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            commands.register("reply", "Reply another player", new ReplyCommand());
+        });
+
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            commands.register("r", "Reply another player", new ReplyCommand());
         });
     }
 }
