@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 
 public class MsgCommand implements BasicCommand {
 
+    public static final Map<UUID, Set<UUID>> lastRecipients = new HashMap<>();
+
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
         if (!(stack.getExecutor() instanceof Player player)) {
@@ -68,7 +70,11 @@ public class MsgCommand implements BasicCommand {
                 .append(targetList)
                 .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(message, NamedTextColor.WHITE)));
+
+            lastRecipients.put(target.getUniqueId(), Set.of(player.getUniqueId()));
         }
+
+        lastRecipients.put(player.getUniqueId(), targets.stream().map(Player::getUniqueId).collect(Collectors.toSet()));
 
         player.sendMessage(targetList
                 .append(Component.text("> ", NamedTextColor.DARK_GRAY))
@@ -82,11 +88,11 @@ public class MsgCommand implements BasicCommand {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/msg <Player(,Player2,Player3,...) <message>", NamedTextColor.BLUE)));
+                    .append(Component.text("/msg <Spieler(,Spieler2,Spieler3,...) <message>", NamedTextColor.BLUE)));
         } else {
             sender.sendMessage(Component.text("Use", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/language german/english", NamedTextColor.BLUE)));
+                    .append(Component.text("/msg <Player(,Player2,Player3,...) <message>", NamedTextColor.BLUE)));
         }
     }
 
