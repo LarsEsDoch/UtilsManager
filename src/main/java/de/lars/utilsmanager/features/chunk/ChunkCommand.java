@@ -249,10 +249,10 @@ public class ChunkCommand implements BasicCommand {
             for (Chunk friendChunk : ChunkAPI.getApi().getChunks(player)) {
                 if (addAll) {
                     if (isAdd && !ChunkAPI.getApi().getFriends(friendChunk).contains("*")) {
-                        ChunkAPI.getApi().addFriend(friendChunk, null);
+                        ChunkAPI.getApi().setAllFriends(friendChunk);
                         sendChunkFriendMessage(player, friendChunk, loc, "alle Spieler", "all players", isAdd);
                     } else if (!isAdd) {
-                        ChunkAPI.getApi().removeFriend(friendChunk, null);
+                        ChunkAPI.getApi().clearFriends(chunk);
                         sendChunkFriendMessage(player, friendChunk, loc, "alle Spieler", "all players", isAdd);
                     }
                 } else {
@@ -319,8 +319,12 @@ public class ChunkCommand implements BasicCommand {
                 NamedTextColor.RED);
             return;
         }
-        
-        ChunkAPI.getApi().addFriend(chunk, friend);
+
+        if (addAll) {
+            ChunkAPI.getApi().setAllFriends(chunk);
+        } else {
+            ChunkAPI.getApi().addFriend(chunk, friend);
+        }
         
         String playerName = addAll ? "alle Spieler" : friend.getName();
         String playerNameEn = addAll ? "all players" : friend.getName();
@@ -359,8 +363,13 @@ public class ChunkCommand implements BasicCommand {
                 NamedTextColor.RED);
             return;
         }
-        
-        ChunkAPI.getApi().removeFriend(chunk, friend);
+
+        if (removeAll) {
+            ChunkAPI.getApi().clearFriends(chunk);
+        } else {
+            ChunkAPI.getApi().removeFriend(chunk, friend);
+        }
+
         
         String playerName = removeAll ? "alle Spieler" : friend.getName();
         String playerNameEn = removeAll ? "all players" : friend.getName();
@@ -613,9 +622,7 @@ public class ChunkCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         Player player = (Player) sender;
-        String usage = isGerman(player) ?
-            "/chunk claim, sell, friend (add <Spieler>, remove <Spieler>, list), list, info, free, flag" :
-            "/chunk claim, sell, friend (add <player>, remove <player>, list), list, info, free, flag";
+        String usage = "/chunk claim, sell, friend, list, info, free, flag";
         
         sender.sendMessage(Component.text(isGerman(player) ? "Verwendung" : "Use", NamedTextColor.GRAY)
             .append(Component.text(": ", NamedTextColor.DARK_GRAY))
