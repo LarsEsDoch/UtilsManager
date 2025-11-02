@@ -123,7 +123,7 @@ public class JoinListener implements Listener {
                 if (Bukkit.getOnlinePlayers().size() > 1) {
                     message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs sind aktuell " + Bukkit.getOnlinePlayers().size() + " Spieler online.\\n");
                     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\\n");
+                        message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
                     }
                 } else {
                     message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs ist aktuell nur er online.");
