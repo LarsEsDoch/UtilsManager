@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.misc;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.util.FormatNumbers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.World;
@@ -25,7 +25,7 @@ public class NetherListener implements Listener {
             if (date.before(finaldate)) {
                 long millis = finaldate.getTimeInMillis() - date.getTimeInMillis();
                 long seconds = millis / 1000;
-                Component time = Statements.formatDuration(seconds);
+                Component time = FormatNumbers.formatDuration(seconds);
                 if (LanguageAPI.getApi().getLanguage(player ) == 2) {
                     player.sendMessage(Component.text("Du kannst nicht in den Nether gehen.", NamedTextColor.RED));
                     player.sendMessage(Component.text("Der Nether wird freigeschaltet in ", NamedTextColor.YELLOW)
@@ -45,7 +45,7 @@ public class NetherListener implements Listener {
             if (date.before(finaldate)) {
                 long millis = finaldate.getTimeInMillis() - date.getTimeInMillis();
                 long seconds = millis / 1000;
-                Component time = Statements.formatDuration(seconds);
+                Component time = FormatNumbers.formatDuration(seconds);
                 if (LanguageAPI.getApi().getLanguage(player ) == 2) {
                     player.sendMessage(Component.text("Du kannst nicht in das End gehen.", NamedTextColor.RED));
                     player.sendMessage(Component.text("Das End wird freigeschaltet in ", NamedTextColor.YELLOW)

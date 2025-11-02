@@ -3,6 +3,7 @@ package de.lars.utilsmanager.features.maintenance;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import de.lars.utilsmanager.util.FormatNumbers;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -73,7 +74,7 @@ public class MaintenanceCommand implements BasicCommand {
 
                     ServerSettingsAPI.getApi().enableMaintenance(reason.toString().trim(), null, end, null);
 
-                    Component formattedTime = Statements.formatDuration(time);
+                    Component formattedTime = FormatNumbers.formatDuration(time);
 
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
@@ -118,7 +119,7 @@ public class MaintenanceCommand implements BasicCommand {
 
                     if (maintenanceTime < 0) maintenanceTime *= -1;
 
-                    Component formattedTime = Statements.formatDuration((int) maintenanceTime);
+                    Component formattedTime = FormatNumbers.formatDuration(maintenanceTime);
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
 
                         player.sendMessage(Statements.getPrefix()

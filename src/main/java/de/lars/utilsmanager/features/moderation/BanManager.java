@@ -2,7 +2,7 @@ package de.lars.utilsmanager.features.moderation;
 
 import de.lars.apimanager.apis.banAPI.BanAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.util.FormatNumbers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -35,7 +35,7 @@ public class BanManager {
                     return;
                 }
 
-                Component remainingTime = Statements.formatDuration(remainingSeconds);
+                Component remainingTime = FormatNumbers.formatDuration(remainingSeconds);
 
                 Bukkit.getScheduler().runTask(UtilsManager.getInstance(), bukkitTask1 -> {
                     target.kick(
