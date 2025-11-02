@@ -1,6 +1,7 @@
 package de.lars.utilsmanager.listener.misc;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.util.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.World;
@@ -20,21 +21,39 @@ public class NetherListener implements Listener {
         if (event.getTo().getWorld().getEnvironment() == World.Environment.NETHER) {
             Calendar date = Calendar.getInstance();
             Calendar finaldate = Calendar.getInstance();
-            finaldate.set(2025, Calendar.APRIL, 13, 0, 0);
+            finaldate.set(2025, Calendar.NOVEMBER, 7, 21, 0);
             if (date.before(finaldate)) {
-                Long dateDiffernce = finaldate.getTimeInMillis() - date.getTimeInMillis();
-                long days = dateDiffernce / (1000 * 60 * 60 * 24);
-                long hours = (dateDiffernce / (1000 * 60 * 60)) % 24;
-                long minutes = (dateDiffernce / (1000 * 60)) % 60;
-                String time = String.format("%d days, %02d:%02d hours", days, hours, minutes);
+                long millis = finaldate.getTimeInMillis() - date.getTimeInMillis();
+                long seconds = millis / 1000;
+                Component time = Statements.formatDuration(seconds);
                 if (LanguageAPI.getApi().getLanguage(player ) == 2) {
                     player.sendMessage(Component.text("Du kannst nicht in den Nether gehen.", NamedTextColor.RED));
                     player.sendMessage(Component.text("Der Nether wird freigeschaltet in ", NamedTextColor.YELLOW)
-                            .append(Component.text(time, NamedTextColor.AQUA)));
+                            .append(time));
                 } else {
                     player.sendMessage(Component.text("You can't go to the Nether.", NamedTextColor.RED));
                     player.sendMessage(Component.text("The Nether will be unlocked in ", NamedTextColor.YELLOW)
-                    .append(Component.text(time, NamedTextColor.AQUA)));
+                    .append(time));
+                }
+                event.setCancelled(true);
+            }
+        }
+        if (event.getTo().getWorld().getEnvironment() == World.Environment.THE_END) {
+            Calendar date = Calendar.getInstance();
+            Calendar finaldate = Calendar.getInstance();
+            finaldate.set(2025, Calendar.NOVEMBER, 14, 21, 0);
+            if (date.before(finaldate)) {
+                long millis = finaldate.getTimeInMillis() - date.getTimeInMillis();
+                long seconds = millis / 1000;
+                Component time = Statements.formatDuration(seconds);
+                if (LanguageAPI.getApi().getLanguage(player ) == 2) {
+                    player.sendMessage(Component.text("Du kannst nicht in das End gehen.", NamedTextColor.RED));
+                    player.sendMessage(Component.text("Das End wird freigeschaltet in ", NamedTextColor.YELLOW)
+                            .append(time));
+                } else {
+                    player.sendMessage(Component.text("You can't go to the end.", NamedTextColor.RED));
+                    player.sendMessage(Component.text("The End will be unlocked in ", NamedTextColor.YELLOW)
+                    .append(time));
                 }
                 event.setCancelled(true);
             }
