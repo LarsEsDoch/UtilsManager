@@ -19,9 +19,6 @@ import java.util.Objects;
 public class Scoreboard extends ScoreboardBuilder {
 
     private int coins;
-    public int Day;
-    public int Hour;
-    public int Minute;
 
     String[] questsDe = {"Werfe 10 Eier", "Bekomme 2 mal Hühner aus einem Ei-Wurf", "Triff dich 5 mal mit einem Pfeil", "Lasse 3 Bäume wachsen", "Esse 10 rohe Kartoffeln nacheinander",
             "Bekomme 10 mal Flint aus gravel", "Ziehe eine Schwarze Leder Rüstung an", "Esse 4 mal ein Keks und trinke danach Milch", "Töte 20 Zombies", "Fische 2 mal Rüstung", "Laufe 1000 Blöcke",

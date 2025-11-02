@@ -106,10 +106,9 @@ public final class UtilsManager extends JavaPlugin {
 
         if (token == null || token.isBlank()) {
             logToConsole("No Discord token found in config.yml!", NamedTextColor.RED);
-            return;
+        } else {
+            discordBot = new DiscordBot(token, serverStatusChannelId, playerStatusChannelId, punishmentsChannelId);
         }
-
-        discordBot = new DiscordBot(token, serverStatusChannelId, playerStatusChannelId, punishmentsChannelId);
     }
 
     private void registerGameFeatures() {

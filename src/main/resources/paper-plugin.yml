@@ -4,6 +4,8 @@ main: de.lars.utilsmanager.UtilsManager
 api-version: '1.21'
 description: A Plugin by Lars for the whole server management
 author: KompetenzL0s
+settings:
+  restart-script: start.sh
 dependencies:
   server:
     ApiManager:
