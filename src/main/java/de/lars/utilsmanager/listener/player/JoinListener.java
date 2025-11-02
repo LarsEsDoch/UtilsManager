@@ -52,6 +52,7 @@ public class JoinListener implements Listener {
         if (!player.hasPlayedBefore()) {
             player.teleport(new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
+            LimitAPI.getApi().setChunkLimit(player, 128);
             Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask -> {
                 firstJoin(player);
             }, 1);

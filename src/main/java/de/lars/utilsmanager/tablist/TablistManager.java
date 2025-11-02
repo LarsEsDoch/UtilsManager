@@ -2,6 +2,7 @@ package de.lars.utilsmanager.tablist;
 
 import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
+import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import de.lars.apimanager.apis.statusAPI.StatusAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
@@ -11,11 +12,14 @@ import me.lucko.spark.api.statistic.StatisticWindow;
 import me.lucko.spark.api.statistic.types.DoubleStatistic;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
+import java.awt.*;
 
 public class TablistManager{
 
@@ -24,12 +28,26 @@ public class TablistManager{
     static TextDecoration type;
 
     public void setTabList(Player player) {
+        String serverName = ServerSettingsAPI.getApi().getServerName();
+        int length = serverName.length();
+
+        Component serverNameComponent = Component.empty();
+        for (int i = 0; i < length; i++) {
+            serverNameComponent = serverNameComponent.append(gradient(
+                String.valueOf(serverName.charAt(i)),
+                "#50FB08",
+                "#006EFF",
+                i,
+                length - 1
+            ));
+        }
+
         player.sendPlayerListHeader(
                 Component.text()
                         .append(Component.text("          ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH))
                         .append(Component.text("[ ", NamedTextColor.DARK_GRAY))
-                        .append(Component.text("A Server", NamedTextColor.LIGHT_PURPLE))
-                        .append(Component.text("]", NamedTextColor.DARK_GRAY))
+                        .append(serverNameComponent)
+                        .append(Component.text(" ]", NamedTextColor.DARK_GRAY))
                         .append(Component.text("          ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH))
                         .append(Component.newline())
                         .append(Component.text(Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers(), NamedTextColor.GREEN))
@@ -39,9 +57,7 @@ public class TablistManager{
         DoubleStatistic<StatisticWindow.TicksPerSecond> tpsInstance = spark.tps();
         DoubleStatistic<StatisticWindow.CpuUsage> cpuUsage = spark.cpuSystem();
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
-            if (RankAPI.getApi().getRankId(player) > 8) {
-
-                cases = cases + 1;
+            cases = cases + 1;
 
                 if(cases >= 3) {
                     cases = 0;
@@ -107,10 +123,6 @@ public class TablistManager{
                                 .append(Component.text(percentString, NamedTextColor.BLUE)));
                         break;
                 }
-            } else {
-                player.sendPlayerListFooter(Component.text("Have fun!", NamedTextColor.BLUE));
-                bukkitTask.cancel();
-            }
         }, 40, 40);
     }
 
@@ -142,5 +154,24 @@ public class TablistManager{
             scoreboardTeam.addEntry(target.getName());
 
         }
+    }
+
+    private Component gradient(String text, String startColor, String endColor, int index, int total) {
+        Color color = blend(Color.decode(startColor), Color.decode(endColor), (float) index / total);
+        return Component.text(text, TextColor.color(color.getRed(), color.getGreen(), color.getBlue()));
+    }
+
+    private Color blend(Color color1, Color color2, float ratio) {
+        ratio = Math.max(0, Math.min(1, ratio));
+
+        int red = (int) (color1.getRed() * (1 - ratio) + color2.getRed() * ratio);
+        int green = (int) (color1.getGreen() * (1 - ratio) + color2.getGreen() * ratio);
+        int blue = (int) (color1.getBlue() * (1 - ratio) + color2.getBlue() * ratio);
+
+        red = Math.max(0, Math.min(255, red));
+        green = Math.max(0, Math.min(255, green));
+        blue = Math.max(0, Math.min(255, blue));
+
+        return new Color(red, green, blue);
     }
 }
