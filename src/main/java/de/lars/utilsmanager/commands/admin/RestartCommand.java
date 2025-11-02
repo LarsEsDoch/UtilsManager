@@ -32,13 +32,11 @@ public class RestartCommand implements BasicCommand {
             return;
         }
 
-        for (String arg : args) {
-            try {
-                delay = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                sendUsage(player);
-                return;
-            }
+        try {
+            delay = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            sendUsage(player);
+            return;
         }
         
         if (delay < 0) {
@@ -113,14 +111,7 @@ public class RestartCommand implements BasicCommand {
                         onlinePlayer.kick(kickMessage);
                     }
                 }
-                player.performCommand("restart");
-                Component kickMessage;
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    kickMessage = Component.text("Server wird neu gestartet...", NamedTextColor.GOLD);
-                } else {
-                    kickMessage = Component.text("Server is restarting...", NamedTextColor.GOLD);
-                }
-                player.kick(kickMessage);
+                Bukkit.restart();
             }
             delay--;
         }, 20, 20);
