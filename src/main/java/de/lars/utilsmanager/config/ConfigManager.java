@@ -26,11 +26,9 @@ public class ConfigManager {
     }
 
     public void load() {
-        // load default config.yml
         plugin.saveDefaultConfig();
         config = plugin.getConfig();
 
-        // load messages_en.yml (externalizable so server owners can edit)
         messagesFile = new File(plugin.getDataFolder(), Names.ConfigKeys.MESSAGES_FILE);
         if (!messagesFile.exists()) {
             plugin.saveResource(Names.ConfigKeys.MESSAGES_FILE, false);
@@ -42,7 +40,6 @@ public class ConfigManager {
         load();
     }
 
-    // Generic getters for config.yml
     public String getString(String path) {
         return config.getString(path);
     }
@@ -55,7 +52,6 @@ public class ConfigManager {
         return config.getBoolean(path, def);
     }
 
-    // Messages getters (with replacements)
     public String getMessage(String key) {
         return getMessage(key, (Map<String, String>) null);
     }
@@ -63,18 +59,15 @@ public class ConfigManager {
     public String getMessage(String key, Map<String, String> replacements) {
         String raw = messages.getString(key);
         if (raw == null) {
-            // fallback to prefix or key so missing keys are visible
             raw = messages.getString(Names.MessageKeys.PREFIX, "&8[&cMissing&8] &r") + " &cMissing message: " + key;
         }
 
-        // replace placeholders if any
         if (replacements != null && !replacements.isEmpty()) {
             for (Map.Entry<String, String> e : replacements.entrySet()) {
                 raw = raw.replace("{" + e.getKey() + "}", e.getValue() == null ? "" : e.getValue());
             }
         }
 
-        // also replace any {prefix} from messages_en.yml
         if (raw.contains("{prefix}")) {
             String prefix = messages.getString(Names.MessageKeys.PREFIX, "");
             raw = raw.replace("{prefix}", prefix);
@@ -83,12 +76,10 @@ public class ConfigManager {
         return colorize(raw);
     }
 
-    /** Convenience varargs replacement: key, value, key, value, ... */
     public String getMessage(String key, String... replacements) {
         if (replacements == null || replacements.length == 0) {
             return getMessage(key, (Map<String, String>) null);
         }
-        // build map
         java.util.Map<String, String> map = new java.util.HashMap<>();
         for (int i = 0; i + 1 < replacements.length; i += 2) {
             String k = replacements[i];

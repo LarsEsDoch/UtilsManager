@@ -65,8 +65,6 @@ public class DiscordListener extends ListenerAdapter {
             case "msg" -> handleMsg(event);
             case "broadcast" -> handleBroadcast(event);
             //case "deaths" -> handleDeaths(event);
-            //case "coords" -> handleCoords(event);
-            //case "economy" -> handleEconomy(event);
             //case "kick" -> handleKick(event);
             //case "ban" -> handleBan(event);
             //case "unban" -> handleUnban(event);

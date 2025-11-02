@@ -39,14 +39,6 @@ public class ChunkOwnerListener implements Listener {
             return;
         }
         if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
-            /*
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "Der Chunk hat keinen Besitzer!" + NamedTextColor.YELLOW + "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")");
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.WHITE + "Du kannst ihn beanspruchen mit" + NamedTextColor.GREEN + " /chunk claim!");
-            } else {
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.RED + "This chunk has no owner!" + NamedTextColor.YELLOW + "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")");
-                player.sendMessage(Statements.getPrefix() + NamedTextColor.WHITE + "You can claim it with" + NamedTextColor.GREEN + " /chunk claim!");
-            }*/
             return;
         }
         if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {

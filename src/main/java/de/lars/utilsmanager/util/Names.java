@@ -17,14 +17,12 @@ public final class Names {
         public static final String HOME_SET = "utilsmanager.home.set";
         public static final String HOME_USE = "utilsmanager.home.use";
         public static final String ECONOMY_ADMIN = "utilsmanager.economy.admin";
-        // add more as needed
     }
 
     public static final class ConfigKeys {
         public static final String MESSAGES_FILE = "messages_en.yml";
         public static final String MAIN_CONFIG = "config.yml";
         public static final String PREFIX_KEY = "prefix";
-        // add keys used in config.yml if you have them, e.g.
         public static final String MAINTENANCE_ENABLED = "maintenance.enabled";
     }
 
@@ -54,11 +52,9 @@ public final class Names {
         public static final String KICK_KICKED = "kick.kicked";
 
         public static final String RELOAD = "reload.success";
-
-        // add others used in your plugin...
     }
 
     public static @NotNull String formatPermission(String node) {
-        return node; // simple pass-through, place for future logic
+        return node;
     }
 }

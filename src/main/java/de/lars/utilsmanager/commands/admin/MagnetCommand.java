@@ -16,7 +16,7 @@ public class MagnetCommand implements BasicCommand {
         if (RankAPI.getApi().getRankId((Player) stack.getSender()) < 9) {
             return;
         }
-        Player player = Bukkit.getPlayer(args[1]);
+        Player player = Bukkit.getPlayer(args[0]);
         Integer RADIUS = 15;
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             player.getNearbyEntities(RADIUS, RADIUS, RADIUS)
