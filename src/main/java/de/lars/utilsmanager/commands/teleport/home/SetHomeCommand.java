@@ -2,6 +2,8 @@ package de.lars.utilsmanager.commands.teleport.home;
 
 import de.lars.apimanager.apis.homeAPI.HomeAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import de.lars.utilsmanager.UtilsManager;
+import de.lars.utilsmanager.features.freecam.FreecamListener;
 import de.lars.utilsmanager.util.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -27,7 +29,19 @@ public class SetHomeCommand implements BasicCommand {
             sendUsage(player);
             return;
         }
-        Boolean isPublic = false;
+
+        FreecamListener freecamListener = UtilsManager.getInstance().getFreecamListener();
+
+        if (freecamListener.getFreeCamUser().containsKey(player.getName())) {
+            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+                player.sendMessage(Statements.getPrefix().append(Component.text("Du kannst nicht im Freecam modus einen Home setzten!", NamedTextColor.RED)));
+            } else {
+                player.sendMessage(Statements.getPrefix().append(Component.text("You can't create a new home in freecam mode!", NamedTextColor.RED)));
+            }
+            return;
+        }
+
+        boolean isPublic = false;
         Component publicStringEn = Component.text("");
         Component publicStringDe = Component.text("");
         /*if (RankAPI.getApi().getRankId(player) >= 9) {
