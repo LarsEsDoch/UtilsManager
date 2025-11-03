@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class BedListener{
-    private int sleepingPlayers;
 
     public BedListener() {
         run();
@@ -20,12 +19,12 @@ public class BedListener{
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             int time = (int) Bukkit.getWorlds().getFirst().getTime();
             if (time < 12600 || time >= 23460) {
-                sleepingPlayers = 0;
                 return;
             }
             if (ServerSettingsAPI.getApi().isRealTimeEnabled()) {
                 return;
             }
+            int sleepingPlayers = 0;
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.isSleeping()) {
                     sleepingPlayers++;
@@ -36,19 +35,17 @@ public class BedListener{
             int playersMissing = playersNeeded - sleepingPlayers;
             if (playersMissing > 0) {
                 Component message;
-                Component message2;
+                Component message2 = Component.text(playersMissing, NamedTextColor.LIGHT_PURPLE)
+                            .append(Component.text(" player still has to sleep!", NamedTextColor.DARK_PURPLE));
                 if (playersMissing == 1) {
                     message = Component.text("Es muss noch ", NamedTextColor.DARK_PURPLE)
                             .append(Component.text(playersMissing, NamedTextColor.LIGHT_PURPLE))
                             .append(Component.text(" Spieler schlafen!", NamedTextColor.DARK_PURPLE));
-                    message2 = Component.text(playersMissing, NamedTextColor.LIGHT_PURPLE)
-                            .append(Component.text(" player still has to sleep!", NamedTextColor.DARK_PURPLE));
+
                 } else {
-                    message = Component.text("Es müsen noch ", NamedTextColor.DARK_PURPLE)
-                            .append(Component.text("ein", NamedTextColor.LIGHT_PURPLE))
+                    message = Component.text("Es müssen noch ", NamedTextColor.DARK_PURPLE)
+                            .append(Component.text(playersMissing, NamedTextColor.LIGHT_PURPLE))
                             .append(Component.text(" Spieler schlafen!", NamedTextColor.DARK_PURPLE));
-                    message2 = Component.text("One", NamedTextColor.LIGHT_PURPLE)
-                            .append(Component.text(" players still have to sleep!", NamedTextColor.DARK_PURPLE));
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (!TimerAPI.getApi().isOff(player)) {
@@ -62,12 +59,10 @@ public class BedListener{
                 }
             } else {
                 Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask1 -> {
-                    Bukkit.getWorlds().get(0).setTime(0);
+                    Bukkit.getWorlds().getFirst().setTime(0);
                 }, 1);
 
             }
-        }, 40, 40);
+        }, 20, 20);
     }
-
 }
-
