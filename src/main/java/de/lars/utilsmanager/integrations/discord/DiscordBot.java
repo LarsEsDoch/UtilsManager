@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -64,15 +65,44 @@ public class DiscordBot {
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
         TextChannel channel = jda.getTextChannelById(serverStatusChannelID);
         if (channel != null) {
-            channel.sendMessage(message).queue();
+            channel.getIterableHistory().takeAsync(100).thenAccept(messages -> {
+                if (!messages.isEmpty()) {
+                    channel.deleteMessages(messages).queue(
+                        success -> channel.sendMessage(message).queue(),
+                        error -> {
+                            for (Message msg : messages) {
+                                msg.delete().queue();
+                            }
+                            channel.sendMessage(message).queue();
+                        }
+                    );
+                } else {
+                    channel.sendMessage(message).queue();
+                }
+            });
         }
     }
 
     public void sendPlayerMessage(String message) {
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
+
         TextChannel channel = jda.getTextChannelById(playerStatusChannelID);
         if (channel != null) {
-            channel.sendMessage(message).queue();
+            channel.getIterableHistory().takeAsync(100).thenAccept(messages -> {
+                if (!messages.isEmpty()) {
+                    channel.deleteMessages(messages).queue(
+                        success -> channel.sendMessage(message).queue(),
+                        error -> {
+                            for (Message msg : messages) {
+                                msg.delete().queue();
+                            }
+                            channel.sendMessage(message).queue();
+                        }
+                    );
+                } else {
+                    channel.sendMessage(message).queue();
+                }
+            });
         }
     }
 
