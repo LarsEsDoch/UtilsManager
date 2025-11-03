@@ -11,15 +11,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServerPingListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onServerPing(PaperServerListPingEvent event) {
         String serverName = ServerSettingsAPI.getApi().getServerName();
-        int totalWidth = 25;
+        String serverVersion = ServerSettingsAPI.getApi().getServerVersion();
+
+        int totalWidth = 45;
         int nameLength = serverName.length();
 
-        int spacesCount = Math.max(0, totalWidth - nameLength);
+        int spacesCount = Math.max(0, (totalWidth - (nameLength + serverVersion.length())) / 2);
         String spaces2 = " ".repeat(spacesCount);
 
         int length = serverName.length();
@@ -27,36 +32,96 @@ public class ServerPingListener implements Listener {
         Component serverNameComponent = Component.empty();
         for (int i = 0; i < length; i++) {
             serverNameComponent = serverNameComponent.append(Gradient.gradient(
-                String.valueOf(serverName.charAt(i)),
-                "#50FB08",
-                "#006EFF",
-                i,
-                length - 1
+                    String.valueOf(serverName.charAt(i)),
+                    "#50FB08",
+                    "#006EFF",
+                    i,
+                    length - 1
             ));
         }
 
-        Component pingMessage = Component.text(spaces2)
+        Component header = Component.text(spaces2)
                 .append(Component.text("M ", NamedTextColor.GOLD, TextDecoration.OBFUSCATED))
                 .append(serverNameComponent.decorate(TextDecoration.BOLD))
                 .append(Component.text(" [", NamedTextColor.WHITE))
-                .append(Component.text(ServerSettingsAPI.getApi().getServerVersion(), NamedTextColor.GOLD))
+                .append(Component.text(serverVersion, NamedTextColor.GOLD))
                 .append(Component.text("] ", NamedTextColor.WHITE))
                 .append(Component.text(" M", NamedTextColor.GOLD, TextDecoration.OBFUSCATED))
                 .append(Component.text("\n "));
+
+        int infoWidth = totalWidth;
+        int extraShift = 5;
+
         if (Bukkit.hasWhitelist()) {
-            event.motd(pingMessage.append(Component.text("                  Info: ", NamedTextColor.GREEN)).append(Component.text("Whitelist enabled!", NamedTextColor.GOLD)));
+            String info = "Info: Whitelist enabled!";
+            Component centered = centerLines(wrapText(info, infoWidth), infoWidth, NamedTextColor.GOLD, extraShift);
+            event.motd(header.append(centered));
             return;
         }
-        String spaces = ServerSettingsAPI.getApi().getMaintenanceReason().length() > 80 ? " " : " ".repeat((60 - ServerSettingsAPI.getApi().getMaintenanceReason().length()) / 2);
+
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-            event.motd(pingMessage.append(Component.text("             Info: ", NamedTextColor.GREEN)).append(Component.text("Server is in maintenance!", NamedTextColor.RED))
-                    .append(Component.text("\n " + spaces + ServerSettingsAPI.getApi().getMaintenanceReason(), NamedTextColor.RED)));
+            List<String> lines = new ArrayList<>();
+            lines.add("Info: Server is in maintenance!");
+            String maintenanceReason = ServerSettingsAPI.getApi().getMaintenanceReason() == null ? "" : ServerSettingsAPI.getApi().getMaintenanceReason().trim();
+            if (!maintenanceReason.isEmpty()) {
+                lines.addAll(wrapText(maintenanceReason, infoWidth));
+            }
+            Component firstLine = centerLines(List.of(lines.get(0)), infoWidth, NamedTextColor.GREEN, extraShift);
+            List<String> detailLines = lines.size() > 1 ? lines.subList(1, lines.size()) : List.of();
+            Component details = centerLines(detailLines, infoWidth, NamedTextColor.RED, extraShift);
+            event.motd(header.append(firstLine).append(details));
             return;
         }
+
         if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
-            event.motd(pingMessage.append(Component.text("                  Info: ", NamedTextColor.GREEN)).append(Component.text( "Server is full!", NamedTextColor.RED)));
+            String info = "Info: Server is full!";
+            Component centered = centerLines(wrapText(info, infoWidth), infoWidth, NamedTextColor.RED, extraShift);
+            event.motd(header.append(centered));
             return;
         }
-        event.motd(pingMessage.append(Component.text("                 Info: ", NamedTextColor.GREEN)).append(Component.text("Server is online!", NamedTextColor.GREEN)));
+
+        String info = "Info: Server is online!";
+        Component centered = centerLines(wrapText(info, infoWidth), infoWidth, NamedTextColor.GREEN, extraShift);
+        event.motd(header.append(centered));
+    }
+
+    private static List<String> wrapText(String text, int width) {
+        List<String> lines = new ArrayList<>();
+        if (text == null || text.isEmpty()) {
+            return lines;
+        }
+
+        String[] words = text.split("\\s+");
+        StringBuilder current = new StringBuilder();
+
+        for (String w : words) {
+            if (current.length() == 0) {
+                current.append(w);
+            } else if (current.length() + 1 + w.length() <= width) {
+                current.append(' ').append(w);
+            } else {
+                lines.add(current.toString());
+                current = new StringBuilder(w);
+            }
+        }
+        if (current.length() > 0) lines.add(current.toString());
+        return lines;
+    }
+
+    private static Component centerLines(List<String> lines, int width, net.kyori.adventure.text.format.NamedTextColor color, int extraShift) {
+        if (lines == null || lines.isEmpty()) {
+            return Component.empty();
+        }
+        Component result = Component.empty();
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            int padding = Math.max(0, (width - line.length()) / 2 + extraShift);
+            String pad = " ".repeat(padding);
+            result = result.append(Component.text(pad)).append(Component.text(line, color));
+            if (i < lines.size() - 1) {
+                result = result.append(Component.text("\n")); // removed the extra single space here
+            }
+        }
+        return result;
     }
 }
