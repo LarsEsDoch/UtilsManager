@@ -36,16 +36,16 @@ public class BedListener{
             if (playersMissing > 0) {
                 Component message;
                 Component message2 = Component.text(playersMissing, NamedTextColor.LIGHT_PURPLE)
-                            .append(Component.text(" player still has to sleep!", NamedTextColor.DARK_PURPLE));
+                            .append(Component.text(" player still has to sleep.", NamedTextColor.DARK_PURPLE));
                 if (playersMissing == 1) {
                     message = Component.text("Es muss noch ", NamedTextColor.DARK_PURPLE)
                             .append(Component.text(playersMissing, NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(" Spieler schlafen!", NamedTextColor.DARK_PURPLE));
+                            .append(Component.text(" Spieler schlafen.", NamedTextColor.DARK_PURPLE));
 
                 } else {
                     message = Component.text("Es müssen noch ", NamedTextColor.DARK_PURPLE)
                             .append(Component.text(playersMissing, NamedTextColor.LIGHT_PURPLE))
-                            .append(Component.text(" Spieler schlafen!", NamedTextColor.DARK_PURPLE));
+                            .append(Component.text(" Spieler schlafen.", NamedTextColor.DARK_PURPLE));
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (!TimerAPI.getApi().isOff(player)) {

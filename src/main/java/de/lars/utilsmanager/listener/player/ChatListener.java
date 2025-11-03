@@ -1,10 +1,12 @@
 package de.lars.utilsmanager.listener.player;
 
+import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.util.RankStatements;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,17 +20,21 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         Component originalMessage = event.message();
 
-        String legacyMessage = LegacyComponentSerializer.legacySection().serialize(originalMessage);
+        String plain = PlainTextComponentSerializer.plainText().serialize(originalMessage);
 
-        String coloredMessage = ChatColor.translateAlternateColorCodes('&', legacyMessage);
+        Component withColors = LegacyComponentSerializer.legacyAmpersand().deserialize(plain);
 
         Component formattedMessage = RankStatements.getRank(player)
                 .append(Component.text(">: ", NamedTextColor.DARK_GRAY))
-                .append(Component.text(coloredMessage, NamedTextColor.WHITE));
+                .append(withColors.colorIfAbsent(NamedTextColor.WHITE));
 
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.sendMessage(formattedMessage);
-        }
+        Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                onlinePlayer.sendMessage(formattedMessage);
+            }
+            Bukkit.getConsoleSender().sendMessage(formattedMessage);
+        });
+
         event.setCancelled(true);
     }
 }
