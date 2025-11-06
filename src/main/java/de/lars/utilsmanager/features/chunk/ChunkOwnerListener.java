@@ -3,12 +3,15 @@ package de.lars.utilsmanager.features.chunk;
 import de.lars.apimanager.apis.chunkAPI.ChunkAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
-import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Openable;
+import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,13 +22,42 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.*;
 
 public class ChunkOwnerListener implements Listener {
+
+    private static final Set<Material> SAFE_INTERACTABLES = EnumSet.of(
+        Material.OAK_DOOR, Material.SPRUCE_DOOR, Material.BIRCH_DOOR, Material.JUNGLE_DOOR,
+        Material.ACACIA_DOOR, Material.DARK_OAK_DOOR, Material.CRIMSON_DOOR, Material.WARPED_DOOR,
+        Material.IRON_DOOR,
+        Material.OAK_TRAPDOOR, Material.SPRUCE_TRAPDOOR, Material.BIRCH_TRAPDOOR,
+        Material.JUNGLE_TRAPDOOR, Material.ACACIA_TRAPDOOR, Material.DARK_OAK_TRAPDOOR,
+        Material.CRIMSON_TRAPDOOR, Material.WARPED_TRAPDOOR, Material.IRON_TRAPDOOR,
+        Material.OAK_FENCE_GATE, Material.SPRUCE_FENCE_GATE, Material.BIRCH_FENCE_GATE,
+        Material.JUNGLE_FENCE_GATE, Material.ACACIA_FENCE_GATE, Material.DARK_OAK_FENCE_GATE,
+        Material.CRIMSON_FENCE_GATE, Material.WARPED_FENCE_GATE,
+
+        Material.LEVER,
+        Material.STONE_BUTTON, Material.OAK_BUTTON, Material.SPRUCE_BUTTON, Material.BIRCH_BUTTON,
+        Material.JUNGLE_BUTTON, Material.ACACIA_BUTTON, Material.DARK_OAK_BUTTON,
+        Material.CRIMSON_BUTTON, Material.WARPED_BUTTON,
+
+        Material.BELL, Material.CAULDRON, Material.WATER_CAULDRON,
+        Material.LAVA_CAULDRON, Material.POWDER_SNOW_CAULDRON
+    );
+
+    private static final Set<Material> ITEM_STORAGE_BLOCKS = EnumSet.of(
+        Material.CHEST, Material.TRAPPED_CHEST, Material.BARREL,
+        Material.SHULKER_BOX, Material.WHITE_SHULKER_BOX, Material.ORANGE_SHULKER_BOX,
+        Material.MAGENTA_SHULKER_BOX, Material.LIGHT_BLUE_SHULKER_BOX, Material.YELLOW_SHULKER_BOX,
+        Material.LIME_SHULKER_BOX, Material.PINK_SHULKER_BOX, Material.GRAY_SHULKER_BOX,
+        Material.LIGHT_GRAY_SHULKER_BOX, Material.CYAN_SHULKER_BOX, Material.PURPLE_SHULKER_BOX,
+        Material.BLUE_SHULKER_BOX, Material.BROWN_SHULKER_BOX, Material.GREEN_SHULKER_BOX,
+        Material.RED_SHULKER_BOX, Material.BLACK_SHULKER_BOX,
+        Material.HOPPER, Material.DROPPER, Material.DISPENSER,
+        Material.BLAST_FURNACE, Material.FURNACE, Material.SMOKER,
+        Material.BREWING_STAND, Material.LECTERN, Material.COMPOSTER
+    );
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -87,83 +119,73 @@ public class ChunkOwnerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (event.getClickedBlock() == null) return;
-
         Player player = event.getPlayer();
-        Block clicked = event.getClickedBlock();
 
-        if (!isContainer(clicked)) return;
+        if (event.getClickedBlock() == null) {
+            return;
+        }
+        if (RankAPI.getApi().getRankId(player) >= 9) {
+            return;
+        }
 
-        if (player.hasPermission("plugin.maintenance")) return;
+        Block block = event.getClickedBlock();
+        Chunk chunk = block.getChunk();
 
-        Chunk chunk = clicked.getChunk();
-        UUID owner = ChunkAPI.getApi().getChunkOwner(chunk);
-        if (owner == null) return;
+        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
+            return;
+        }
 
-        String uuidStr = player.getUniqueId().toString();
-        List<String> friends = ChunkAPI.getApi().getFriends(chunk);
+        if (ChunkAPI.getApi().getFriends(chunk).contains(player.getUniqueId().toString()) || ChunkAPI.getApi().getFriends(chunk).contains("*")) {
+            return;
+        }
 
-        if (friends.contains(uuidStr) || friends.contains("*")) return;
-        if (owner.toString().equals(uuidStr)) return;
+        if (Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
+            return;
+        }
 
-        event.setCancelled(true);
-        OfflinePlayer offOwner = Bukkit.getOfflinePlayer(owner);
+        Material type = block.getType();
+
+        if (ITEM_STORAGE_BLOCKS.contains(type)) {
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
+            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
+                        .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+            } else {
+                player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
+                        .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
+                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+            }
+            event.setCancelled(true);
+            return;
+        }
+
+        if (isSafeBlock(block)) {
+            return;
+        }
+
+        OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
-            player.sendMessage(Statements.getPrefix()
-                .append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
-                .append(Component.text(offOwner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+            player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
+                    .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
+                    .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
         } else {
-            player.sendMessage(Statements.getPrefix()
-                .append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
-                .append(Component.text(offOwner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+            player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
+                    .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
+                    .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
         }
+        event.setCancelled(true);
     }
 
-    @EventHandler
-    public void onEntityExplode(EntityExplodeEvent event) {
-        Entity entity = event.getEntity();
-        List<org.bukkit.block.Block> blocks = event.blockList();
+    private boolean isSafeBlock(Block block) {
+        Material mat = block.getType();
+        BlockData data = block.getBlockData();
 
-        Iterator<Block> iterator = blocks.iterator();
-        while (iterator.hasNext()) {
-            org.bukkit.block.Block block = iterator.next();
-            Chunk chunk = block.getChunk();
-            UUID owner = ChunkAPI.getApi().getChunkOwner(chunk);
-
-            if (owner != null) {
-                iterator.remove();
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBlockExplode(BlockExplodeEvent event) {
-        List<org.bukkit.block.Block> blocks = event.blockList();
-
-        Iterator<org.bukkit.block.Block> iterator = blocks.iterator();
-        while (iterator.hasNext()) {
-            org.bukkit.block.Block block = iterator.next();
-            Chunk chunk = block.getChunk();
-            UUID owner = ChunkAPI.getApi().getChunkOwner(chunk);
-
-            if (owner != null) {
-                iterator.remove();
-            }
-        }
-    }
-
-    public static boolean isContainer(Block block) {
-        if (block == null) return false;
-        Material m = block.getType();
-        return m == Material.CHEST
-            || m == Material.TRAPPED_CHEST
-            || m == Material.BARREL
-            || m == Material.SHULKER_BOX
-            || m == Material.WHITE_SHULKER_BOX
-            || m == Material.LECTERN;
+        if (SAFE_INTERACTABLES.contains(mat)) return true;
+        if (data instanceof Openable) return true;
+        if (data instanceof Switch) return true;
+        if (data instanceof Bed) return true;
+        return false;
     }
 
     /*@EventHandler
