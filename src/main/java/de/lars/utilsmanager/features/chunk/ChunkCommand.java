@@ -6,7 +6,7 @@ import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.limitAPI.LimitAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -414,9 +414,9 @@ public class ChunkCommand implements BasicCommand {
         String flags = "EntitySpawning: " + (isGerman(player) ? "Aktiviert" : "Activated");
         
         Component title = Component.text("                   ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH)
-        .append(Component.text("[ ", NamedTextColor.DARK_GRAY))
-        .append(Component.text("Chunk Info", NamedTextColor.LIGHT_PURPLE))
-        .append(Component.text(" ]", NamedTextColor.DARK_GRAY))
+        .append(Component.text("[ ", NamedTextColor.DARK_GRAY).decoration(TextDecoration.STRIKETHROUGH, false))
+        .append(Component.text("Chunk Info", NamedTextColor.LIGHT_PURPLE, TextDecoration.STRIKETHROUGH).decoration(TextDecoration.STRIKETHROUGH, false))
+        .append(Component.text(" ]", NamedTextColor.DARK_GRAY).decoration(TextDecoration.STRIKETHROUGH, false))
         .append(Component.text("                   ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH));
         
         player.sendMessage(Statements.getPrefix().append(title));
