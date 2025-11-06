@@ -10,8 +10,8 @@ import de.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.scoreboard.Scoreboard;
-import de.lars.utilsmanager.util.RankStatements;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.RankStatements;
+import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -24,7 +24,6 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
@@ -38,8 +37,7 @@ import java.util.Calendar;
 
 public class JoinListener implements Listener {
 
-
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UtilsManager.getInstance().getQuestManager().sendDailyQuests(player);
@@ -117,11 +115,11 @@ public class JoinListener implements Listener {
             UtilsManager.getInstance().getRankManager().setRanks(player);
             UtilsManager.getInstance().getRankManager().setPerm();
             UtilsManager.getInstance().getTablistManager().setTabList(player);
-            Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                 StringBuilder message;
 
                 if (Bukkit.getOnlinePlayers().size() > 1) {
-                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs sind aktuell " + Bukkit.getOnlinePlayers().size() + " Spieler online.\\n");
+                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs sind aktuell " + Bukkit.getOnlinePlayers().size() + " Spieler online.\n");
                     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                         message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
                     }
@@ -131,7 +129,7 @@ public class JoinListener implements Listener {
 
                 UtilsManager.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
                 UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
-            }, 20);
+            });
         }
 
 

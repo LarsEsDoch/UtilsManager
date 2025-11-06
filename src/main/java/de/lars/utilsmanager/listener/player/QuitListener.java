@@ -2,8 +2,8 @@ package de.lars.utilsmanager.listener.player;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.RankStatements;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.RankStatements;
+import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -27,7 +27,7 @@ public class QuitListener implements Listener {
             }
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             StringBuilder message = new StringBuilder();
 
             if (Bukkit.getOnlinePlayers().isEmpty()) {
@@ -45,7 +45,7 @@ public class QuitListener implements Listener {
             }
 
             UtilsManager.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
-        }, 20);
+        });
 
         event.quitMessage(Component.text(""));
     }
