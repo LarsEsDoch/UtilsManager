@@ -2,7 +2,7 @@ package de.lars.utilsmanager.features.moderation;
 
 import de.lars.apimanager.apis.banAPI.BanAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.FormatNumbers;
+import de.lars.utilsmanager.utils.FormatNumbers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;

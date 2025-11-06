@@ -3,7 +3,7 @@ package de.lars.utilsmanager.features.maintenance;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;

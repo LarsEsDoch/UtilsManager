@@ -1,7 +1,6 @@
-package de.lars.utilsmanager.util;
+package de.lars.utilsmanager.utils;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.text.DecimalFormat;

@@ -4,7 +4,7 @@ import de.lars.apimanager.apis.courtAPI.CourtAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.timerAPI.ITimerAPI;
 import de.lars.apimanager.apis.timerAPI.TimerAPI;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;

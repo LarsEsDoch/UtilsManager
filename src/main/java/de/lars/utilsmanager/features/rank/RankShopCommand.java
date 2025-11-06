@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.rank;
 
-import de.lars.utilsmanager.util.ItemBuilder;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.ItemBuilder;
+import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;

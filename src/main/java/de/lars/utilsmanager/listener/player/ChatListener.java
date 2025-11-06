@@ -1,14 +1,13 @@
 package de.lars.utilsmanager.listener.player;
 
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.RankStatements;
+import de.lars.utilsmanager.utils.RankStatements;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

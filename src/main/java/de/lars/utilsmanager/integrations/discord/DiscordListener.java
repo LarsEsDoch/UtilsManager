@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.integrations.discord;
 
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.RankStatements;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.RankStatements;
+import de.lars.utilsmanager.utils.Statements;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;

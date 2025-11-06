@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.commands.admin;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.utilsmanager.util.CheckPlayers;
-import de.lars.utilsmanager.util.RankStatements;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.CheckPlayers;
+import de.lars.utilsmanager.utils.RankStatements;
+import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;

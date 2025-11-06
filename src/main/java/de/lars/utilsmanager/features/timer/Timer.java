@@ -3,7 +3,7 @@ package de.lars.utilsmanager.features.timer;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.timerAPI.TimerAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.FormatNumbers;
+import de.lars.utilsmanager.utils.FormatNumbers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;

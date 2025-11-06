@@ -1,4 +1,4 @@
-package de.lars.utilsmanager.util;
+package de.lars.utilsmanager.utils;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;

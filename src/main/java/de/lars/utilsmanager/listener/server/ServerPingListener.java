@@ -2,7 +2,7 @@ package de.lars.utilsmanager.listener.server;
 
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
-import de.lars.utilsmanager.util.Gradient;
+import de.lars.utilsmanager.utils.Gradient;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

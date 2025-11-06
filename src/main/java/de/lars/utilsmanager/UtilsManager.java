@@ -22,7 +22,7 @@ import de.lars.utilsmanager.plugin.Registrar;
 import de.lars.utilsmanager.quest.QuestManager;
 import de.lars.utilsmanager.recipes.RecipeLoader;
 import de.lars.utilsmanager.tablist.TablistManager;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;

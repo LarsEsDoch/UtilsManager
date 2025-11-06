@@ -1,4 +1,4 @@
-package de.lars.utilsmanager.util;
+package de.lars.utilsmanager.utils;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import net.kyori.adventure.text.Component;

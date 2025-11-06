@@ -1,4 +1,4 @@
-package de.lars.utilsmanager.util;
+package de.lars.utilsmanager.utils;
 
 import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;

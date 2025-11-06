@@ -1,10 +1,11 @@
 package de.lars.utilsmanager.integrations.discord;
 
 import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
-import de.lars.utilsmanager.util.Statements;
+import de.lars.utilsmanager.utils.Statements;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -41,7 +42,7 @@ public class DiscordBot {
                     .awaitReady();
 
             jda.getPresence().setStatus(OnlineStatus.ONLINE);
-            jda.getPresence().setActivity(Activity.playing("Minecraft auf "+ Bukkit.getIp()));
+            jda.getPresence().setActivity(Activity.playing("auf " + ServerSettingsAPI.getApi().getServerName()));
             Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Discord bot started!", NamedTextColor.GREEN)));
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -85,23 +86,34 @@ public class DiscordBot {
 
     public void sendPlayerMessage(String message) {
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
-
         TextChannel channel = jda.getTextChannelById(playerStatusChannelID);
+
         if (channel != null) {
+            System.out.println("1");
             channel.getIterableHistory().takeAsync(100).thenAccept(messages -> {
+                System.out.println("Fetched " + messages.size() + " messages");
                 if (!messages.isEmpty()) {
                     channel.deleteMessages(messages).queue(
                         success -> channel.sendMessage(message).queue(),
                         error -> {
+                            System.out.println("3");
                             for (Message msg : messages) {
                                 msg.delete().queue();
                             }
+                            System.out.println("4");
                             channel.sendMessage(message).queue();
                         }
                     );
                 } else {
+                    System.out.println("5");
                     channel.sendMessage(message).queue();
                 }
+                System.out.println("2");
+            }).exceptionally(error -> {
+                System.out.println("⚠️ Failed to fetch message history: " + error.getMessage());
+                error.printStackTrace();
+                channel.sendMessage(message).queue();
+                return null;
             });
         }
     }

@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.config;
 
-import de.lars.utilsmanager.util.Names;
+import de.lars.utilsmanager.utils.Names;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

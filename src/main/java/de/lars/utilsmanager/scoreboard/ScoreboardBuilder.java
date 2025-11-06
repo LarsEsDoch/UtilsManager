@@ -2,7 +2,7 @@ package de.lars.utilsmanager.scoreboard;
 
 import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import de.lars.utilsmanager.UtilsManager;
-import de.lars.utilsmanager.util.Gradient;
+import de.lars.utilsmanager.utils.Gradient;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
