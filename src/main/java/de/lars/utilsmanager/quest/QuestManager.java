@@ -177,7 +177,7 @@ public class QuestManager implements Listener {
             seconds = diffInSeconds % 60;
         }
         String quest = generateQuest(player);
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        /*if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deine tägliche Aufgabe abgeschlossen!", NamedTextColor.GREEN)));
             player.sendMessage(Statements.getPrefix().append(Component.text("Sie war: ", NamedTextColor.WHITE))
                     .append(Component.text(quest, NamedTextColor.GOLD)));
@@ -203,6 +203,8 @@ public class QuestManager implements Listener {
         CoinAPI.getApi().addGift(player, 100 + (25 * (QuestAPI.getApi().getStreak(player)+1)));
         QuestAPI.getApi().setQuestComplete(player, true);
         QuestAPI.getApi().setStreak(player, QuestAPI.getApi().getStreak(player)+1);
+
+         */
     }
 
     public void startDailyQuests() {
