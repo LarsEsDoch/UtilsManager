@@ -65,20 +65,20 @@ public class DiscordBot {
 
     public void sendStatusMessage(String message) {
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
+
         TextChannel channel = jda.getTextChannelById(serverStatusChannelID);
-        if (channel != null) {
-            channel.getIterableHistory().takeAsync(100).thenAccept(messages -> {
-                for (Message msg : messages) {
-                    if (msg.getTimeCreated().isAfter(OffsetDateTime.now().minusWeeks(2))) {
-                        msg.delete().queue();
-                    }
+        if (channel == null) return;
+
+        try {
+            for (Message msg : channel.getIterableHistory().takeAsync(100).join()) {
+                if (msg.getTimeCreated().isAfter(OffsetDateTime.now().minusWeeks(2))) {
+                    msg.delete().complete();
                 }
-                channel.sendMessage(message).queue();
-            }).exceptionally(error -> {
-                error.printStackTrace();
-                channel.sendMessage(message).queue();
-                return null;
-            });
+            }
+
+            channel.sendMessage(message).complete();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
