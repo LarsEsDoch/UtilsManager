@@ -24,7 +24,7 @@ public class BackpackManager implements Listener {
     public void openBackpack(Player player) {
         BackpackAPI.getApi().getBackpackAsync(player).thenAccept(data -> {
             Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
-                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getSlots(player), Component.text("§6Backpack"));
+                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getBackpackSlots(player), Component.text("§6Backpack"));
 
                 if (data != null && !data.isEmpty()) {
                     ItemStack[] items = deserializeItems(data);
@@ -39,7 +39,7 @@ public class BackpackManager implements Listener {
     public void openOfflineBackpack(OfflinePlayer offlinePlayer, Player player) {
         BackpackAPI.getApi().getBackpackAsync(offlinePlayer).thenAccept(data -> {
             Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
-                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getSlots(offlinePlayer), Component.text("§6Backpack"));
+                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getBackpackSlots(offlinePlayer), Component.text("§6Backpack"));
 
                 if (data != null && !data.isEmpty()) {
                     ItemStack[] items = deserializeItems(data);

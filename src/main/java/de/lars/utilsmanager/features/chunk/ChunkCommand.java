@@ -106,7 +106,7 @@ public class ChunkCommand implements BasicCommand {
             return;
         }
 
-        if (LimitAPI.getApi().getChunkLimit(player) == 0) {
+        if (LimitAPI.getApi().getMaxChunks(player) == 0) {
             sendMessage(player,
                 "Du kannst nun keine Chunks mehr beanspruchen! Du must zum Notar gehen und dir dort neue kaufen!",
                 "You can´t claim more chunks. You have to go to the notary and buy new ones there!",
@@ -119,7 +119,7 @@ public class ChunkCommand implements BasicCommand {
 
     private void claimChunkForPlayer(Player player, Chunk chunk, Location loc) {
         ChunkAPI.getApi().claimChunk(player, chunk);
-        LimitAPI.getApi().increaseChunkLimit(player, 1);
+        LimitAPI.getApi().increaseMaxChunks(player, 1);
         
         sendMessage(player,
             "Du hast den Chunk " + formatChunkCoords(chunk, loc) + " beansprucht!",
@@ -127,7 +127,7 @@ public class ChunkCommand implements BasicCommand {
             NamedTextColor.WHITE);
         
         if (RankAPI.getApi().getRankId(player) <= 8) {
-            int remaining = LimitAPI.getApi().getChunkLimit(player) - 1;
+            int remaining = LimitAPI.getApi().getMaxChunks(player) - 1;
             sendMessage(player,
                 "Du kannst nun noch " + remaining + " Chunks beanspruchen. Wenn du mehr brauchst kannst du diese beim Notar kaufen.",
                 "Now you can claim " + remaining + " chunks. If you need more chunks you can buy them at the notary.",
@@ -169,7 +169,7 @@ public class ChunkCommand implements BasicCommand {
 
         ChunkAPI.getApi().unclaimChunk(player, chunk);
         if (RankAPI.getApi().getRankId(player) <= 8) {
-            LimitAPI.getApi().decreaseChunkLimit(player, 1);
+            LimitAPI.getApi().decreaseMaxChunks(player, 1);
         }
         
         sendMessage(player,
@@ -178,7 +178,7 @@ public class ChunkCommand implements BasicCommand {
             NamedTextColor.WHITE);
         
         if (RankAPI.getApi().getRankId(player) <= 8) {
-            int remaining = LimitAPI.getApi().getChunkLimit(player) + 1;
+            int remaining = LimitAPI.getApi().getMaxChunks(player) + 1;
             sendMessage(player,
                 "Du kannst nun noch " + remaining + " Chunks beanspruchen. Wenn du mehr brauchst kannst du diese beim Notar kaufen.",
                 "Now you can claim " + remaining + " chunks. If you need more chunks you can buy them at the notary.",
@@ -389,7 +389,7 @@ public class ChunkCommand implements BasicCommand {
             return;
         }
         
-        int limit = LimitAPI.getApi().getChunkLimit(player);
+        int limit = LimitAPI.getApi().getMaxChunks(player);
         
         if (limit == 0) {
             sendMessage(player,

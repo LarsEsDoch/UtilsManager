@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -28,7 +28,7 @@ public class ClaimGiftCommand implements BasicCommand {
             return;
         }
         String gift = args[0];
-        if (!CoinAPI.getApi().getGifts(player).contains(gift)) {
+        if (!EconomyAPI.getApi().getGifts(player).contains(gift)) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Dir steht nicht dieses Geschenk zu!", NamedTextColor.RED)));
             } else {
@@ -47,9 +47,9 @@ public class ClaimGiftCommand implements BasicCommand {
                     .append(Component.text(giftString, NamedTextColor.GOLD))
                     .append(Component.text("$.", NamedTextColor.BLUE)));
         }
-        CoinAPI.getApi().addCoins(player, Integer.parseInt(gift));
-        CoinAPI.getApi().removeGift(player, Integer.parseInt(gift));
-        if (!CoinAPI.getApi().getGifts(player).isEmpty()) {
+        EconomyAPI.getApi().increaseBalance(player, Integer.parseInt(gift));
+        EconomyAPI.getApi().removeGift(player, Integer.parseInt(gift));
+        if (!EconomyAPI.getApi().getGifts(player).isEmpty()) {
             player.sendMessage(" ");
             player.performCommand("gifts");
         }

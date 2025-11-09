@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.quest;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.questAPI.QuestAPI;
 import de.lars.utilsmanager.UtilsManager;
@@ -69,7 +69,7 @@ public class QuestManager implements Listener {
         }
         for (Player player : Bukkit.getOnlinePlayers()) {
             String quest = generateQuest(player);
-            if (!QuestAPI.getApi().isDailyQuestComplete(player)) {
+            if (!QuestAPI.getApi().isQuestComplete(player)) {
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Deine tägliche Aufgabe ist: ", NamedTextColor.WHITE))
                             .append(Component.text(quest, NamedTextColor.GOLD)));
@@ -86,13 +86,13 @@ public class QuestManager implements Listener {
             }
         }
 
-        //startDailyQuests();
+        //startQuests();
         Completer();
     }
 
-    public void sendDailyQuests(Player player) {
+    public void sendQuests(Player player) {
         String quest = generateQuest(player);
-        if (!QuestAPI.getApi().isDailyQuestComplete(player)) {
+        if (!QuestAPI.getApi().isQuestComplete(player)) {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             long hours;
@@ -200,14 +200,14 @@ public class QuestManager implements Listener {
                     .append(Component.text((100 + 25 * (QuestAPI.getApi().getStreak(player)+1)) + "$", NamedTextColor.DARK_GREEN))
                     .append(Component.text(" !", NamedTextColor.GREEN)));
         }
-        CoinAPI.getApi().addGift(player, 100 + (25 * (QuestAPI.getApi().getStreak(player)+1)));
+        EconomyAPI.getApi().addGift(player, 100 + (25 * (QuestAPI.getApi().getStreak(player)+1)));
         QuestAPI.getApi().setQuestComplete(player, true);
         QuestAPI.getApi().setStreak(player, QuestAPI.getApi().getStreak(player)+1);
 
          */
     }
 
-    public void startDailyQuests() {
+    public void startQuests() {
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (Calendar.HOUR_OF_DAY == 6 && Calendar.MINUTE == 0) {
@@ -232,12 +232,12 @@ public class QuestManager implements Listener {
         Instant now = Instant.now();
         if (Calendar.HOUR_OF_DAY < 6) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                return questsDe[QuestAPI.getApi().getDailyQuest(player)];
+                return questsDe[QuestAPI.getApi().getQuest(player)];
             } else {
-                return questsEn[QuestAPI.getApi().getDailyQuest(player)];
+                return questsEn[QuestAPI.getApi().getQuest(player)];
             }
         } else {
-            complete = QuestAPI.getApi().isDailyQuestComplete(player);
+            complete = QuestAPI.getApi().isQuestComplete(player);
             streak = QuestAPI.getApi().getStreak(player);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 if (QuestAPI.getApi().getQuestDate(player).compareTo(now) < 0) {
@@ -250,12 +250,12 @@ public class QuestManager implements Listener {
                         setQuest(player, quest);
                     }
                 } else {
-                    if (QuestAPI.getApi().getDailyQuest(player) == -1) {
+                    if (QuestAPI.getApi().getQuest(player) == -1) {
                         quest = 0;
                         QuestAPI.getApi().setStreak(player, 0);
                         setQuest(player, quest);
                     } else {
-                        quest = QuestAPI.getApi().getDailyQuest(player);
+                        quest = QuestAPI.getApi().getQuest(player);
                     }
                 }
                 return questsDe[quest];
@@ -270,12 +270,12 @@ public class QuestManager implements Listener {
                         setQuest(player, quest);
                     }
                 } else {
-                    if (QuestAPI.getApi().getDailyQuest(player) == -1) {
+                    if (QuestAPI.getApi().getQuest(player) == -1) {
                         quest = 0;
                         QuestAPI.getApi().setStreak(player, 0);
                         setQuest(player, quest);
                     } else {
-                        quest = QuestAPI.getApi().getDailyQuest(player);
+                        quest = QuestAPI.getApi().getQuest(player);
                     }
                 }
                 return questsEn[quest];
@@ -362,7 +362,7 @@ public class QuestManager implements Listener {
     public void Completer() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (QuestAPI.getApi().isDailyQuestComplete(player)) {
+                if (QuestAPI.getApi().isQuestComplete(player)) {
                     return;
                 }
                 int number = QuestAPI.getApi().getProgress(player);
@@ -371,11 +371,11 @@ public class QuestManager implements Listener {
                     setComplete(player);
                 }
 
-                if (QuestAPI.getApi().getDailyQuest(player) == 21) {
+                if (QuestAPI.getApi().getQuest(player) == 21) {
                     QuestAPI.getApi().setProgress(player, player.getLevel());
                 }
 
-                if (QuestAPI.getApi().getDailyQuest(player) == 2) {
+                if (QuestAPI.getApi().getQuest(player) == 2) {
                     PlayerInventory inventory = player.getInventory();
                     ItemStack apple = new ItemStack(Material.APPLE);
                     int existing = inventory.all(Material.APPLE).values().stream()
@@ -383,7 +383,7 @@ public class QuestManager implements Listener {
                     QuestAPI.getApi().setProgress(player, existing);
                 }
 
-                if (QuestAPI.getApi().getDailyQuest(player) == 6) {
+                if (QuestAPI.getApi().getQuest(player) == 6) {
                     PlayerInventory inventory = player.getInventory();
                     ItemStack cactus = new ItemStack(Material.CACTUS);
                     int existing = inventory.all(Material.CACTUS).values().stream()
@@ -401,7 +401,7 @@ public class QuestManager implements Listener {
             if (event.getHitEntity() == null) return;
             if (event.getHitEntity() instanceof Player) {
                 if (event.getHitEntity() == event.getEntity().getShooter()); {
-                    if (QuestAPI.getApi().getDailyQuest(player) == 2) {
+                    if (QuestAPI.getApi().getQuest(player) == 2) {
                         QuestAPI.getApi().increaseProgress(player, 1);
                     }
                 }
@@ -422,7 +422,7 @@ public class QuestManager implements Listener {
                     || material == Material.JUNGLE_SAPLING || material == Material.ACACIA_SAPLING || material == Material.DARK_OAK_SAPLING
                     || material == Material.OAK_LOG || material == Material.BIRCH_LOG || material == Material.SPRUCE_LOG
                     || material == Material.JUNGLE_LOG || material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG)) {
-                if (QuestAPI.getApi().getDailyQuest(player) == 3) {
+                if (QuestAPI.getApi().getQuest(player) == 3) {
                     QuestAPI.getApi().increaseProgress(player, 1);
                 }
             }
@@ -436,7 +436,7 @@ public class QuestManager implements Listener {
         if (entity instanceof Zombie) {
             Player player = ((Zombie) entity).getKiller();
             if (player != null) {
-                if (QuestAPI.getApi().getDailyQuest(player) == 8) {
+                if (QuestAPI.getApi().getQuest(player) == 8) {
                     QuestAPI.getApi().increaseProgress(player, 1);
                 }
             }
@@ -447,12 +447,12 @@ public class QuestManager implements Listener {
     public void onQuest1o2(ProjectileHitEvent event) {
         if (event.getEntity() instanceof Egg) {
             Player player = (Player) event.getEntity().getShooter();
-            if (QuestAPI.getApi().getDailyQuest(player) == 0) {
+            if (QuestAPI.getApi().getQuest(player) == 0) {
                 if (event.getEntity().getShooter() instanceof Player) {
                     QuestAPI.getApi().increaseProgress(player, 1);
                 }
             }
-            if (QuestAPI.getApi().getDailyQuest(player) == 1) {
+            if (QuestAPI.getApi().getQuest(player) == 1) {
                 Egg egg = (Egg) event.getEntity();
                 if (egg.getShooter() instanceof Player) {
                     if (event.getEntity() instanceof Chicken) {

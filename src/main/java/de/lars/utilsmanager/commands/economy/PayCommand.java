@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.CheckPlayers;
 import de.lars.utilsmanager.utils.Statements;
@@ -51,7 +51,7 @@ public class PayCommand implements BasicCommand {
             sendUsage(player);
             return;
         }
-        sendercoins = CoinAPI.getApi().getCoins(sendplayer);
+        sendercoins = EconomyAPI.getApi().getBalance(sendplayer);
         OfflinePlayer recipient = Bukkit.getPlayer(args[0]);
         if (CheckPlayers.checkOfflinePlayer(sendplayer, recipient)) return;
         if (paying > sendercoins) {
@@ -63,8 +63,8 @@ public class PayCommand implements BasicCommand {
             return;
         }
 
-        CoinAPI.getApi().removeCoins(sendplayer, paying);
-        CoinAPI.getApi().addCoins(player, paying);
+        EconomyAPI.getApi().decreaseBalance(sendplayer, paying);
+        EconomyAPI.getApi().increaseBalance(player, paying);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(paying);
         if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
@@ -96,9 +96,9 @@ public class PayCommand implements BasicCommand {
         }
     private void sendUsage(CommandSender sender) {
         if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-            sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/pay <Spieler> <Coins>");
+            sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/pay <Spieler> <Balance>");
         } else {
-            sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/pay <Player> <Coins>");
+            sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/pay <Player> <Balance>");
         }
     }
 }

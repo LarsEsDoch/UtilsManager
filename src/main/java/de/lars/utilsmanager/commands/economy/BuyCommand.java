@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -72,7 +72,7 @@ public class BuyCommand implements BasicCommand {
             case "copper": {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack copper = new ItemStack(Material.COPPER_INGOT, nummber);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 10 * nummber;
                 missing = price - balence;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
@@ -118,13 +118,13 @@ public class BuyCommand implements BasicCommand {
                     }
                 }
 
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 break;
             }
             case "amethyst": {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD, nummber);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 30 * nummber;
                 missing = price - balence;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
@@ -169,13 +169,13 @@ public class BuyCommand implements BasicCommand {
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
                 }
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 break;
             }
             case "diamond": {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack diamond = new ItemStack(Material.DIAMOND, nummber);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 150 * nummber;
                 missing = price - balence;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
@@ -221,13 +221,13 @@ public class BuyCommand implements BasicCommand {
                     }
                 }
 
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 break;
             }
             case "netherite": {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT, nummber);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 1250 * nummber;
                 missing = price - balence;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
@@ -273,13 +273,13 @@ public class BuyCommand implements BasicCommand {
                     }
                 }
 
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 break;
             }
             case "spawner": {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack spawner = new ItemStack(Material.SPAWNER, nummber);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 10000 * nummber;
                 missing = price - balence;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
@@ -308,7 +308,7 @@ public class BuyCommand implements BasicCommand {
                             .append(Component.text("Spawner, for ", NamedTextColor.YELLOW))
                             .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                 }
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 break;
             }
 

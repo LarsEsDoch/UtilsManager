@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.features.rank;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.utils.Statements;
@@ -36,7 +36,7 @@ public class RankShopListener implements Listener {
             String id = clicked.getItemMeta().getPersistentDataContainer().get(rankKey, PersistentDataType.STRING);
             if (id == null) return;
 
-            int balance = CoinAPI.getApi().getCoins(player);
+            int balance = EconomyAPI.getApi().getBalance(player);
             int price = switch (id) {
                 case "6premium" -> 500;
                 case "12premium" -> 900;
@@ -75,7 +75,7 @@ public class RankShopListener implements Listener {
             }
 
             RankAPI.getApi().setRank(player, rankID, durationDays);
-            CoinAPI.getApi().removeCoins(player, price);
+            EconomyAPI.getApi().decreaseBalance(player, price);
 
             String rankName = switch (id) {
                 case "6premium", "12premium" -> "Premium";

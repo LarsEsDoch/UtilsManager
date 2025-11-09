@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -43,11 +43,6 @@ public class AddCoinsCommand implements BasicCommand {
             return;
         }
 
-        if (!(args[0] instanceof String)) {
-            sendUsage(player);
-            return;
-        }
-
         for (String arg : args) {
             try {
                 Integer.parseInt(args[1]);
@@ -71,7 +66,7 @@ public class AddCoinsCommand implements BasicCommand {
             }
             return;
         }
-        CoinAPI.getApi().addCoins((Player) offlinePlayer, addcoins);
+        EconomyAPI.getApi().increaseBalance((Player) offlinePlayer, addcoins);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(addcoins);
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -119,11 +114,11 @@ public class AddCoinsCommand implements BasicCommand {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/addcoins <Spieler> <Coins>", NamedTextColor.BLUE)));
+                    .append(Component.text("/addcoins <Spieler> <Balance>", NamedTextColor.BLUE)));
         } else {
             player.sendMessage(Component.text("Use", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/addcoins <Player> <Coins>", NamedTextColor.BLUE)));
+                    .append(Component.text("/addcoins <Player> <Balance>", NamedTextColor.BLUE)));
         }
     }
 }

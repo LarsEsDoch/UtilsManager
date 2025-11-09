@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
@@ -96,7 +96,7 @@ public class ShopListener implements Listener {
                 */
                 PlayerInventory inventory = player.getInventory();
                 ItemStack copper = new ItemStack(Material.COPPER_INGOT);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 10;
                 if (price > balence) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -120,13 +120,13 @@ public class ShopListener implements Listener {
                             .append(Component.text("Copper Ingot, for ", NamedTextColor.YELLOW))
                             .append(Component.text(price + "$", NamedTextColor.LIGHT_PURPLE)));
                 }
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 return;
             }
             if (id.equalsIgnoreCase(buyamethyst)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 30;
                 if (price > balence) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -150,13 +150,13 @@ public class ShopListener implements Listener {
                             .append(Component.text("Amethyst Shard, for ", NamedTextColor.YELLOW))
                             .append(Component.text(price + "$", NamedTextColor.LIGHT_PURPLE)));
                 }
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 return;
             }
             if (id.equalsIgnoreCase(buydiamond)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack diamond = new ItemStack(Material.DIAMOND);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 150;
                 if (price > balence) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -180,13 +180,13 @@ public class ShopListener implements Listener {
                             .append(Component.text("Diamond, for ", NamedTextColor.YELLOW))
                             .append(Component.text(price + "$", NamedTextColor.LIGHT_PURPLE)));
                 }
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 return;
             }
             if (id.equalsIgnoreCase(buynetherite)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 1250;
                 if (price > balence) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -210,13 +210,13 @@ public class ShopListener implements Listener {
                             .append(Component.text("Netherite Ingot, for ", NamedTextColor.YELLOW))
                             .append(Component.text(price + "$", NamedTextColor.LIGHT_PURPLE)));
                 }
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 return;
             }
             if (id.equalsIgnoreCase(buyspawner)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack spawner = new ItemStack(Material.SPAWNER);
-                balence = CoinAPI.getApi().getCoins(player);
+                balence = EconomyAPI.getApi().getBalance(player);
                 price = 10000;
                 if (price >= balence) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -240,7 +240,7 @@ public class ShopListener implements Listener {
                             .append(Component.text("Spawner, for ", NamedTextColor.YELLOW))
                             .append(Component.text(price + "$", NamedTextColor.LIGHT_PURPLE)));
                 }
-                CoinAPI.getApi().removeCoins(player, price);
+                EconomyAPI.getApi().decreaseBalance(player, price);
                 return;
             }
             if (id.equalsIgnoreCase(sellcopper)) {
@@ -271,7 +271,7 @@ public class ShopListener implements Listener {
                             .append(Component.text(" Copper Ingot, for ", NamedTextColor.WHITE))
                             .append(Component.text(sellprice + "$.", NamedTextColor.LIGHT_PURPLE)));
                 }
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 return;
             }
             if (id.equalsIgnoreCase(sellamethyst)) {
@@ -302,7 +302,7 @@ public class ShopListener implements Listener {
                             .append(Component.text(sellprice, NamedTextColor.LIGHT_PURPLE))
                             .append(Component.text("$.")));
                 }
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 return;
             }
             if (id.equalsIgnoreCase(selldiamond)) {
@@ -333,7 +333,7 @@ public class ShopListener implements Listener {
                             .append(Component.text(sellprice, NamedTextColor.AQUA))
                             .append(Component.text("$.")));
                 }
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 return;
             }
             if (id.equalsIgnoreCase(sellnetherite)) {
@@ -364,7 +364,7 @@ public class ShopListener implements Listener {
                             .append(Component.text(sellprice, NamedTextColor.DARK_GRAY))
                             .append(Component.text("$.")));
                 }
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 return;
             }
             if (id.equalsIgnoreCase(sellspawner)) {
@@ -395,7 +395,7 @@ public class ShopListener implements Listener {
                             .append(Component.text(sellprice, NamedTextColor.BLACK))
                             .append(Component.text("$.")));
                 }
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 return;
             }
         }
@@ -434,7 +434,7 @@ public class ShopListener implements Listener {
                     case 10 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 }
 
-                PrefixAPI.getApi().setDecoration(player, Collections.emptySet());
+                PrefixAPI.getApi().setDecorations(player, Collections.emptySet());
 
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD));

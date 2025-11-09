@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -114,7 +114,7 @@ public class SellCommand implements BasicCommand {
                     }
                 }
 
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 break;
             }
             case "amethyst": {
@@ -164,7 +164,7 @@ public class SellCommand implements BasicCommand {
                     }
                 }
 
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 break;
             }
             case "diamond": {
@@ -213,7 +213,7 @@ public class SellCommand implements BasicCommand {
                                 .append(Component.text("$.")));
                     }
                 }
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 break;
             }
             case "netherite": {
@@ -263,7 +263,7 @@ public class SellCommand implements BasicCommand {
                     }
                 }
 
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 break;
             }
             case "spawner": {
@@ -296,7 +296,7 @@ public class SellCommand implements BasicCommand {
                             .append(Component.text(formatierteZahl, NamedTextColor.BLACK))
                             .append(Component.text("$.")));
                 }
-                CoinAPI.getApi().addCoins(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellprice);
                 break;
             }
 

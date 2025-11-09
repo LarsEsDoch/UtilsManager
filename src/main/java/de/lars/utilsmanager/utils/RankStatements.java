@@ -12,7 +12,7 @@ import java.util.Set;
 public class RankStatements {
 
     public static Component getRank(Player player) {
-        Set<TextDecoration> prefixDecoration = PrefixAPI.getApi().getDecoration(player);
+        Set<TextDecoration> prefixDecoration = PrefixAPI.getApi().getDecorations(player);
         NamedTextColor prefixColor = PrefixAPI.getApi().getColor(player);
         Integer rank = RankAPI.getApi().getRankId(player);
 

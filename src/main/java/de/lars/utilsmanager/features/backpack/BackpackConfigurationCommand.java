@@ -43,7 +43,7 @@ public class BackpackConfigurationCommand implements BasicCommand {
                     .append(Component.text(slots, NamedTextColor.GREEN)));
         }
         for (OfflinePlayer offlinePlayer: Bukkit.getOfflinePlayers()) {
-            LimitAPI.getApi().setSlots(offlinePlayer, slots);
+            LimitAPI.getApi().setBackpackSlots(offlinePlayer, slots);
         }
     }
 

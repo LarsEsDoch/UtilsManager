@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -26,7 +26,7 @@ public class GiftCommand implements BasicCommand {
             return;
         }
 
-        if (CoinAPI.getApi().getGifts(player).isEmpty()) {
+        if (EconomyAPI.getApi().getGifts(player).isEmpty()) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast keine Geschenke!", NamedTextColor.RED)));
             } else {
@@ -41,7 +41,7 @@ public class GiftCommand implements BasicCommand {
                 .append(Component.text(" ]", NamedTextColor.DARK_GRAY))
                 .append(Component.text("                    ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH)));
         player.sendMessage(" ");
-        for (Integer gift: CoinAPI.getApi().getGifts(player)) {
+        for (Integer gift: EconomyAPI.getApi().getGifts(player)) {
             String giftString = formatter.format(gift);
             Component GiftClickText = Component.text("[Anfordern]", NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/claimgift " + gift));
             Component GiftClickTextE = Component.text("[Claim]", NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/claimgift " + gift));

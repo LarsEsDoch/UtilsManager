@@ -439,7 +439,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "bold": {
-                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.BOLD)) {
+                if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.BOLD)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.BOLD);
                 } else {
                     PrefixAPI.getApi().setDecoration(player, TextDecoration.BOLD);
@@ -460,7 +460,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "italic": {
-                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.ITALIC)) {
+                if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.ITALIC)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.ITALIC);
                 } else {
                     PrefixAPI.getApi().setDecoration(player, TextDecoration.ITALIC);
@@ -480,7 +480,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "obfuscated": {
-                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.OBFUSCATED)) {
+                if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.OBFUSCATED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.OBFUSCATED);
                 } else {
                     PrefixAPI.getApi().setDecoration(player, TextDecoration.OBFUSCATED);
@@ -500,7 +500,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "strikethrough": {
-                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.STRIKETHROUGH)) {
+                if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.STRIKETHROUGH)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.STRIKETHROUGH);
                 } else {
                     PrefixAPI.getApi().setDecoration(player, TextDecoration.STRIKETHROUGH);
@@ -520,7 +520,7 @@ public class PrefixCommand implements BasicCommand {
             }
 
             case "underlined": {
-                if (PrefixAPI.getApi().getDecoration(player).contains(TextDecoration.UNDERLINED)) {
+                if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.UNDERLINED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.UNDERLINED);
                 } else {
                     PrefixAPI.getApi().setDecoration(player, TextDecoration.UNDERLINED);
@@ -558,7 +558,7 @@ public class PrefixCommand implements BasicCommand {
                 if (RankAPI.getApi().getRankId(player) == 10) {
                     PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 }
-                PrefixAPI.getApi().setDecoration(player, Collections.emptySet());
+                PrefixAPI.getApi().setDecorations(player, Collections.emptySet());
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD)));
                 } else {

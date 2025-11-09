@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -32,7 +32,7 @@ public class WalletCommand implements BasicCommand {
         }
         if (args.length == 0) {
 
-            coins = CoinAPI.getApi().getCoins(sendplayer);
+            coins = EconomyAPI.getApi().getBalance(sendplayer);
             DecimalFormat formatter = new DecimalFormat("#,###");
             String formatierteZahl = formatter.format(coins);
             if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
@@ -56,7 +56,7 @@ public class WalletCommand implements BasicCommand {
             }
             return;
         }
-        coins = CoinAPI.getApi().getCoins((Player) player);
+        coins = EconomyAPI.getApi().getBalance((Player) player);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(coins);
         if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {

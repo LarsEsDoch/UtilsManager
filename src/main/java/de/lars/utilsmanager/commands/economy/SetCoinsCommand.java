@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -56,7 +56,7 @@ public class SetCoinsCommand implements BasicCommand {
             }
             return;
         }
-        CoinAPI.getApi().setCoins((Player) player, setcoins);
+        EconomyAPI.getApi().setBalance((Player) player, setcoins);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(setcoins);
         if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
@@ -87,9 +87,9 @@ public class SetCoinsCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         if (LanguageAPI.getApi().getLanguage((Player) sender) == 2) {
-            sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setcoins <Spieler> <Coins>");
+            sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setcoins <Spieler> <Balance>");
         } else {
-            sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setcoins <Player> <Coins>");
+            sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setcoins <Player> <Balance>");
         }
     }
 }

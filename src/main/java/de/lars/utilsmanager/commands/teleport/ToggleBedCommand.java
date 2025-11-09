@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.teleport;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
+import de.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -22,8 +22,8 @@ public class ToggleBedCommand implements BasicCommand {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
-        if (ToggleAPI.getApi().getBedToggle(player)) {
-            ToggleAPI.getApi().setBedToggle(player, false);
+        if (PlayerSettingsAPI.getApi().getBedToggle(player)) {
+            PlayerSettingsAPI.getApi().setBedToggle(player, false);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du Spawnst nun nicht mehr am Spawn!", NamedTextColor.GRAY)));
             } else {
@@ -31,7 +31,7 @@ public class ToggleBedCommand implements BasicCommand {
             }
 
         } else {
-            ToggleAPI.getApi().setBedToggle(player, true);
+            PlayerSettingsAPI.getApi().setBedToggle(player, true);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du Spawnst nun am Spawn!", NamedTextColor.GRAY)));
             } else {

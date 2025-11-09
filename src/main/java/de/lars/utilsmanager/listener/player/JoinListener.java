@@ -1,13 +1,13 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.courtAPI.CourtAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.limitAPI.LimitAPI;
 import de.lars.apimanager.apis.playerAPI.PlayerAPI;
 import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import de.lars.apimanager.apis.rankAPI.RankAPI;
-import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
+import de.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.scoreboard.Scoreboard;
 import de.lars.utilsmanager.utils.RankStatements;
@@ -40,8 +40,8 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        UtilsManager.getInstance().getQuestManager().sendDailyQuests(player);
-        if (ToggleAPI.getApi().getScoreboardToggle(player)) {
+        UtilsManager.getInstance().getQuestManager().sendQuests(player);
+        if (PlayerSettingsAPI.getApi().getScoreboardToggle(player)) {
             new Scoreboard(player);
         }
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0));
@@ -50,12 +50,12 @@ public class JoinListener implements Listener {
         if (!player.hasPlayedBefore()) {
             player.teleport(new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
-            LimitAPI.getApi().setChunkLimit(player, 128);
+            LimitAPI.getApi().setMaxChunks(player, 128);
             Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask -> {
                 firstJoin(player);
             }, 1);
         } else {
-            if (ToggleAPI.getApi().getBedToggle(player)) {
+            if (PlayerSettingsAPI.getApi().getBedToggle(player)) {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
             } else {
                 Location loc = new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0);
@@ -74,7 +74,7 @@ public class JoinListener implements Listener {
                 player.sendMessage(Statements.getPrefix().append(message));
             }
 
-            if (!CoinAPI.getApi().getGifts(player).isEmpty()) {
+            if (!EconomyAPI.getApi().getGifts(player).isEmpty()) {
                 Component cmj = Component.text("[Yes]")
                         .color(NamedTextColor.GREEN)
                         .clickEvent(ClickEvent.runCommand("/gifts"))
@@ -141,7 +141,7 @@ public class JoinListener implements Listener {
 
         RankAPI.getApi().setRank(player, 5, 30);
         PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
-        LimitAPI.getApi().setSlots(player, 27);
+        LimitAPI.getApi().setBackpackSlots(player, 27);
 
 
 
@@ -402,7 +402,7 @@ public class JoinListener implements Listener {
             player.showTitle(Title.title(visibleText, subTitle, times));
             player.spawnParticle(Particle.TOTEM_OF_UNDYING, player.getLocation(), 50, 0.5, 0.5, 0.5, 1);
 
-            if(!ToggleAPI.getApi().getScoreboardToggle(player)) {
+            if(!PlayerSettingsAPI.getApi().getScoreboardToggle(player)) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -501,7 +501,7 @@ public class JoinListener implements Listener {
             player.showTitle(Title.title(visibleText, subTitle, times));
             player.spawnParticle(Particle.TOTEM_OF_UNDYING, player.getLocation(), 50, 0.5, 0.5, 0.5, 1);
 
-            if(!ToggleAPI.getApi().getScoreboardToggle(player)) {
+            if(!PlayerSettingsAPI.getApi().getScoreboardToggle(player)) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {

@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.player;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
+import de.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,7 +25,7 @@ public class RespawnListener implements Listener {
 
         Location loc = new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0);
 
-        if (ToggleAPI.getApi().getBedToggle(player) || !respawnLocation.equals(bedSpawn)) {
+        if (PlayerSettingsAPI.getApi().getBedToggle(player) || !respawnLocation.equals(bedSpawn)) {
             if (LanguageAPI.getApi().getLanguage(player ) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest an deinem eigenen Respawn Punkt wiederbelebt.", NamedTextColor.GOLD)));
             } else {

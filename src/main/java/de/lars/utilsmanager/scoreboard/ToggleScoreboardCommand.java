@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.scoreboard;
 
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.toggleAPI.ToggleAPI;
+import de.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -18,8 +18,8 @@ public class ToggleScoreboardCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (ToggleAPI.getApi().getScoreboardToggle(player)) {
-            ToggleAPI.getApi().setScoreboardToggle(player, false);
+        if (PlayerSettingsAPI.getApi().getScoreboardToggle(player)) {
+            PlayerSettingsAPI.getApi().setScoreboardToggle(player, false);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.kick(Statements.getPrefix().append(Component.text("Du hast nun ab dem nächsten join kein Scoreboard!", NamedTextColor.GRAY)));
             } else {
@@ -27,7 +27,7 @@ public class ToggleScoreboardCommand implements BasicCommand {
             }
 
         } else {
-            ToggleAPI.getApi().setScoreboardToggle(player,true);
+            PlayerSettingsAPI.getApi().setScoreboardToggle(player,true);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.kick(Statements.getPrefix().append(Component.text("Du hast nun ab dem nächsten join ein Scoreboard!", NamedTextColor.GRAY)));
             } else {

@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.scoreboard;
 
-import de.lars.apimanager.apis.coinAPI.CoinAPI;
+import de.lars.apimanager.apis.economyAPI.EconomyAPI;
 import de.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.apimanager.apis.playerAPI.PlayerAPI;
 import de.lars.apimanager.apis.questAPI.QuestAPI;
@@ -51,9 +51,9 @@ public class Scoreboard extends ScoreboardBuilder {
             setScore(Component.text(""), 12);
 
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                setScore(Component.text("Deine Coins:", NamedTextColor.DARK_AQUA), 11);
+                setScore(Component.text("Deine Kontostand:", NamedTextColor.DARK_AQUA), 11);
             } else {
-                setScore(Component.text("Your Coins:", NamedTextColor.DARK_AQUA), 11);
+                setScore(Component.text("Your balance:", NamedTextColor.DARK_AQUA), 11);
             }
             setScore(Component.text(""), 10);
             setScore(Component.text(""), 9);
@@ -117,7 +117,7 @@ public class Scoreboard extends ScoreboardBuilder {
     private void run() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (mode) {
-                coins = CoinAPI.getApi().getCoins(player);
+                coins = EconomyAPI.getApi().getBalance(player);
 
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(coins);
@@ -157,7 +157,7 @@ public class Scoreboard extends ScoreboardBuilder {
                 int amount = QuestAPI.getApi().getProgress(player);
                 int hasNumber = QuestAPI.getApi().getProgress(player);
                 Component progressBar = getProgressBar(hasNumber, amount);
-                if (QuestAPI.getApi().isDailyQuestComplete(player)) {
+                if (QuestAPI.getApi().isQuestComplete(player)) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         setScore(Component.text(">> ", NamedTextColor.GRAY)
                                 .append(Component.text("Abgeschlossen!", NamedTextColor.GREEN, TextDecoration.BOLD)), 1);
@@ -169,7 +169,7 @@ public class Scoreboard extends ScoreboardBuilder {
                     setScore(progressBar, 1);
                 }
 
-                int quest = QuestAPI.getApi().getDailyQuest(player);
+                int quest = QuestAPI.getApi().getQuest(player);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     setScore(Component.text(">> ", NamedTextColor.GRAY)
                             .append(Component.text(questsDe[quest], NamedTextColor.WHITE)), 0);
