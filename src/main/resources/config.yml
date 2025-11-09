@@ -1,5 +1,12 @@
+# ============================================
+#  UtilsManager - Discord Configuration
+# ============================================
+# Configure your Discord bot connection and channels here.
+# The bot token must be from your Discord Developer Portal.
+# ============================================
+
 discord:
-  token: "Token of your discord bot"
-  serverStatusChannelID: "Id of the discord channel to broadcast server status"
-  playerStatusChannelID: "Id of the discord channel to broadcast player events"
-  punishmentsChannelID: "Id of the discord channel to broadcast player punishments"
+  token: "YOUR_BOT_TOKEN_HERE"                # Discord bot token
+  serverStatusChannelID: "123456789012345678" # Channel ID for server status messages
+  playerStatusChannelID: "123456789012345678" # Channel ID for player join/quit events
+  punishmentsChannelID: "123456789012345678"  # Channel ID for bans, mutes, etc.
