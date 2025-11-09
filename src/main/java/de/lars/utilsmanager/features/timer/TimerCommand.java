@@ -20,10 +20,9 @@ import java.util.Objects;
 
 public class TimerCommand implements BasicCommand {
 
-    private Player player;
     @Override
-    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        player = (Player) stack.getSender();
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
+        Player player = (Player) stack.getSender();
 
         if (!player.hasPermission("plugin.timer")) {
             player.sendMessage(Statements.getNotAllowed(player));
@@ -482,7 +481,7 @@ public class TimerCommand implements BasicCommand {
     }
 
    @Override
-   public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
+   public @NotNull Collection<String> suggest(final @NotNull CommandSourceStack commandSourceStack, final String[] args) {
        if (args.length == 0 || args.length == 1) {
            Collection<String> timerCommands = new ArrayList<>();
            timerCommands.add("resume");

@@ -49,12 +49,11 @@ public class ServerPingListener implements Listener {
                 .append(Component.text(" M", NamedTextColor.GOLD, TextDecoration.OBFUSCATED))
                 .append(Component.text("\n "));
 
-        int infoWidth = totalWidth;
         int extraShift = 5;
 
         if (Bukkit.hasWhitelist()) {
             String info = "Info: Whitelist enabled!";
-            Component centered = centerLines(wrapText(info, infoWidth), infoWidth, NamedTextColor.GOLD, extraShift);
+            Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.GOLD, extraShift);
             event.motd(header.append(centered));
             return;
         }
@@ -64,24 +63,24 @@ public class ServerPingListener implements Listener {
             lines.add("Info: Server is in maintenance!");
             String maintenanceReason = ServerSettingsAPI.getApi().getMaintenanceReason() == null ? "" : ServerSettingsAPI.getApi().getMaintenanceReason().trim();
             if (!maintenanceReason.isEmpty()) {
-                lines.addAll(wrapText(maintenanceReason, infoWidth));
+                lines.addAll(wrapText(maintenanceReason, totalWidth));
             }
-            Component firstLine = centerLines(List.of(lines.get(0)), infoWidth, NamedTextColor.GREEN, extraShift);
+            Component firstLine = centerLines(List.of(lines.getFirst()), totalWidth, NamedTextColor.GREEN, extraShift);
             List<String> detailLines = lines.size() > 1 ? lines.subList(1, lines.size()) : List.of();
-            Component details = centerLines(detailLines, infoWidth, NamedTextColor.RED, extraShift);
+            Component details = centerLines(detailLines, totalWidth, NamedTextColor.RED, extraShift);
             event.motd(header.append(firstLine).append(details));
             return;
         }
 
         if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
             String info = "Info: Server is full!";
-            Component centered = centerLines(wrapText(info, infoWidth), infoWidth, NamedTextColor.RED, extraShift);
+            Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.RED, extraShift);
             event.motd(header.append(centered));
             return;
         }
 
         String info = "Info: Server is online!";
-        Component centered = centerLines(wrapText(info, infoWidth), infoWidth, NamedTextColor.GREEN, extraShift);
+        Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.GREEN, extraShift);
         event.motd(header.append(centered));
     }
 
@@ -95,7 +94,7 @@ public class ServerPingListener implements Listener {
         StringBuilder current = new StringBuilder();
 
         for (String w : words) {
-            if (current.length() == 0) {
+            if (current.isEmpty()) {
                 current.append(w);
             } else if (current.length() + 1 + w.length() <= width) {
                 current.append(' ').append(w);
@@ -104,7 +103,7 @@ public class ServerPingListener implements Listener {
                 current = new StringBuilder(w);
             }
         }
-        if (current.length() > 0) lines.add(current.toString());
+        if (!current.isEmpty()) lines.add(current.toString());
         return lines;
     }
 

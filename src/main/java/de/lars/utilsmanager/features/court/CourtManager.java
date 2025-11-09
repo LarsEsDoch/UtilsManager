@@ -83,7 +83,7 @@ public class CourtManager {
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Die Gerichtsversammlung beginnt in 60 Sekunden. Kommst du?", NamedTextColor.WHITE)));
 
-                            ComponentBuilder comeChecker = Component.text("").append(Statements.getPrefix()).toBuilder();
+                            ComponentBuilder<TextComponent, TextComponent.Builder> comeChecker = Component.text("").append(Statements.getPrefix()).toBuilder();
                             Component comeMessageYes = Component.text("[Ja]")
                                     .color(NamedTextColor.GREEN)
                                     .clickEvent(ClickEvent.runCommand("/court join"))
@@ -115,7 +115,7 @@ public class CourtManager {
                             onlineplayer.sendMessage(Statements.getPrefix()
                                     .append(Component.text("The court meeting begins in 60 seconds. Do you come?", NamedTextColor.WHITE)));
 
-                            ComponentBuilder comeChecker = Component.text("").append(Statements.getPrefix()).toBuilder();
+                            ComponentBuilder<TextComponent, TextComponent.Builder> comeChecker = Component.text("").append(Statements.getPrefix()).toBuilder();
                             Component comeMessageYes = Component.text("[Yes]")
                                     .color(NamedTextColor.GREEN)
                                     .clickEvent(ClickEvent.runCommand("/court join"))
@@ -161,12 +161,12 @@ public class CourtManager {
                         return;
                     }
                     World world = Bukkit.getWorld("world");
-                    Location placecriminal = new Location(world, -74, 132, 173);
-                    placecriminal.setYaw(-180);
-                    placecriminal.setPitch(0);
-                    player.teleport(placecriminal);
+                    Location placeCriminal = new Location(world, -74, 132, 173);
+                    placeCriminal.setYaw(-180);
+                    placeCriminal.setPitch(0);
+                    player.teleport(placeCriminal);
 
-                    ArmorStand armorStandCriminal = (ArmorStand) placecriminal.getWorld().spawnEntity(placecriminal.add(0.5, -1.40, 0.5), EntityType.ARMOR_STAND);
+                    ArmorStand armorStandCriminal = (ArmorStand) placeCriminal.getWorld().spawnEntity(placeCriminal.add(0.5, -1.40, 0.5), EntityType.ARMOR_STAND);
                     armorStandCriminal.setVisible(false);
                     armorStandCriminal.setGravity(false);
                     armorStandCriminal.addPassenger(player);
@@ -176,6 +176,7 @@ public class CourtManager {
                     Location placeProsecutor = new Location(world, -75, 132, 173);
                     placeProsecutor.setYaw(-180);
                     placeProsecutor.setPitch(0);
+                    assert prosecutor != null;
                     prosecutor.teleport(placeProsecutor);
 
                     ArmorStand armorStandProsecutor = (ArmorStand) placeProsecutor.getWorld().spawnEntity(placeProsecutor.add(0.5, -1.40, 0.5), EntityType.ARMOR_STAND);
@@ -559,7 +560,7 @@ public class CourtManager {
                         if (LanguageAPI.getApi().getLanguage(member) == 2) {
                             member.sendMessage(Statements.getPrefix().append(Component.text("Die Verhandlung hat begonnen!", NamedTextColor.LIGHT_PURPLE)));
 
-                            ComponentBuilder wittnesChecker = Component.text("").append(Statements.getPrefix())
+                            ComponentBuilder<TextComponent, TextComponent.Builder> wittnesChecker = Component.text("").append(Statements.getPrefix())
                                     .append(Component.text("Hast du etwas zu bezeugen? : ", NamedTextColor.GRAY)).toBuilder();
                             Component witnessYes = Component.text("[Ja]")
                                     .color(NamedTextColor.GREEN)
@@ -569,14 +570,14 @@ public class CourtManager {
                             member.sendMessage(wittnesChecker.build());
                         } else {
                             member.sendMessage(Statements.getPrefix().append(Component.text("The negotiation has started!", NamedTextColor.LIGHT_PURPLE)));
-                            ComponentBuilder wittnesChecker = Component.text("").append(Statements.getPrefix())
+                            ComponentBuilder<TextComponent, TextComponent.Builder> witnessChecker = Component.text("").append(Statements.getPrefix())
                                     .append(Component.text("Do you have something to testify? : ", NamedTextColor.GRAY)).toBuilder();
                             Component witnessYes = Component.text("[Yes]")
                                     .color(NamedTextColor.GREEN)
                                     .clickEvent(ClickEvent.runCommand("/court witness"))
                                     .hoverEvent(HoverEvent.showText(Component.text("You will get a witnesser").color(NamedTextColor.GREEN)));
-                            wittnesChecker.append(witnessYes);
-                            member.sendMessage(wittnesChecker.build());
+                            witnessChecker.append(witnessYes);
+                            member.sendMessage(witnessChecker.build());
                         }
                         TimerAPI.getApi().setEnabled(member, true);
                         TimerAPI.getApi().setTimer(member, true);
@@ -756,7 +757,7 @@ public class CourtManager {
                                     .append(Component.text("|----------------------------------|", NamedTextColor.DARK_GRAY)));
                         }
                     }
-                    Integer cell = new Random().nextInt(5) + 1;
+                    int cell = new Random().nextInt(5) + 1;
                     TimerAPI.getApi().setEnabled(player, true);
                     TimerAPI.getApi().setTime(player, 600);
                     TimerAPI.getApi().setTimer(player, true);
@@ -958,7 +959,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -972,7 +973,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -986,7 +987,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1000,7 +1001,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1014,7 +1015,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1028,7 +1029,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1042,7 +1043,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1056,7 +1057,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1070,7 +1071,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1084,7 +1085,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1098,7 +1099,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1112,7 +1113,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1126,7 +1127,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1140,7 +1141,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1154,7 +1155,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1168,7 +1169,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1182,7 +1183,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1196,7 +1197,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1210,7 +1211,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1224,7 +1225,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1238,7 +1239,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1252,7 +1253,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1266,7 +1267,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
@@ -1280,7 +1281,7 @@ public class CourtManager {
                     armorStand.setVisible(false);
                     armorStand.setGravity(false);
 
-                    armorStand.addPassenger(member);
+                    armorStand.addPassenger(player);
                     break;
                 }
 
