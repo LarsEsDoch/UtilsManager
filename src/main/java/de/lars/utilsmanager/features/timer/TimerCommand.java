@@ -65,7 +65,7 @@ public class TimerCommand implements BasicCommand {
                         }
                     }
                 }
-                if(timer.isOff(player)) {
+                if(!timer.isEnabled(player)) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist ausgeschaltet!", NamedTextColor.RED)));
@@ -319,7 +319,7 @@ public class TimerCommand implements BasicCommand {
                     }
                 }
                 timer.setRunning(player,false);
-                if (timer.isOff(player)) {
+                if (!timer.isEnabled(player)) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist bereits ausgeschaltet!", NamedTextColor.RED)));
@@ -337,7 +337,7 @@ public class TimerCommand implements BasicCommand {
                             .append(Component.text("The timer was switched off.", NamedTextColor.WHITE)));
                 }
 
-                timer.setOff(player, true);
+                timer.setEnabled(player, false);
                 break;
             }
             case "on": {
@@ -355,7 +355,7 @@ public class TimerCommand implements BasicCommand {
                         }
                     }
                 }
-                if (!timer.isOff(player)) {
+                if (timer.isEnabled(player)) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist bereits angeschaltet!", NamedTextColor.RED)));
@@ -373,7 +373,7 @@ public class TimerCommand implements BasicCommand {
                             .append(Component.text("The timer was switched on.", NamedTextColor.WHITE)));
                 }
 
-                timer.setOff(player,false);
+                timer.setEnabled(player,true);
                 break;
             }
             case "public": {
@@ -414,7 +414,7 @@ public class TimerCommand implements BasicCommand {
                     }
                     for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                         timer.setRunning(onlinePlayer, false);
-                        timer.setOff(onlinePlayer, false);
+                        timer.setEnabled(onlinePlayer, true);
                     }
                     timer.setRunning(player, true);
                     timer.setPublic(player, true);
@@ -456,11 +456,9 @@ public class TimerCommand implements BasicCommand {
                     }
                     timer.setPublic(player, false);
                     for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
-                        timer.setRunning(onlinePlayer, false);
-                        timer.setOff(onlinePlayer, true);
+                        timer.setEnabled(onlinePlayer, false);
                     }
-                    timer.setRunning(player, true);
-                    timer.setOff(player, false);
+                    timer.setEnabled(player, true);
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist nicht mehr öffentlich.", NamedTextColor.WHITE)));

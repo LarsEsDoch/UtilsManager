@@ -19,7 +19,7 @@ public class Timer {
     private void run() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (TimerAPI.getApi().isOff(player)) {
+                if (!TimerAPI.getApi().isEnabled(player)) {
                     return;
                 }
                 if (TimerAPI.getApi().isPublic(player)) {

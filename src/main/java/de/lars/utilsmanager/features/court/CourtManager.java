@@ -8,6 +8,7 @@ import de.lars.utilsmanager.utils.RankStatements;
 import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -151,7 +152,6 @@ public class CourtManager {
                     if (criminal == 3) {
                         return;
                     }
-                    timeToCourt = 60;
                     if (isPlayerOffline(CourtAPI.getApi().getProsecutor(player))) {
                         CourtAPI.getApi().resetPlayer(player);
                         return;
@@ -578,16 +578,16 @@ public class CourtManager {
                             wittnesChecker.append(witnessYes);
                             member.sendMessage(wittnesChecker.build());
                         }
-                        TimerAPI.getApi().setOff(member, false);
+                        TimerAPI.getApi().setEnabled(member, true);
                         TimerAPI.getApi().setTimer(member, true);
                         TimerAPI.getApi().setTime(member, 120);
                         TimerAPI.getApi().setRunning(member,true);
                     }
-                    TimerAPI.getApi().setOff(prosecutor, false);
+                    TimerAPI.getApi().setEnabled(prosecutor, true);
                     TimerAPI.getApi().setTimer(prosecutor, true);
                     TimerAPI.getApi().setTime(prosecutor, 120);
                     TimerAPI.getApi().setRunning(prosecutor,true);
-                    TimerAPI.getApi().setOff(player, false);
+                    TimerAPI.getApi().setEnabled(player, true);
                     TimerAPI.getApi().setTimer(player, true);
                     TimerAPI.getApi().setTime(player, 120);
                     TimerAPI.getApi().setRunning(player,true);
@@ -603,9 +603,9 @@ public class CourtManager {
                             TimerAPI.getApi().setRunning(member, false);
                             TimerAPI.getApi().setTime(member, 0);
                             TimerAPI.getApi().setTimer(member, false);
-                            TimerAPI.getApi().setOff(member, true);
+                            TimerAPI.getApi().setEnabled(member, false);
                         }
-                        TimerAPI.getApi().setOff(player, true);
+                        TimerAPI.getApi().setEnabled(player, false);
                         TimerAPI.getApi().setTimer(player, false);
                         TimerAPI.getApi().setTime(player, 0);
                         TimerAPI.getApi().setRunning(player,false);
@@ -617,14 +617,14 @@ public class CourtManager {
                             TimerAPI.getApi().setRunning(member, false);
                             TimerAPI.getApi().setTime(member, 0);
                             TimerAPI.getApi().setTimer(member, false);
-                            TimerAPI.getApi().setOff(member, true);
+                            TimerAPI.getApi().setEnabled(member, false);
                         }
-                        TimerAPI.getApi().setOff(player, true);
+                        TimerAPI.getApi().setEnabled(player, false);
                         TimerAPI.getApi().setTimer(player, false);
                         TimerAPI.getApi().setTime(player, 0);
                         TimerAPI.getApi().setRunning(player,false);
 
-                        TimerAPI.getApi().setOff(prosecutor, true);
+                        TimerAPI.getApi().setEnabled(prosecutor, false);
                         TimerAPI.getApi().setTimer(prosecutor, false);
                         TimerAPI.getApi().setTime(prosecutor, 0);
                         TimerAPI.getApi().setRunning(prosecutor,false);
@@ -640,15 +640,15 @@ public class CourtManager {
                         TimerAPI.getApi().setRunning(member, false);
                         TimerAPI.getApi().setTime(member, 0);
                         TimerAPI.getApi().setTimer(member, false);
-                        TimerAPI.getApi().setOff(member, true);
+                        TimerAPI.getApi().setEnabled(member, false);
                     }
                     UUID prosecutorUUID = UUID.fromString(CourtAPI.getApi().getProsecutor(player));
                     Player prosecutor = Bukkit.getPlayer(prosecutorUUID);
-                    TimerAPI.getApi().setOff(player, true);
+                    TimerAPI.getApi().setEnabled(player, false);
                     TimerAPI.getApi().setTimer(player, false);
                     TimerAPI.getApi().setTime(player, 0);
                     TimerAPI.getApi().setRunning(player,false);
-                    TimerAPI.getApi().setOff(prosecutor, true);
+                    TimerAPI.getApi().setEnabled(prosecutor, false);
                     TimerAPI.getApi().setTimer(prosecutor, false);
                     TimerAPI.getApi().setTime(prosecutor, 0);
                     TimerAPI.getApi().setRunning(prosecutor,false);
@@ -757,7 +757,7 @@ public class CourtManager {
                         }
                     }
                     Integer cell = new Random().nextInt(5) + 1;
-                    TimerAPI.getApi().setOff(player, false);
+                    TimerAPI.getApi().setEnabled(player, true);
                     TimerAPI.getApi().setTime(player, 600);
                     TimerAPI.getApi().setTimer(player, true);
                     TimerAPI.getApi().setRunning(player,true);
@@ -945,7 +945,6 @@ public class CourtManager {
     public void sitOn() {
         for (int i = 0; i < members.size(); i++) {
             Player player = members.get(i);
-            Player member = player;
             World world = Bukkit.getWorld("world");
             int place = i + 1;
             switch (place) {

@@ -48,7 +48,7 @@ public class BedListener{
                             .append(Component.text(" Spieler schlafen.", NamedTextColor.DARK_PURPLE));
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (!TimerAPI.getApi().isOff(player)) {
+                    if (TimerAPI.getApi().isEnabled(player)) {
                         return;
                     }
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
