@@ -1,9 +1,10 @@
 name: UtilsManager
 version: '3.1.1'
-main: de.lars.utilsmanager.UtilsManager
-api-version: '1.21'
+main: dev.lars.utilsmanager.UtilsManager
+api-version: '1.21.10'
 description: A Plugin by Lars for the whole server management
-author: KompetenzL0s
+author: LarsEsDoch
+website: "https://github.com/LarsEsDoch/UtilsManager"
 settings:
   restart-script: start.sh
 dependencies:
