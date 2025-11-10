@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.freecam;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;

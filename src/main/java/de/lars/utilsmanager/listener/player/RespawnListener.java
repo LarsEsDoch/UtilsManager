@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

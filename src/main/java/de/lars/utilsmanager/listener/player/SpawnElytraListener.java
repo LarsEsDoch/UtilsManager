@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

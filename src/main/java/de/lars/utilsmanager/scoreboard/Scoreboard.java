@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.scoreboard;
 
-import de.lars.apimanager.apis.economyAPI.EconomyAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.playerAPI.PlayerAPI;
-import de.lars.apimanager.apis.questAPI.QuestAPI;
+import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
+import dev.lars.apimanager.apis.questAPI.QuestAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.RankStatements;
 import net.kyori.adventure.text.Component;

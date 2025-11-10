@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.rank;
 
-import de.lars.apimanager.apis.economyAPI.EconomyAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

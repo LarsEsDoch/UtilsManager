@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.backpack;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.limitAPI.LimitAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.limitAPI.LimitAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

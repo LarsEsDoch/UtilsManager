@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.FormatNumbers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

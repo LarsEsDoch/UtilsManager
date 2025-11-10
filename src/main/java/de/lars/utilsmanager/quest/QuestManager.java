@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.quest;
 
-import de.lars.apimanager.apis.economyAPI.EconomyAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.questAPI.QuestAPI;
+import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.questAPI.QuestAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;

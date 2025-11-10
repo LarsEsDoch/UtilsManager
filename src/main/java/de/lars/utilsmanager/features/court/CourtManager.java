@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.court;
 
-import de.lars.apimanager.apis.courtAPI.CourtAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.timerAPI.TimerAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.timerAPI.TimerAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.RankStatements;
 import de.lars.utilsmanager.utils.Statements;

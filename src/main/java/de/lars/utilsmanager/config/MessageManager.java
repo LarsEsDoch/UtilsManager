@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.config;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.economy;
 
-import de.lars.apimanager.apis.economyAPI.EconomyAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -321,14 +321,14 @@ public class BuyCommand implements BasicCommand {
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         if (args.length == 0 || args.length == 1) {
-            List<String> timercommands = new ArrayList<>();
-            timercommands.add("copper");
-            timercommands.add("amethyst");
-            timercommands.add("diamond");
-            timercommands.add("netherite");
-            timercommands.add("spawner");
+            List<String> materials = new ArrayList<>();
+            materials.add("copper");
+            materials.add("amethyst");
+            materials.add("diamond");
+            materials.add("netherite");
+            materials.add("spawner");
 
-            return timercommands;
+            return materials;
         }
         return Collections.emptyList();
     }

@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apimanager.apis.economyAPI.EconomyAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
@@ -434,7 +434,7 @@ public class ShopListener implements Listener {
                     case 10 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 }
 
-                PrefixAPI.getApi().setDecorations(player, Collections.emptySet());
+                PrefixAPI.getApi().setDecoration(player, null);
 
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD));

@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.moderation;
 
-import de.lars.apimanager.apis.banAPI.BanAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.banAPI.BanAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.RankStatements;
 import net.kyori.adventure.text.Component;

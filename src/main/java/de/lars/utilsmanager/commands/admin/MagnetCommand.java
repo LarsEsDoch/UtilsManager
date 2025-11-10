@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.commands.admin;
 
-import de.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.UtilsManager;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

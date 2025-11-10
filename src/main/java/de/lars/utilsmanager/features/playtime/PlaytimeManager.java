@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.features.playtime;
 
-import de.lars.apimanager.apis.playerAPI.PlayerAPI;
+import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
 import de.lars.utilsmanager.UtilsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

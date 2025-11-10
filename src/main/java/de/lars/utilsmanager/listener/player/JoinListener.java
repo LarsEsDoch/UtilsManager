@@ -1,13 +1,13 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apimanager.apis.economyAPI.EconomyAPI;
-import de.lars.apimanager.apis.courtAPI.CourtAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.limitAPI.LimitAPI;
-import de.lars.apimanager.apis.playerAPI.PlayerAPI;
-import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
-import de.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
+import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.limitAPI.LimitAPI;
+import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
+import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.scoreboard.Scoreboard;
 import de.lars.utilsmanager.utils.RankStatements;

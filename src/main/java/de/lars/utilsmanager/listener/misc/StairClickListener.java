@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.listener.misc;
 
-import de.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtAPI;
 import de.lars.utilsmanager.UtilsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

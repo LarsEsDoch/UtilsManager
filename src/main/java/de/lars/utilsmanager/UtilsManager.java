@@ -67,7 +67,7 @@ public final class UtilsManager extends JavaPlugin {
         registerEventsAndCommands();
         startBackgroundTasks();
 
-        logToConsole("UtilsManager enabled!", NamedTextColor.GREEN);
+        logToConsole("UtilsManager enabled!", NamedTextColor.DARK_GREEN);
     }
 
     @Override

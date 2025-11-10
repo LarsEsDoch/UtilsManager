@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.features.timer;
 
-import de.lars.apimanager.apis.courtAPI.CourtAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.timerAPI.ITimerAPI;
-import de.lars.apimanager.apis.timerAPI.TimerAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.timerAPI.ITimerAPI;
+import dev.lars.apimanager.apis.timerAPI.TimerAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

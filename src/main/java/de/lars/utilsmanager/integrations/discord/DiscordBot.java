@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.integrations.discord;
 
-import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import de.lars.utilsmanager.utils.Statements;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;

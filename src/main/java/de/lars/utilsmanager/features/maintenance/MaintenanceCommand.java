@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.maintenance;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
-import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import de.lars.utilsmanager.utils.FormatNumbers;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;

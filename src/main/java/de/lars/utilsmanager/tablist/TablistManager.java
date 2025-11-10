@@ -1,9 +1,9 @@
 package de.lars.utilsmanager.tablist;
 
-import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
-import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
-import de.lars.apimanager.apis.statusAPI.StatusAPI;
+import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.statusAPI.StatusAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.Gradient;
 import de.lars.utilsmanager.utils.RankStatements;

@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.teleport;
 
-import de.lars.apimanager.apis.courtAPI.CourtAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

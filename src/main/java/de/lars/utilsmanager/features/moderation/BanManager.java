@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.features.moderation;
 
-import de.lars.apimanager.apis.banAPI.BanAPI;
+import dev.lars.apimanager.apis.banAPI.BanAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.FormatNumbers;
 import net.kyori.adventure.text.Component;

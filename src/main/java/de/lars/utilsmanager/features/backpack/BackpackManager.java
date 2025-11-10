@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.backpack;
 
-import de.lars.apimanager.apis.backpackAPI.BackpackAPI;
-import de.lars.apimanager.apis.limitAPI.LimitAPI;
+import dev.lars.apimanager.apis.backpackAPI.BackpackAPI;
+import dev.lars.apimanager.apis.limitAPI.LimitAPI;
 import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

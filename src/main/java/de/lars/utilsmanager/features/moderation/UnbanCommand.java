@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.features.moderation;
 
-import de.lars.apimanager.apis.banAPI.BanAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.banAPI.BanAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class UnbanCommand implements BasicCommand {
 
@@ -57,11 +58,11 @@ public class UnbanCommand implements BasicCommand {
         if (!(player.hasPermission("plugin.ban"))) {
             return Collections.emptyList();
         }
-        /*List<String> players = BanAPI.getApi().getBannedPlayer();
+        List<String> players = BanAPI.getApi().getBannedPlayers();
         if (args.length == 0 || args.length == 1) {
 
             return players;
-        } */
+        }
         return Collections.emptyList();
     }
 

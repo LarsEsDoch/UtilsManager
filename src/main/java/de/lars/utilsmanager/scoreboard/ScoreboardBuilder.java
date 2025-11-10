@@ -1,6 +1,6 @@
 package de.lars.utilsmanager.scoreboard;
 
-import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.Gradient;
 import net.kyori.adventure.text.Component;

@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.commands.player;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.prefixAPI.PrefixAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import de.lars.utilsmanager.UtilsManager;
 import de.lars.utilsmanager.utils.ItemBuilder;
 import de.lars.utilsmanager.utils.Statements;
@@ -558,7 +558,7 @@ public class PrefixCommand implements BasicCommand {
                 if (RankAPI.getApi().getRankId(player) == 10) {
                     PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 }
-                PrefixAPI.getApi().setDecorations(player, Collections.emptySet());
+                PrefixAPI.getApi().setDecoration(player, null);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD)));
                 } else {

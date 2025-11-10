@@ -1,7 +1,7 @@
 package de.lars.utilsmanager.commands.teleport.home;
 
-import de.lars.apimanager.apis.homeAPI.HomeAPI;
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.homeAPI.HomeAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import de.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

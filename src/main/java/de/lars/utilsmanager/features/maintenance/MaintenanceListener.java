@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.features.maintenance;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.rankAPI.RankAPI;
-import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;

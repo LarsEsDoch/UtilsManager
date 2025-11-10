@@ -1,8 +1,8 @@
 package de.lars.utilsmanager.listener.player;
 
-import de.lars.apimanager.apis.languageAPI.LanguageAPI;
-import de.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
-import de.lars.apimanager.apis.timerAPI.TimerAPI;
+import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.timerAPI.TimerAPI;
 import de.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
