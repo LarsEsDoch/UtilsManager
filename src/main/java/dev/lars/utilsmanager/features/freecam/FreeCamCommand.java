@@ -12,7 +12,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -48,6 +47,7 @@ public class FreeCamCommand implements BasicCommand {
         armorStand.setVisible(false);
         armorStand.setGravity(false);
         armorStand.setMarker(true);
+        armorStand.setPersistent(false);
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         if (skullMeta != null) {
@@ -60,26 +60,20 @@ public class FreeCamCommand implements BasicCommand {
         armorStand.getEquipment().setHelmet(skull);
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du befindest dich nun im Kamera Modus. Benutzte ", NamedTextColor.GREEN))
-                    .append(Component.text("/freecamleave", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("\"freecamleave\"")))
+                    .append(Component.text("/freecamleave", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("freecamleave")))
                     .append(Component.text(" zum verlassen.", NamedTextColor.GREEN)));
+            player.sendActionBar(Component.text("Drücke ", NamedTextColor.YELLOW)
+                    .append(Component.text("F", NamedTextColor.AQUA))
+                    .append(Component.text(" um den Freecam-Modus zu verlassen.", NamedTextColor.YELLOW))
+            );
         } else {
             player.sendMessage(Statements.getPrefix().append(Component.text("You're now in the cam mode. Use ", NamedTextColor.GREEN))
-                    .append(Component.text("/freecamleave", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("\"freecamleave\"")))
+                    .append(Component.text("/freecamleave", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("freecamleave")))
                     .append(Component.text(" to leave.", NamedTextColor.GREEN)));
+            player.sendActionBar(Component.text("Press ", NamedTextColor.YELLOW)
+                    .append(Component.text("F", NamedTextColor.AQUA))
+                    .append(Component.text(" to leave the freecam mode.", NamedTextColor.YELLOW))
+            );
         }
-    }
-
-    private BlockFace getBlockFace(Player player) {
-        float yaw = player.getLocation().getYaw();
-        yaw += 180;
-
-        if (yaw >= 45 && yaw <= 135) {
-            return BlockFace.WEST;
-        } else if (yaw > 135 && yaw <= 225) {
-            return BlockFace.NORTH;
-        } else if (yaw > 225 && yaw <= 315) {
-            return BlockFace.EAST;
-        }
-        return BlockFace.SOUTH;
     }
 }

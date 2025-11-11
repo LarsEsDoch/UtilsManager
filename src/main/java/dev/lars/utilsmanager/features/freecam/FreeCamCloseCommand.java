@@ -7,6 +7,7 @@ import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -29,13 +30,19 @@ public class FreeCamCloseCommand implements BasicCommand {
         if (!freecamListener.getFreeCamUser().containsKey(player.getName())) return;
         player.teleport(freecamListener.freeCamUser.get(player.getName()));
         player.setGameMode(GameMode.SURVIVAL);
-        ArmorStand armorStand = freecamListener.getFreeCamArmorStand().get(player.getUniqueId());
-        freecamListener.getFreeCamArmorStand().remove(player.getUniqueId());
+        ArmorStand armorStand = freecamListener.getFreeCamArmorStand().remove(player.getUniqueId());
         freecamListener.getFreeCamUser().remove(player.getName());
 
         if (armorStand != null && !armorStand.isDead()) {
+            Chunk chunk = armorStand.getLocation().getChunk();
+            boolean wasLoaded = chunk.isLoaded();
+            if (!wasLoaded) chunk.load();
+
             armorStand.remove();
+
+            if (!wasLoaded) chunk.unload();
         }
+
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun zurück im Überlebens Modus", NamedTextColor.GREEN)));
         } else {
