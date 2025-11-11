@@ -1,13 +1,13 @@
 package dev.lars.utilsmanager.listener.player;
 
-import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.limitAPI.LimitAPI;
 import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
+import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
-import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.scoreboard.Scoreboard;
 import dev.lars.utilsmanager.utils.RankStatements;
@@ -112,8 +112,7 @@ public class JoinListener implements Listener {
                             .append(Component.text(" joined the server.", NamedTextColor.WHITE)));
                 }
             }
-            UtilsManager.getInstance().getRankManager().setRanks(player);
-            UtilsManager.getInstance().getRankManager().setPerm();
+            UtilsManager.getInstance().getRankManager().setPermisssions(player);
             UtilsManager.getInstance().getTablistManager().setTabList(player);
             Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                 StringBuilder message;
@@ -159,8 +158,7 @@ public class JoinListener implements Listener {
             }
         }
         player.sendMessage(Statements.getPrefix().append(Component.text("Willkommen auf diesem Server! Habe Spaß und genieße es.", NamedTextColor.GOLD, TextDecoration.BOLD)));
-        UtilsManager.getInstance().getRankManager().setRanks(player);
-        UtilsManager.getInstance().getRankManager().setPerm();
+        UtilsManager.getInstance().getRankManager().setPermisssions(player);
         UtilsManager.getInstance().getTablistManager().setTabList(player);
         Component LanguageText = getLanguageText();
         player.sendMessage(LanguageText);
@@ -176,18 +174,16 @@ public class JoinListener implements Listener {
     private static @NotNull Component getLanguageText() {
         Component lMG = Component.text("[German]", NamedTextColor.YELLOW).clickEvent(ClickEvent.runCommand("/language deutsch"));
         Component lME = Component.text("[English]", NamedTextColor.BLUE).clickEvent(ClickEvent.runCommand("/language english"));
-        Component LanguageText = Statements.getPrefix().append(Component.text("Choose your language: ", NamedTextColor.GRAY))
+        return Statements.getPrefix().append(Component.text("Choose your language: ", NamedTextColor.GRAY))
                 .append(lMG).append(Component.text(" / ", NamedTextColor.GRAY)).append(lME);
-        return LanguageText;
     }
 
     private static @NotNull Component getComponent() {
         Component CGJ = Component.text("[Yes]", NamedTextColor.YELLOW).clickEvent(ClickEvent.runCommand("/gifts"))
                 .hoverEvent(HoverEvent.showText(Component.text("Take it!", NamedTextColor.GRAY)));
         Component CGN = Component.text("[No]", NamedTextColor.BLUE).clickEvent(ClickEvent.runCommand(""));
-        Component GiftText = Statements.getPrefix().append(Component.text("Take your starter gift: ", NamedTextColor.GRAY))
+        return Statements.getPrefix().append(Component.text("Take your starter gift: ", NamedTextColor.GRAY))
                 .append(CGJ).append(Component.text(" / ", NamedTextColor.GRAY)).append(CGN);
-        return GiftText;
     }
 
     @EventHandler

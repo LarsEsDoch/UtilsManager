@@ -114,6 +114,7 @@ public final class UtilsManager extends JavaPlugin {
     private void registerGameFeatures() {
         new RecipeLoader().registerRecipes();
         entitySummons.EntityHearths();
+        rankManager.checkRanks();
     }
 
     private void registerEventsAndCommands() {

@@ -15,335 +15,9 @@ import java.time.Instant;
 
 public class RankManager {
 
-    public void setRanks(Player player) {
-        run(player);
-    }
-
-    public void setPerm() {
-        run1();
-    }
-
-    private void run1() {
-        for (Player target : Bukkit.getOnlinePlayers()) {
-            if (RankAPI.getApi().getRankId(target) == 10 || target.isOp()) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.addcoins", true);
-                attachment.setPermission("plugin.setcoins", true);
-                attachment.setPermission("plugin.backpack", true);
-                attachment.setPermission("plugin.backpackconfig", true);
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.realtime", true);
-                attachment.setPermission("plugin.setspawn", true);
-                attachment.setPermission("plugin.spawn", true);
-                attachment.setPermission("plugin.timer", true);
-                attachment.setPermission("plugin.timer.public", true);
-                attachment.setPermission("plugin.togglebed", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("plugin.rank", true);
-                attachment.setPermission("spark", true);
-                attachment.setPermission("worldedit.*", true);
-                attachment.setPermission("minecraft.login.bypass-player-limit", true);
-                attachment.setPermission("minecraft.login.bypass-whitelist", true);
-                attachment.setPermission("bukkit.command.reload",true);
-                attachment.setPermission("bukkit.command.timings",true);
-                attachment.setPermission("troll.*",true);
-                attachment.setPermission("sv",true);
-                attachment.setPermission("sv.*",true);
-                attachment.setPermission("sv.use",true);
-                attachment.setPermission("sv.see",true);
-                attachment.setPermission("sv.silentchest",true);
-                attachment.setPermission("minecraft.admin.command_feedback",true);
-                attachment.setPermission("minecraft.nbt.copy",true);
-                attachment.setPermission("minecraft.nbt.place",true);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("minecraft.debugstick", true);
-                attachment.setPermission("minecraft.debugstick.always", true);
-                attachment.setPermission("plugin.nick", true);
-                attachment.setPermission("plugin.spawnbuild", true);
-                attachment.setPermission("plugin.freeze", true);
-                attachment.setPermission("plugin.inv", true);
-                attachment.setPermission("plugin.prefix", true);
-                attachment.setPermission("plugin.ban", true);
-                attachment.setPermission("plugin.home", true);
-                attachment.setPermission("plugin.heal", true);
-                attachment.setPermission("plugin.announce", true);
-                attachment.setPermission("plugin.clearchat", true);
-                attachment.setPermission("plugin.entity", true);
-                attachment.setPermission("plugin.restart", true);
-                attachment.setPermission("plugin.search", true);
-                attachment.setPermission("plugin.sudo", true);
-                attachment.setPermission("plugin.vanish", true);
-                attachment.setPermission("plugin.freecam", true);
-                attachment.setPermission("plugin.maintenance", true);
-            }
-            if (RankAPI.getApi().getRankId(target) == 9) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.addcoins", true);
-                attachment.setPermission("plugin.setcoins", true);
-                attachment.setPermission("plugin.backpack", true);
-                attachment.setPermission("plugin.backpackconfig", true);
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.realtime", true);
-                attachment.setPermission("plugin.setspawn", true);
-                attachment.setPermission("plugin.spawn", true);
-                attachment.setPermission("plugin.timer", true);
-                attachment.setPermission("plugin.togglebed", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("plugin.rank", true);
-                attachment.setPermission("spark", true);
-                attachment.setPermission("worldedit.*", true);
-                attachment.setPermission("minecraft.login.bypass-player-limit", true);
-                attachment.setPermission("minecraft.login.bypass-whitelist", true);
-                attachment.setPermission("bukkit.command.reload",true);
-                attachment.setPermission("bukkit.command.timings",true);
-                attachment.setPermission("troll.*",true);
-                attachment.setPermission("sv.use",true);
-                attachment.setPermission("sv.silentchest",true);
-                attachment.setPermission("minecraft.admin.command_feedback",true);
-                attachment.setPermission("minecraft.nbt.copy",true);
-                attachment.setPermission("minecraft.nbt.place",true);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("minecraft.debugstick", true);
-                attachment.setPermission("minecraft.debugstick.always", true);
-                attachment.setPermission("plugin.nick", true);
-                attachment.setPermission("plugin.spawnbuild", true);
-                attachment.setPermission("plugin.freeze", true);
-                attachment.setPermission("plugin.inv", true);
-                attachment.setPermission("plugin.prefix", true);
-                attachment.setPermission("plugin.ban", true);
-                attachment.setPermission("plugin.home", true);
-                attachment.setPermission("plugin.heal", true);
-                attachment.setPermission("plugin.announce", true);
-                attachment.setPermission("plugin.clearchat", true);
-                attachment.setPermission("plugin.entity", true);
-                attachment.setPermission("plugin.restart", true);
-                attachment.setPermission("plugin.search", true);
-                attachment.setPermission("plugin.sudo", true);
-                attachment.setPermission("plugin.vanish", true);
-                attachment.setPermission("plugin.freecam", true);
-                attachment.setPermission("plugin.maintenance", true);
-            }
-            if (RankAPI.getApi().getRankId(target) == 8) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.addcoins", true);
-                attachment.setPermission("plugin.setcoins", true);
-                attachment.setPermission("plugin.backpack", true);
-                attachment.setPermission("plugin.backpackconfig", true);
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.realtime", true);
-                attachment.setPermission("plugin.setspawn", true);
-                attachment.setPermission("plugin.spawn", true);
-                attachment.setPermission("plugin.timer", true);
-                attachment.setPermission("plugin.togglebed", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("spark", true);
-                attachment.setPermission("worldedit.*", true);
-                attachment.setPermission("bukkit.command.reload",true);
-                attachment.setPermission("bukkit.command.timings",true);
-                attachment.setPermission("troll.*",true);
-                attachment.setPermission("minecraft.nbt.copy",true);
-                attachment.setPermission("minecraft.nbt.place",true);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("minecraft", true);
-                attachment.setPermission("minecraft.*", true);
-                attachment.setPermission("minecraft.command.*", true);
-                attachment.setPermission("plugin.nick", true);
-                attachment.setPermission("plugin.prefix", true);
-                attachment.setPermission("plugin.home", true);
-                attachment.setPermission("plugin.announce", true);
-                attachment.setPermission("plugin.clearchat", true);
-                attachment.setPermission("plugin.entity", true);
-                attachment.setPermission("plugin.restart", true);
-                attachment.setPermission("plugin.search", true);
-                attachment.setPermission("plugin.vanish", true);
-                attachment.setPermission("plugin.freecam", true);
-                attachment.setPermission("plugin.maintenance", true);
-            }
-            if (RankAPI.getApi().getRankId(target) == 7) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.addcoins", true);
-                attachment.setPermission("plugin.setcoins", true);
-                attachment.setPermission("plugin.backpack", true);
-                attachment.setPermission("plugin.backpackconfig", true);
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.realtime", true);
-                attachment.setPermission("plugin.setspawn", true);
-                attachment.setPermission("plugin.spawn", true);
-                attachment.setPermission("plugin.timer", true);
-                attachment.setPermission("plugin.togglebed", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("spark", true);
-                attachment.setPermission("worldedit.navigation.jumpto.command", true);
-                attachment.setPermission("bukkit.command.reload",true);
-                attachment.setPermission("bukkit.command.timings",true);
-                attachment.setPermission("minecraft.nbt.copy",true);
-                attachment.setPermission("minecraft.nbt.place",true);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("plugin.prefix", true);
-                attachment.setPermission("plugin.home", true);
-                attachment.setPermission("plugin.clearchat", true);
-                attachment.setPermission("plugin.entity", true);
-                attachment.setPermission("plugin.search", true);
-                attachment.setPermission("plugin.freecam", true);
-                attachment.setPermission("plugin.maintenance", true);
-            }
-            if (RankAPI.getApi().getRankId(target) == 6) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.backpack", true);
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.setspawn", true);
-                attachment.setPermission("plugin.spawn", true);
-                attachment.setPermission("plugin.timer", true);
-                attachment.setPermission("plugin.togglebed", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("worldedit.*", true);
-                attachment.setPermission("bukkit.command.version",false);
-                attachment.setPermission("bukkit.command.plugins",false);
-                attachment.setPermission("bukkit.command.help",false);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("plugin.spawnbuild", true);
-                attachment.setPermission("plugin.prefix", true);
-                attachment.setPermission("plugin.home", true);
-                attachment.setPermission("plugin.entity", true);
-                attachment.setPermission("plugin.search", true);
-                attachment.setPermission("plugin.freecam", true);
-            }
-            if (RankAPI.getApi().getRankId(target) == 5) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.backpack", true);
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.spawn", true);
-                attachment.setPermission("plugin.timer", true);
-                attachment.setPermission("plugin.togglebed", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("spark.tps", true);
-                attachment.setPermission("bukkit.command.version",false);
-                attachment.setPermission("bukkit.command.plugins",false);
-                attachment.setPermission("bukkit.command.help",false);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("plugin.prefix", true);
-                attachment.setPermission("plugin.home", true);
-                attachment.setPermission("plugin.search", true);
-                attachment.setPermission("plugin.freecam", true);
-            }
-            if (RankAPI.getApi().getRankId(target) == 4) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.backpack", true);
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.togglebed", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("bukkit.command.version",false);
-                attachment.setPermission("bukkit.command.plugins",false);
-                attachment.setPermission("bukkit.command.help",false);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("plugin.home", true);
-                attachment.setPermission("plugin.search", true);
-
-            }
-            if (RankAPI.getApi().getRankId(target) == 3) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.shop", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.pay", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.togglescoreboard", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("bukkit.command.version",false);
-                attachment.setPermission("bukkit.command.plugins",false);
-                attachment.setPermission("bukkit.command.help",false);
-                attachment.setPermission("minecraft.autocraft",true);
-                attachment.setPermission("plugin.search", true);
-            }
-            if (RankAPI.getApi().getRankId(target) == 2) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.buy", true);
-                attachment.setPermission("plugin.sell", true);
-                attachment.setPermission("plugin.price", true);
-                attachment.setPermission("plugin.date", true);
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("plugin.wallet", true);
-                attachment.setPermission("bukkit.command.version",false);
-                attachment.setPermission("bukkit.command.plugins",false);
-                attachment.setPermission("bukkit.command.help",false);
-                attachment.setPermission("minecraft.autocraft",true);
-
-            }
-            if (RankAPI.getApi().getRankId(target) == 1) {
-                PermissionAttachment attachment = target.addAttachment(UtilsManager.getInstance());
-                attachment.setPermission("plugin.firstcoins", true);
-                attachment.setPermission("plugin.language", true);
-                attachment.setPermission("bukkit.command.version",false);
-                attachment.setPermission("bukkit.command.plugins",false);
-                attachment.setPermission("bukkit.command.help",false);
-
-            }
-        }
-    }
-
-    private void run(Player player) {
+    public void checkRanks() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
-            if (RankAPI.getApi().getRankId(player) == 5 || RankAPI.getApi().getRankId(player) == 4 || RankAPI.getApi().getRankId(player) == 3 || RankAPI.getApi().getRankId(player) == 2) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 Instant now = Instant.now();
                 Instant expiresAt = RankAPI.getApi().getExpiresAt(player);
                 if (expiresAt.compareTo(now) <= 0) {
@@ -382,6 +56,319 @@ public class RankManager {
                     }
                 }
             }
-        }, 20, 12000);
+        }, 0, 60 * 20);
+    }
+
+    public void setPermisssions(Player player) {
+        PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
+        Integer rankId = RankAPI.getApi().getRankId(player);
+        if (rankId == null) {
+            rankId = 1;
+        }
+        if (player.isOp()) {
+            rankId = 10;
+        }
+        switch (rankId) {
+            case 10: {
+                attachment.setPermission("utilsmanager.addcoins", true);
+                attachment.setPermission("utilsmanager.setcoins", true);
+                attachment.setPermission("utilsmanager.backpack", true);
+                attachment.setPermission("utilsmanager.backpackconfig", true);
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.realtime", true);
+                attachment.setPermission("utilsmanager.setspawn", true);
+                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.timer", true);
+                attachment.setPermission("utilsmanager.timer.public", true);
+                attachment.setPermission("utilsmanager.togglebed", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("utilsmanager.rank", true);
+                attachment.setPermission("spark", true);
+                attachment.setPermission("worldedit.*", true);
+                attachment.setPermission("minecraft.login.bypass-player-limit", true);
+                attachment.setPermission("minecraft.login.bypass-whitelist", true);
+                attachment.setPermission("bukkit.command.reload",true);
+                attachment.setPermission("bukkit.command.timings",true);
+                attachment.setPermission("troll.*",true);
+                attachment.setPermission("sv",true);
+                attachment.setPermission("sv.*",true);
+                attachment.setPermission("sv.use",true);
+                attachment.setPermission("sv.see",true);
+                attachment.setPermission("sv.silentchest",true);
+                attachment.setPermission("minecraft.admin.command_feedback",true);
+                attachment.setPermission("minecraft.nbt.copy",true);
+                attachment.setPermission("minecraft.nbt.place",true);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("minecraft.debugstick", true);
+                attachment.setPermission("minecraft.debugstick.always", true);
+                attachment.setPermission("utilsmanager.nick", true);
+                attachment.setPermission("utilsmanager.spawnbuild", true);
+                attachment.setPermission("utilsmanager.freeze", true);
+                attachment.setPermission("utilsmanager.inv", true);
+                attachment.setPermission("utilsmanager.prefix", true);
+                attachment.setPermission("utilsmanager.ban", true);
+                attachment.setPermission("utilsmanager.home", true);
+                attachment.setPermission("utilsmanager.heal", true);
+                attachment.setPermission("utilsmanager.announce", true);
+                attachment.setPermission("utilsmanager.clearchat", true);
+                attachment.setPermission("utilsmanager.entity", true);
+                attachment.setPermission("utilsmanager.restart", true);
+                attachment.setPermission("utilsmanager.search", true);
+                attachment.setPermission("utilsmanager.sudo", true);
+                attachment.setPermission("utilsmanager.vanish", true);
+                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.maintenance", true);
+            }
+            case 9: {
+                attachment.setPermission("utilsmanager.addcoins", true);
+                attachment.setPermission("utilsmanager.setcoins", true);
+                attachment.setPermission("utilsmanager.backpack", true);
+                attachment.setPermission("utilsmanager.backpackconfig", true);
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.realtime", true);
+                attachment.setPermission("utilsmanager.setspawn", true);
+                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.timer", true);
+                attachment.setPermission("utilsmanager.togglebed", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("utilsmanager.rank", true);
+                attachment.setPermission("spark", true);
+                attachment.setPermission("worldedit.*", true);
+                attachment.setPermission("minecraft.login.bypass-player-limit", true);
+                attachment.setPermission("minecraft.login.bypass-whitelist", true);
+                attachment.setPermission("bukkit.command.reload",true);
+                attachment.setPermission("bukkit.command.timings",true);
+                attachment.setPermission("troll.*",true);
+                attachment.setPermission("sv.use",true);
+                attachment.setPermission("sv.silentchest",true);
+                attachment.setPermission("minecraft.admin.command_feedback",true);
+                attachment.setPermission("minecraft.nbt.copy",true);
+                attachment.setPermission("minecraft.nbt.place",true);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("minecraft.debugstick", true);
+                attachment.setPermission("minecraft.debugstick.always", true);
+                attachment.setPermission("utilsmanager.nick", true);
+                attachment.setPermission("utilsmanager.spawnbuild", true);
+                attachment.setPermission("utilsmanager.freeze", true);
+                attachment.setPermission("utilsmanager.inv", true);
+                attachment.setPermission("utilsmanager.prefix", true);
+                attachment.setPermission("utilsmanager.ban", true);
+                attachment.setPermission("utilsmanager.home", true);
+                attachment.setPermission("utilsmanager.heal", true);
+                attachment.setPermission("utilsmanager.announce", true);
+                attachment.setPermission("utilsmanager.clearchat", true);
+                attachment.setPermission("utilsmanager.entity", true);
+                attachment.setPermission("utilsmanager.restart", true);
+                attachment.setPermission("utilsmanager.search", true);
+                attachment.setPermission("utilsmanager.sudo", true);
+                attachment.setPermission("utilsmanager.vanish", true);
+                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.maintenance", true);
+            }
+            case 8: {
+                attachment.setPermission("utilsmanager.addcoins", true);
+                attachment.setPermission("utilsmanager.setcoins", true);
+                attachment.setPermission("utilsmanager.backpack", true);
+                attachment.setPermission("utilsmanager.backpackconfig", true);
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.realtime", true);
+                attachment.setPermission("utilsmanager.setspawn", true);
+                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.timer", true);
+                attachment.setPermission("utilsmanager.togglebed", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("spark", true);
+                attachment.setPermission("worldedit.*", true);
+                attachment.setPermission("bukkit.command.reload",true);
+                attachment.setPermission("bukkit.command.timings",true);
+                attachment.setPermission("troll.*",true);
+                attachment.setPermission("minecraft.nbt.copy",true);
+                attachment.setPermission("minecraft.nbt.place",true);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("minecraft", true);
+                attachment.setPermission("minecraft.*", true);
+                attachment.setPermission("minecraft.command.*", true);
+                attachment.setPermission("utilsmanager.nick", true);
+                attachment.setPermission("utilsmanager.prefix", true);
+                attachment.setPermission("utilsmanager.home", true);
+                attachment.setPermission("utilsmanager.announce", true);
+                attachment.setPermission("utilsmanager.clearchat", true);
+                attachment.setPermission("utilsmanager.entity", true);
+                attachment.setPermission("utilsmanager.restart", true);
+                attachment.setPermission("utilsmanager.search", true);
+                attachment.setPermission("utilsmanager.vanish", true);
+                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.maintenance", true);
+            }
+            case 7: {
+                attachment.setPermission("utilsmanager.addcoins", true);
+                attachment.setPermission("utilsmanager.setcoins", true);
+                attachment.setPermission("utilsmanager.backpack", true);
+                attachment.setPermission("utilsmanager.backpackconfig", true);
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.realtime", true);
+                attachment.setPermission("utilsmanager.setspawn", true);
+                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.timer", true);
+                attachment.setPermission("utilsmanager.togglebed", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("spark", true);
+                attachment.setPermission("worldedit.navigation.jumpto.command", true);
+                attachment.setPermission("bukkit.command.reload",true);
+                attachment.setPermission("bukkit.command.timings",true);
+                attachment.setPermission("minecraft.nbt.copy",true);
+                attachment.setPermission("minecraft.nbt.place",true);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("utilsmanager.prefix", true);
+                attachment.setPermission("utilsmanager.home", true);
+                attachment.setPermission("utilsmanager.clearchat", true);
+                attachment.setPermission("utilsmanager.entity", true);
+                attachment.setPermission("utilsmanager.search", true);
+                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.maintenance", true);
+            }
+            case 6: {
+                attachment.setPermission("utilsmanager.backpack", true);
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.setspawn", true);
+                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.timer", true);
+                attachment.setPermission("utilsmanager.togglebed", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("worldedit.*", true);
+                attachment.setPermission("bukkit.command.version",false);
+                attachment.setPermission("bukkit.command.plugins",false);
+                attachment.setPermission("bukkit.command.help",false);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("utilsmanager.spawnbuild", true);
+                attachment.setPermission("utilsmanager.prefix", true);
+                attachment.setPermission("utilsmanager.home", true);
+                attachment.setPermission("utilsmanager.entity", true);
+                attachment.setPermission("utilsmanager.search", true);
+                attachment.setPermission("utilsmanager.freecam", true);
+            }
+            case 5: {
+                attachment.setPermission("utilsmanager.backpack", true);
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.timer", true);
+                attachment.setPermission("utilsmanager.togglebed", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("spark.tps", true);
+                attachment.setPermission("bukkit.command.version",false);
+                attachment.setPermission("bukkit.command.plugins",false);
+                attachment.setPermission("bukkit.command.help",false);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("utilsmanager.prefix", true);
+                attachment.setPermission("utilsmanager.home", true);
+                attachment.setPermission("utilsmanager.search", true);
+                attachment.setPermission("utilsmanager.freecam", true);
+            }
+            case 4: {
+                attachment.setPermission("utilsmanager.backpack", true);
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.togglebed", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("bukkit.command.version",false);
+                attachment.setPermission("bukkit.command.plugins",false);
+                attachment.setPermission("bukkit.command.help",false);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("utilsmanager.home", true);
+                attachment.setPermission("utilsmanager.search", true);
+            }
+            case 3: {
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.shop", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.pay", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.togglescoreboard", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("bukkit.command.version",false);
+                attachment.setPermission("bukkit.command.plugins",false);
+                attachment.setPermission("bukkit.command.help",false);
+                attachment.setPermission("minecraft.autocraft",true);
+                attachment.setPermission("utilsmanager.search", true);
+            }
+            case 2: {
+                attachment.setPermission("utilsmanager.buy", true);
+                attachment.setPermission("utilsmanager.sell", true);
+                attachment.setPermission("utilsmanager.price", true);
+                attachment.setPermission("utilsmanager.date", true);
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("utilsmanager.wallet", true);
+                attachment.setPermission("bukkit.command.version",false);
+                attachment.setPermission("bukkit.command.plugins",false);
+                attachment.setPermission("bukkit.command.help",false);
+                attachment.setPermission("minecraft.autocraft",true);
+            }
+            default: {
+                attachment.setPermission("utilsmanager.firstcoins", true);
+                attachment.setPermission("utilsmanager.language", true);
+                attachment.setPermission("bukkit.command.version",false);
+                attachment.setPermission("bukkit.command.plugins",false);
+                attachment.setPermission("bukkit.command.help",false);
+            }
+        }
     }
 }
