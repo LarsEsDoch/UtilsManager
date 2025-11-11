@@ -21,7 +21,7 @@ public class FreeCamCloseCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!player.hasPermission("plugin.freecam")) {
+        if (!player.hasPermission("utilsmanager.freecam")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

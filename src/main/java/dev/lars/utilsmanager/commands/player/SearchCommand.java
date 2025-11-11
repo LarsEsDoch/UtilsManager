@@ -20,7 +20,7 @@ public class SearchCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!player.hasPermission("plugin.search")) {
+        if (!player.hasPermission("utilsmanager.search")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

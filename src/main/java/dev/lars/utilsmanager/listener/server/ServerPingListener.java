@@ -65,7 +65,7 @@ public class ServerPingListener implements Listener {
             if (!maintenanceReason.isEmpty()) {
                 lines.addAll(wrapText(maintenanceReason, totalWidth));
             }
-            Component firstLine = centerLines(List.of(lines.getFirst()), totalWidth, NamedTextColor.GREEN, extraShift);
+            Component firstLine = centerLines(List.of(lines.getFirst()), totalWidth, NamedTextColor.GOLD, extraShift);
             List<String> detailLines = lines.size() > 1 ? lines.subList(1, lines.size()) : List.of();
             Component details = centerLines(detailLines, totalWidth, NamedTextColor.RED, extraShift);
             event.motd(header.append(firstLine).append(details));

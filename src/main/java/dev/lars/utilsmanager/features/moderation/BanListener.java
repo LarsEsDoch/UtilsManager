@@ -61,7 +61,7 @@ public class BanListener implements Listener {
             return;
         }
 
-        if (!(player.hasPermission("plugin.ban"))) {
+        if (!(player.hasPermission("utilsmanager.ban"))) {
             return;
         }
 

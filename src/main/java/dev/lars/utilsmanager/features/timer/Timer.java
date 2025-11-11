@@ -33,7 +33,7 @@ public class Timer {
                     }
                     break;
                 }
-                if(!(player.hasPermission("plugin.timer"))) {
+                if(!(player.hasPermission("utilsmanager.timer"))) {
                     return;
                 }
                 sendActionBar(player);

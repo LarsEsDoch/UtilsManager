@@ -17,13 +17,13 @@ public class MaintenanceListener implements Listener {
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("plugin.maintenance")) return;
+        if (player.hasPermission("utilsmanager.maintenance")) return;
         if (player.isOp()) return;
         if (RankAPI.getApi().getRankId(player) >= 8) return;
 
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
 
-            Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEnd();
+            Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
 
             if (maintenanceEnd == null) {
                 Component noEnd = Component.text("There is no ending available");

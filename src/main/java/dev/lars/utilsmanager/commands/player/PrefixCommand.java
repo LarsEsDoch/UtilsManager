@@ -29,7 +29,7 @@ public class PrefixCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!player.hasPermission("plugin.prefix")) {
+        if (!player.hasPermission("utilsmanager.prefix")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

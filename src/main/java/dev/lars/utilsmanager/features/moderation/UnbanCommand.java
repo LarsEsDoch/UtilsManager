@@ -26,7 +26,7 @@ public class UnbanCommand implements BasicCommand {
             return;
         }
 
-        if (!(sendplayer.hasPermission("plugin.ban"))) {
+        if (!(sendplayer.hasPermission("utilsmanager.ban"))) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }
@@ -55,7 +55,7 @@ public class UnbanCommand implements BasicCommand {
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (!(player.hasPermission("plugin.ban"))) {
+        if (!(player.hasPermission("utilsmanager.ban"))) {
             return Collections.emptyList();
         }
         List<String> players = BanAPI.getApi().getBannedPlayers();

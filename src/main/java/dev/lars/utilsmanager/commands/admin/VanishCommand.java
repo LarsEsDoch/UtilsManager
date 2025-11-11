@@ -17,7 +17,7 @@ public class VanishCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!player.hasPermission("plugin.vanish")) {
+        if (!player.hasPermission("utilsmanager.vanish")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

@@ -27,7 +27,7 @@ public class MaintenanceCommand implements BasicCommand {
             return;
         }
 
-        if (!player.hasPermission("plugin.maintenance")) {
+        if (!player.hasPermission("utilsmanager.maintenance")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
@@ -112,7 +112,7 @@ public class MaintenanceCommand implements BasicCommand {
                                 .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));
                     }
                 } else {
-                    Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEnd();
+                    Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
                     Instant now = Instant.now();
 
                     long maintenanceTime = Duration.between(now, maintenanceEnd).getSeconds();

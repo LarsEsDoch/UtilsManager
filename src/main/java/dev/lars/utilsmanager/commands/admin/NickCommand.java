@@ -22,7 +22,7 @@ public class NickCommand implements BasicCommand {
             return;
         }
 
-        if (!player.hasPermission("plugin.nick")) {
+        if (!player.hasPermission("utilsmanager.nick")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

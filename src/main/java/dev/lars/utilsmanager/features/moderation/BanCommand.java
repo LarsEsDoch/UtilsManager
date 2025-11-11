@@ -25,7 +25,7 @@ public class BanCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         Player sendplayer = (Player) stack.getSender();
-        if (!(sendplayer.hasPermission("plugin.ban"))) {
+        if (!(sendplayer.hasPermission("utilsmanager.ban"))) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }

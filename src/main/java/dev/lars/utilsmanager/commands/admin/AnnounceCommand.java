@@ -20,7 +20,7 @@ public class AnnounceCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!(player.hasPermission("plugin.announce"))) {
+        if (!(player.hasPermission("utilsmanager.announce"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

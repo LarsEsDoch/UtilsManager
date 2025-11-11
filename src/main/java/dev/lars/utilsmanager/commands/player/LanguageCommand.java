@@ -28,7 +28,7 @@ public class LanguageCommand implements BasicCommand {
             sendUsage(player);
             return;
         }
-        if (!(player.hasPermission("plugin.language"))) {
+        if (!(player.hasPermission("utilsmanager.language"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

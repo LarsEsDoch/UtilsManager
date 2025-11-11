@@ -33,7 +33,7 @@ public class PayCommand implements BasicCommand {
             sendUsage(player);
             return;
         }
-        if (!(player.hasPermission("plugin.pay"))) {
+        if (!(player.hasPermission("utilsmanager.pay"))) {
             player.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }

@@ -25,7 +25,7 @@ public class MaintenanceManager {
     private void run() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-                Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEnd();
+                Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
 
                 Instant now = Instant.now();
                 long maintenanceTime = Duration.between(now, maintenanceEnd).getSeconds();
@@ -42,7 +42,7 @@ public class MaintenanceManager {
                 Component formatedTimeNoHour = Component.text(String.format("%02dm %02ds", minutes, seconds), NamedTextColor.GOLD);
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (!player.isOp() || !player.hasPermission("plugin.maintenance")) {
+                    if (!player.isOp() || !player.hasPermission("utilsmanager.maintenance")) {
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             if ((maintenanceTime/ 86400) != 0) {
                                 Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask1 -> {

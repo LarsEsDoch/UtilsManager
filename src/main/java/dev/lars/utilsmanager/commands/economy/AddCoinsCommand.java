@@ -38,7 +38,7 @@ public class AddCoinsCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.addcoins"))) {
+        if (!(player.hasPermission("utilsmanager.addcoins"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
@@ -98,7 +98,7 @@ public class AddCoinsCommand implements BasicCommand {
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (!player.hasPermission("plugin.sudo")) return Collections.emptyList();
+        if (!player.hasPermission("utilsmanager.sudo")) return Collections.emptyList();
         if (args.length == 1 || args.length == 0) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {

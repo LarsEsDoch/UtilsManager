@@ -24,7 +24,7 @@ public class BackpackConfigurationCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!(player.hasPermission("plugin.backpack.config"))) {
+        if (!(player.hasPermission("utilsmanager.backpack.config"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

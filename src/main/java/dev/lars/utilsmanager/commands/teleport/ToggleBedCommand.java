@@ -18,7 +18,7 @@ public class ToggleBedCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!(player.hasPermission("plugin.togglebed"))) {
+        if (!(player.hasPermission("utilsmanager.togglebed"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

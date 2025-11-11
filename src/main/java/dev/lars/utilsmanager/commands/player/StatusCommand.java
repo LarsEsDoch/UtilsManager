@@ -24,7 +24,7 @@ public class StatusCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         player = (Player) stack.getSender();
-        if (!(player.hasPermission("plugin.prefix"))) {
+        if (!(player.hasPermission("utilsmanager.prefix"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

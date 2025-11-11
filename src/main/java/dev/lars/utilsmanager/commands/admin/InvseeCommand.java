@@ -22,7 +22,7 @@ public class InvseeCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         Player sendplayer = (Player) stack.getSender();
-        if (!sendplayer.hasPermission("plugin.inv")) {
+        if (!sendplayer.hasPermission("utilsmanager.inv")) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }
@@ -50,7 +50,7 @@ public class InvseeCommand implements BasicCommand {
     @Override
     public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (!player.hasPermission("plugin.inv")) return Collections.emptyList();
+        if (!player.hasPermission("utilsmanager.inv")) return Collections.emptyList();
         if (args.length == 1 || args.length == 0) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {

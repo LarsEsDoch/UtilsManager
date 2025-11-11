@@ -22,7 +22,7 @@ public class EntityCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if(!player.hasPermission("plugin.entity")) {
+        if(!player.hasPermission("utilsmanager.entity")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

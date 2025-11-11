@@ -24,7 +24,7 @@ public class TimerCommand implements BasicCommand {
     public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
         Player player = (Player) stack.getSender();
 
-        if (!player.hasPermission("plugin.timer")) {
+        if (!player.hasPermission("utilsmanager.timer")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
@@ -376,7 +376,7 @@ public class TimerCommand implements BasicCommand {
                 break;
             }
             case "public": {
-                if (!player.hasPermission("plugin.timer.public")) {
+                if (!player.hasPermission("utilsmanager.timer.public")) {
                     player.sendMessage(Statements.getNotAllowed(player));
                     return;
                 }

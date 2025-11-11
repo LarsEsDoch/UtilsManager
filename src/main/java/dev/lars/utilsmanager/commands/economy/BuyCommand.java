@@ -34,7 +34,7 @@ public class BuyCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.buy"))) {
+        if (!(player.hasPermission("utilsmanager.buy"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

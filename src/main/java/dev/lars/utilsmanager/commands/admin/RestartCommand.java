@@ -22,7 +22,7 @@ public class RestartCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!player.hasPermission("plugin.restart")) {
+        if (!player.hasPermission("utilsmanager.restart")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

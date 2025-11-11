@@ -21,7 +21,7 @@ public class SetHomeCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.home"))) {
+        if (!(player.hasPermission("utilsmanager.home"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

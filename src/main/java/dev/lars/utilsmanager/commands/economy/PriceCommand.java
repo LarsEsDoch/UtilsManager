@@ -18,7 +18,7 @@ public class PriceCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!(player.hasPermission("plugin.price"))) {
+        if (!(player.hasPermission("utilsmanager.price"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

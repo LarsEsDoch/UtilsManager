@@ -24,7 +24,7 @@ public class ClearChatCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!(player.hasPermission("plugin.clearchat"))) {
+        if (!(player.hasPermission("utilsmanager.clearchat"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

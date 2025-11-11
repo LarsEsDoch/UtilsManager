@@ -33,7 +33,7 @@ public class SetCoinsCommand implements BasicCommand {
             return;
         }
 
-        if (!(sendplayer.hasPermission("plugin.setcoins"))) {
+        if (!(sendplayer.hasPermission("utilsmanager.setcoins"))) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }

@@ -25,7 +25,7 @@ public class BackpackCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.backpack"))) {
+        if (!(player.hasPermission("utilsmanager.backpack"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

@@ -28,7 +28,7 @@ public class KickCommand implements BasicCommand {
             return;
         }
         int time = 0;
-        if (!(player.hasPermission("plugin.ban"))) {
+        if (!(player.hasPermission("utilsmanager.ban"))) {
             player.sendMessage(Statements.getNotAllowed(player));
         }
         if (args.length == 0) {

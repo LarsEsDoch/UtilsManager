@@ -23,7 +23,7 @@ public class RankCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         Player sendplayer = (Player) stack.getSender();
-        if (!(sendplayer.hasPermission("plugin.rank"))) {
+        if (!(sendplayer.hasPermission("utilsmanager.rank"))) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }

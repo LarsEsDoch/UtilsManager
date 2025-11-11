@@ -32,7 +32,7 @@ public class SellCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.sell"))) {
+        if (!(player.hasPermission("utilsmanager.sell"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

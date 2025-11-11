@@ -4,30 +4,28 @@ import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import org.bukkit.Bukkit;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class RealTime {
-
-    private LocalTime time;
-
-    private LocalDate date;
-
-    private Boolean activated;
+    private Boolean activated = false;
 
     public RealTime() {
-        run();
+        updateActivation();
+        updateTime();
     }
 
-    private void run() {
+    public void updateActivation() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
-            if (!ServerSettingsAPI.getApi().isRealTimeEnabled()) return;
-            time = LocalTime.now();
-            date = LocalDate.now();
-            Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> {
-                Objects.requireNonNull(Bukkit.getWorld("world")).setFullTime(date.getDayOfYear() * 24000 + time.getHour() * 1000 + time.getMinute() * 17 - 6000);
-            }, 1);
+            activated = ServerSettingsAPI.getApi().isRealTimeEnabled();
+        }, 20, 20);
+    }
+
+    private void updateTime() {
+        Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
+            if (!activated) return;
+            LocalDateTime date = LocalDateTime.now();
+            Objects.requireNonNull(Bukkit.getWorld("world")).setFullTime(date.getDayOfYear() * 24000 + date.getHour() * 1000 + date.getMinute() * 17 - 6000);
         }, 1, 1);
     }
 }

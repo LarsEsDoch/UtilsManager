@@ -27,7 +27,7 @@ public class TeleporterListener implements Listener {
             @Override
             public void run() {
                 for (Player player: Bukkit.getOnlinePlayers()) {
-                    if (!(player.hasPermission("plugin.spawn"))) {
+                    if (!(player.hasPermission("utilsmanager.spawn"))) {
                         return;
                     }
                     if (player.getLocation().getBlockX() == -2 && player.getLocation().getBlockZ() == 24 && player.getLocation().getBlock().getType() == Material.SCULK_SENSOR) {

@@ -19,7 +19,7 @@ public class HealCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         sendplayer = (Player) stack.getSender();
-        if (!sendplayer.hasPermission("plugin.heal")) {
+        if (!sendplayer.hasPermission("utilsmanager.heal")) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }

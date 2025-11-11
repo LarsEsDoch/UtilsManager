@@ -764,7 +764,7 @@ public class CourtManager {
                     TimerAPI.getApi().setRunning(player,true);
                     player.addAttachment(UtilsManager.getInstance()).setPermission("worldedit.navigation.jumpto.command", false);
                     PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
-                    attachment.setPermission("plugin.addcoins", true);
+                    attachment.setPermission("utilsmanager.addcoins", true);
                     CourtAPI.getApi().setStatus(player, 5);
                     CourtAPI.getApi().setTime(player, 600);
                     switch (cell) {

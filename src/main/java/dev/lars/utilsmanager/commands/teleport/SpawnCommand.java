@@ -22,7 +22,7 @@ public class SpawnCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("plugin.spawn"))) {
+        if (!(player.hasPermission("utilsmanager.spawn"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

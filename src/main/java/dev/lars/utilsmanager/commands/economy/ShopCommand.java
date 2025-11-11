@@ -26,7 +26,7 @@ public class ShopCommand implements BasicCommand {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
-        if (!(player.hasPermission("plugin.shop"))) {
+        if (!(player.hasPermission("utilsmanager.shop"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }

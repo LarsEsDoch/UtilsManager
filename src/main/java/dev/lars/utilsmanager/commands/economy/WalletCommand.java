@@ -26,7 +26,7 @@ public class WalletCommand implements BasicCommand {
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         Player sendplayer = (Player) stack.getSender();
 
-        if (!(sendplayer.hasPermission("plugin.wallet"))) {
+        if (!(sendplayer.hasPermission("utilsmanager.wallet"))) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }
