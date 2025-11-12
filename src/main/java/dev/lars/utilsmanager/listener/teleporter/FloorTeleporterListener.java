@@ -13,8 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,109 +20,136 @@ import java.util.UUID;
 
 public class FloorTeleporterListener implements Listener {
 
-    private Map<UUID, Double> lastY = new HashMap<>();
-
-    public FloorTeleporterListener() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.hasPermission("ported")) {
-                    return;
-                }
-                if(player.isSneaking()) {
-                    down(player);
-                }
-            }
-        }, 1, 1);
-    }
+    private final Map<UUID, Double> lastY = new HashMap<>();
+    private final Map<UUID, Long> teleportCooldown = new HashMap<>();
+    private static final long COOLDOWN_TICKS = 10L; // 0.5 seconds
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
+        Location to = event.getTo();
 
-        double currentY = player.getLocation().getY();
-        if (player.hasPermission("ported")) {
-            this.lastY.put(playerId, currentY);
+        if (isOnCooldown(playerId)) {
             return;
         }
-        double lastY = this.lastY.getOrDefault(playerId, currentY);
 
-        if (currentY > lastY) {
-            up(player);
-        } else if (currentY < lastY) {
+        double currentY = to.getY();
+        double previousY = lastY.getOrDefault(playerId, currentY);
+        lastY.put(playerId, currentY);
 
+        if (!isOnDaylightDetector(player)) {
+            return;
         }
 
-        this.lastY.put(playerId, currentY);
-    }
-
-    public void up(Player player) {
-        Block thisblock = player.getLocation().getBlock();
-        Location second = player.getLocation();
-        second.setY(second.getY()-1.0);
-        Block thissecondblock = second.getBlock();
-        if (thisblock.getType() == Material.DAYLIGHT_DETECTOR || thissecondblock.getType() == Material.DAYLIGHT_DETECTOR) {
-            for (int y = player.getLocation().getBlockY() + 1; y <= player.getWorld().getMaxHeight(); y++) {
-                Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX(), y, player.getLocation().getBlockZ());
-                if (block.getType() == Material.DAYLIGHT_DETECTOR) {
-                    World world = player.getWorld();
-                    Block blockbackup = player.getWorld().getBlockAt(player.getLocation().getBlockX(), y + 1, player.getLocation().getBlockZ());
-                    if (blockbackup.getType() != Material.AIR) {
-                        player.teleport(new Location(world, player.getLocation().getBlockX() + 0.5, y + 1.50, player.getLocation().getBlockZ() + 0.5).setDirection(player.getLocation().getDirection()));
-                    } else {
-                        player.teleport(new Location(world, player.getLocation().getBlockX() + 0.5, y + 0.50, player.getLocation().getBlockZ() + 0.5).setDirection(player.getLocation().getDirection()));
-                    }
-                    PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
-                    attachment.setPermission("ported", true);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            attachment.setPermission("ported", false);
-                        }
-                    }.runTaskLater(UtilsManager.getInstance(), 10);
-                    return;
-                }
-            }
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendActionBar(Component.text("Es gibt keine Teleporter über dir!", NamedTextColor.RED));
-            } else {
-                player.sendActionBar(Component.text("There are no teleporters over you", NamedTextColor.RED));
-            }
+        if (currentY > previousY) {
+            teleportUp(player);
+        } else if (player.isSneaking()) {
+            teleportDown(player);
         }
     }
 
-    public void down(Player player) {
-        Block thisblock = player.getLocation().getBlock();
-        Location second = player.getLocation();
-        second.setY(second.getY()-1.0);
-        Block thissecondblock = second.getBlock();
-        if (thisblock.getType() == Material.DAYLIGHT_DETECTOR || thissecondblock.getType() == Material.DAYLIGHT_DETECTOR) {
-            for (int y = player.getLocation().getBlockY() - 2; y >= player.getWorld().getMinHeight(); y--) {
-                Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX(), y, player.getLocation().getBlockZ());
-                if (block.getType() == Material.DAYLIGHT_DETECTOR) {
-                    World world = player.getWorld();
-                    Block blockbackup = player.getWorld().getBlockAt(player.getLocation().getBlockX(), y + 1, player.getLocation().getBlockZ());
-                    if (blockbackup.getType() != Material.AIR) {
-                        player.teleport(new Location(world, player.getLocation().getBlockX() + 0.5, y + 1.50, player.getLocation().getBlockZ() + 0.5).setDirection(player.getLocation().getDirection()));
-                    } else {
-                        player.teleport(new Location(world, player.getLocation().getBlockX() + 0.5, y + 0.50, player.getLocation().getBlockZ() + 0.5).setDirection(player.getLocation().getDirection()));
-                    }
-                    PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
-                    attachment.setPermission("ported", true);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            attachment.setPermission("ported", false);
-                        }
-                    }.runTaskLater(UtilsManager.getInstance(), 10);
-                    return;
-                }
+    private boolean isOnCooldown(UUID playerId) {
+        Long lastTeleport = teleportCooldown.get(playerId);
+        if (lastTeleport == null) {
+            return false;
+        }
+
+        long currentTime = System.currentTimeMillis();
+        long cooldownMs = COOLDOWN_TICKS * 50;
+
+        if (currentTime - lastTeleport < cooldownMs) {
+            return true;
+        }
+
+        teleportCooldown.remove(playerId);
+        return false;
+    }
+
+    private void setCooldown(UUID playerId) {
+        teleportCooldown.put(playerId, System.currentTimeMillis());
+    }
+
+    private boolean isOnDaylightDetector(Player player) {
+        Block blockAtFeet = player.getLocation().getBlock();
+        Block blockBelow = player.getLocation().subtract(0, 1, 0).getBlock();
+
+        return blockAtFeet.getType() == Material.DAYLIGHT_DETECTOR ||
+               blockBelow.getType() == Material.DAYLIGHT_DETECTOR;
+    }
+
+    private void teleportUp(Player player) {
+        int startY = player.getLocation().getBlockY() + 1;
+        int maxY = player.getWorld().getMaxHeight();
+
+        for (int y = startY; y <= maxY; y++) {
+            Block block = player.getWorld().getBlockAt(
+                player.getLocation().getBlockX(),
+                y,
+                player.getLocation().getBlockZ()
+            );
+
+            if (block.getType() == Material.DAYLIGHT_DETECTOR) {
+                performTeleport(player, y);
+                return;
             }
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendActionBar(Component.text("Es gibt keine Teleporter unter dir!", NamedTextColor.RED));
-            } else {
-                player.sendActionBar(Component.text("There are no teleporters under you", NamedTextColor.RED));
+        }
+
+        sendNoTeleporterMessage(player, true);
+    }
+
+    private void teleportDown(Player player) {
+        int startY = player.getLocation().getBlockY() - 2;
+        int minY = player.getWorld().getMinHeight();
+
+        for (int y = startY; y >= minY; y--) {
+            Block block = player.getWorld().getBlockAt(
+                player.getLocation().getBlockX(),
+                y,
+                player.getLocation().getBlockZ()
+            );
+
+            if (block.getType() == Material.DAYLIGHT_DETECTOR) {
+                performTeleport(player, y);
+                return;
             }
+        }
+
+        sendNoTeleporterMessage(player, false);
+    }
+
+    private void performTeleport(Player player, int targetY) {
+        World world = player.getWorld();
+        int x = player.getLocation().getBlockX();
+        int z = player.getLocation().getBlockZ();
+
+        Block blockAbove = world.getBlockAt(x, targetY + 1, z);
+        double yOffset = blockAbove.getType() != Material.AIR ? 1.50 : 0.50;
+
+        Location teleportLocation = new Location(
+            world,
+            x + 0.5,
+            targetY + yOffset,
+            z + 0.5
+        );
+        teleportLocation.setDirection(player.getLocation().getDirection());
+
+        player.teleport(teleportLocation);
+        setCooldown(player.getUniqueId());
+    }
+
+    private void sendNoTeleporterMessage(Player player, boolean searchingUp) {
+        String messageKey = searchingUp ?
+            "Es gibt keine Teleporter über dir!" :
+            "Es gibt keine Teleporter unter dir!";
+        String messageEn = searchingUp ?
+            "There are no teleporters above you!" :
+            "There are no teleporters below you!";
+
+        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            player.sendActionBar(Component.text(messageKey, NamedTextColor.RED));
+        } else {
+            player.sendActionBar(Component.text(messageEn, NamedTextColor.RED));
         }
     }
 }
