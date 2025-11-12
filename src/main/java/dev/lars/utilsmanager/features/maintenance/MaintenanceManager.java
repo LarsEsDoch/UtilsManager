@@ -18,11 +18,7 @@ import java.time.Month;
 
 public class MaintenanceManager {
 
-    public void maintenanceManager() {
-        run();
-    }
-
-    private void run() {
+    public MaintenanceManager() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
                 Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();

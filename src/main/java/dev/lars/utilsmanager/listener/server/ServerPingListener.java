@@ -118,7 +118,7 @@ public class ServerPingListener implements Listener {
             String pad = " ".repeat(padding);
             result = result.append(Component.text(pad)).append(Component.text(line, color));
             if (i < lines.size() - 1) {
-                result = result.append(Component.text("\n")); // removed the extra single space here
+                result = result.append(Component.text("\n"));
             }
         }
         return result;

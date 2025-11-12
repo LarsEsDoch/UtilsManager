@@ -22,13 +22,30 @@ public class FloorTeleporterListener implements Listener {
 
     private final Map<UUID, Double> lastY = new HashMap<>();
     private final Map<UUID, Long> teleportCooldown = new HashMap<>();
-    private static final long COOLDOWN_TICKS = 10L; // 0.5 seconds
+    private static final long COOLDOWN_TICKS = 10L;
+
+    public FloorTeleporterListener() {
+        Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.isSneaking() && !isOnCooldown(player.getUniqueId())) {
+                    if (isOnDaylightDetector(player)) {
+                        teleportDown(player);
+                    }
+                }
+            }
+        }, 1L, 1L);
+    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
+        Location from = event.getFrom();
         Location to = event.getTo();
+
+        if (from.getY() == to.getY()) {
+            return;
+        }
 
         if (isOnCooldown(playerId)) {
             return;
@@ -44,8 +61,6 @@ public class FloorTeleporterListener implements Listener {
 
         if (currentY > previousY) {
             teleportUp(player);
-        } else if (player.isSneaking()) {
-            teleportDown(player);
         }
     }
 

@@ -3,8 +3,6 @@ package dev.lars.utilsmanager.commands.teleport.home;
 import dev.lars.apimanager.apis.homeAPI.HomeAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
-import dev.lars.utilsmanager.features.freecam.FreeCamLeaveListener;
-import dev.lars.utilsmanager.features.freecam.FreeCamManager;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

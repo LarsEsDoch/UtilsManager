@@ -15,8 +15,6 @@ import dev.lars.utilsmanager.features.realtime.RealTime;
 import dev.lars.utilsmanager.features.timer.Timer;
 import dev.lars.utilsmanager.integrations.discord.DiscordBot;
 import dev.lars.utilsmanager.listener.player.BedListener;
-import dev.lars.utilsmanager.listener.player.SpawnElytraListener;
-import dev.lars.utilsmanager.listener.teleporter.FloorTeleporterListener;
 import dev.lars.utilsmanager.listener.teleporter.TeleporterListener;
 import dev.lars.utilsmanager.plugin.Registrar;
 import dev.lars.utilsmanager.quest.QuestManager;
@@ -33,23 +31,16 @@ public final class UtilsManager extends JavaPlugin {
     private static UtilsManager instance;
     private ProtocolManager protocolManager;
 
-    private Timer timer;
     private BackpackManager backpackManager;
-    private RealTime realTime;
     private TablistManager tablistManager;
     private RankManager rankManager;
     private EntitySummons entitySummons;
-    private SpawnElytraListener spawnElytraListener;
     private QuestManager questManager;
     private BanManager banManager;
-    private FloorTeleporterListener floorTeleporterListener;
     private CourtManager courtManager;
-    private TeleporterListener teleporterListener;
-    private BedListener bedListener;
     private FreeCamManager freeCamManager;
     private DiscordBot discordBot;
     private KickManager kickManager;
-    private MaintenanceManager maintenanceManager;
     private PlaytimeManager playtimeManager;
 
     @Override
@@ -82,18 +73,16 @@ public final class UtilsManager extends JavaPlugin {
         backpackManager = new BackpackManager();
         tablistManager = new TablistManager();
         rankManager = new RankManager();
-        timer = new Timer();
-        realTime = new RealTime();
-        bedListener = new BedListener();
+        new Timer();
+        new RealTime();
+        new BedListener();
         entitySummons = new EntitySummons();
-        spawnElytraListener = new SpawnElytraListener();
-        floorTeleporterListener = new FloorTeleporterListener();
         courtManager = new CourtManager();
         banManager = new BanManager();
-        teleporterListener = new TeleporterListener();
+        new TeleporterListener();
         freeCamManager = new FreeCamManager();
         kickManager = new KickManager();
-        maintenanceManager = new MaintenanceManager();
+        new MaintenanceManager();
         playtimeManager = new PlaytimeManager();
         questManager = new QuestManager();
     }
@@ -124,7 +113,6 @@ public final class UtilsManager extends JavaPlugin {
 
     private void startBackgroundTasks() {
         banManager.run();
-        teleporterListener.checkTeleportTime();
         playtimeManager.updateTime();
     }
 
@@ -152,10 +140,6 @@ public final class UtilsManager extends JavaPlugin {
 
     public CourtManager getCourtManager() {
         return courtManager;
-    }
-
-    public RealTime getRealTime() {
-        return realTime;
     }
 
     public TablistManager getTablistManager() {
