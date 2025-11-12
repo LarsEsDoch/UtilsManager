@@ -14,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.util.Objects;
+
 public class RespawnListener implements Listener {
 
     @EventHandler
@@ -21,7 +23,7 @@ public class RespawnListener implements Listener {
         Player player = event.getPlayer();
         Location respawnLocation = event.getRespawnLocation();
         Location bedSpawn = player.getRespawnLocation();
-        Location worldSpawn = player.getWorld().getSpawnLocation();
+        Location worldSpawn = Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation();
         Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
 
         if (PlayerSettingsAPI.getApi().getBedToggle(player) || !respawnLocation.equals(bedSpawn)) {

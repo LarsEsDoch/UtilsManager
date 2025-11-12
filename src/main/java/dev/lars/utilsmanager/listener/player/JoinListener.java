@@ -50,7 +50,13 @@ public class JoinListener implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 50, 0));
 
         if (!player.hasPlayedBefore()) {
-            player.teleport(new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0));
+            Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+            if (loc == null) {
+                player.teleport(Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation());
+            } else {
+                player.teleport(loc);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
+            }
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
             LimitAPI.getApi().setMaxChunks(player, 128);
             Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask -> {
