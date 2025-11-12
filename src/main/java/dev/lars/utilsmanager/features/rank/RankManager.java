@@ -124,7 +124,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.search", true);
                 attachment.setPermission("utilsmanager.sudo", true);
                 attachment.setPermission("utilsmanager.vanish", true);
-                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.feature.freecam", true);
                 attachment.setPermission("utilsmanager.maintenance", true);
             }
             case 9: {
@@ -178,7 +178,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.search", true);
                 attachment.setPermission("utilsmanager.sudo", true);
                 attachment.setPermission("utilsmanager.vanish", true);
-                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.feature.freecam", true);
                 attachment.setPermission("utilsmanager.maintenance", true);
             }
             case 8: {
@@ -221,7 +221,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.restart", true);
                 attachment.setPermission("utilsmanager.search", true);
                 attachment.setPermission("utilsmanager.vanish", true);
-                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.feature.freecam", true);
                 attachment.setPermission("utilsmanager.maintenance", true);
             }
             case 7: {
@@ -256,7 +256,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.clearchat", true);
                 attachment.setPermission("utilsmanager.entity", true);
                 attachment.setPermission("utilsmanager.search", true);
-                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.feature.freecam", true);
                 attachment.setPermission("utilsmanager.maintenance", true);
             }
             case 6: {
@@ -285,7 +285,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.home", true);
                 attachment.setPermission("utilsmanager.entity", true);
                 attachment.setPermission("utilsmanager.search", true);
-                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.feature.freecam", true);
             }
             case 5: {
                 attachment.setPermission("utilsmanager.backpack", true);
@@ -310,7 +310,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.prefix", true);
                 attachment.setPermission("utilsmanager.home", true);
                 attachment.setPermission("utilsmanager.search", true);
-                attachment.setPermission("utilsmanager.freecam", true);
+                attachment.setPermission("utilsmanager.feature.freecam", true);
             }
             case 4: {
                 attachment.setPermission("utilsmanager.backpack", true);

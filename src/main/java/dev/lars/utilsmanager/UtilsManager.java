@@ -5,7 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import dev.lars.utilsmanager.entity.EntitySummons;
 import dev.lars.utilsmanager.features.backpack.BackpackManager;
 import dev.lars.utilsmanager.features.court.CourtManager;
-import dev.lars.utilsmanager.features.freecam.FreecamListener;
+import dev.lars.utilsmanager.features.freecam.FreeCamManager;
 import dev.lars.utilsmanager.features.maintenance.MaintenanceManager;
 import dev.lars.utilsmanager.features.moderation.BanManager;
 import dev.lars.utilsmanager.features.moderation.KickManager;
@@ -46,7 +46,7 @@ public final class UtilsManager extends JavaPlugin {
     private CourtManager courtManager;
     private TeleporterListener teleporterListener;
     private BedListener bedListener;
-    private FreecamListener freecamListener;
+    private FreeCamManager freeCamManager;
     private DiscordBot discordBot;
     private KickManager kickManager;
     private MaintenanceManager maintenanceManager;
@@ -91,7 +91,7 @@ public final class UtilsManager extends JavaPlugin {
         courtManager = new CourtManager();
         banManager = new BanManager();
         teleporterListener = new TeleporterListener();
-        freecamListener = new FreecamListener();
+        freeCamManager = new FreeCamManager();
         kickManager = new KickManager();
         maintenanceManager = new MaintenanceManager();
         playtimeManager = new PlaytimeManager();
@@ -170,8 +170,8 @@ public final class UtilsManager extends JavaPlugin {
         return questManager;
     }
 
-    public FreecamListener getFreecamListener() {
-        return freecamListener;
+    public FreeCamManager getFreeCamManager() {
+        return freeCamManager;
     }
 
     public KickManager getKickManager() {

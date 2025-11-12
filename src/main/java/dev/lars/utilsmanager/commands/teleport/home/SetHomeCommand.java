@@ -3,7 +3,8 @@ package dev.lars.utilsmanager.commands.teleport.home;
 import dev.lars.apimanager.apis.homeAPI.HomeAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
-import dev.lars.utilsmanager.features.freecam.FreecamListener;
+import dev.lars.utilsmanager.features.freecam.FreeCamLeaveListener;
+import dev.lars.utilsmanager.features.freecam.FreeCamManager;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -30,9 +31,7 @@ public class SetHomeCommand implements BasicCommand {
             return;
         }
 
-        FreecamListener freecamListener = UtilsManager.getInstance().getFreecamListener();
-
-        if (freecamListener.getFreeCamUser().containsKey(player.getName())) {
+        if (UtilsManager.getInstance().getFreeCamManager().isFreeCamPlayer(player)) {
             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du kannst nicht im Freecam modus einen Home setzten!", NamedTextColor.RED)));
             } else {

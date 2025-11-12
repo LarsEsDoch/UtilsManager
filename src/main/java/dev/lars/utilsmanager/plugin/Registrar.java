@@ -16,9 +16,9 @@ import dev.lars.utilsmanager.features.chunk.ChunkCommand;
 import dev.lars.utilsmanager.features.chunk.ChunkOwnerListener;
 import dev.lars.utilsmanager.features.court.CourtCommand;
 import dev.lars.utilsmanager.features.court.ReportCommand;
-import dev.lars.utilsmanager.features.freecam.FreeCamCloseCommand;
 import dev.lars.utilsmanager.features.freecam.FreeCamCommand;
-import dev.lars.utilsmanager.features.freecam.FreecamListener;
+import dev.lars.utilsmanager.features.freecam.FreeCamLeaveCommand;
+import dev.lars.utilsmanager.features.freecam.FreeCamLeaveListener;
 import dev.lars.utilsmanager.features.maintenance.MaintenanceCommand;
 import dev.lars.utilsmanager.features.maintenance.MaintenanceListener;
 import dev.lars.utilsmanager.features.moderation.BanCommand;
@@ -69,7 +69,7 @@ public class Registrar {
         pluginManager.registerEvents(new FloorTeleporterListener(), plugin);
         pluginManager.registerEvents(new ChunkOwnerListener(), plugin);
         pluginManager.registerEvents(new ServerPingListener(), plugin);
-        pluginManager.registerEvents(new FreecamListener(), plugin);
+        pluginManager.registerEvents(new FreeCamLeaveListener(), plugin);
         pluginManager.registerEvents(new MaintenanceListener(), plugin);
         pluginManager.registerEvents(new RecipeLoader(), plugin);
         pluginManager.registerEvents(new NetherListener(), plugin);
@@ -290,7 +290,7 @@ public class Registrar {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("freecamleave", "Close the freecam and play along", new FreeCamCloseCommand());
+            commands.register("freecamleave", "Close the freecam and play along", new FreeCamLeaveCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {

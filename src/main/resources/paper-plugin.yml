@@ -98,5 +98,5 @@ permissions:
     default: false
   utilsmanager.vanish:
     default: false
-  utilsmanager.freecam:
+  utilsmanager.feature.freecam:
     default: false
