@@ -3,8 +3,9 @@ package dev.lars.utilsmanager.plugin;
 import dev.lars.utilsmanager.commands.admin.*;
 import dev.lars.utilsmanager.commands.economy.*;
 import dev.lars.utilsmanager.commands.player.*;
-import dev.lars.utilsmanager.commands.teleport.SpawnCommand;
-import dev.lars.utilsmanager.commands.teleport.ToggleBedCommand;
+import dev.lars.utilsmanager.commands.teleport.spawn.SetSpawnCommand;
+import dev.lars.utilsmanager.commands.teleport.spawn.SpawnCommand;
+import dev.lars.utilsmanager.commands.teleport.spawn.ToggleBedCommand;
 import dev.lars.utilsmanager.commands.teleport.home.DeleteHomeCommand;
 import dev.lars.utilsmanager.commands.teleport.home.HomeCommand;
 import dev.lars.utilsmanager.commands.teleport.home.SetHomeCommand;
@@ -111,6 +112,11 @@ public class Registrar {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("spawn", "Teleport to the spawn of the World", new SpawnCommand());
+        });
+
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            commands.register("setspawn", "Set the new spawn", new SetSpawnCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {

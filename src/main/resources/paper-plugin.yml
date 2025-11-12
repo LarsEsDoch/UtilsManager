@@ -48,7 +48,7 @@ permissions:
     default: false
   utilsmanager.shop:
     default: false
-  utilsmanager.spawn:
+  utilsmanager.feature.spawn:
     default: false
   utilsmanager.timer:
     default: false
@@ -100,3 +100,4 @@ permissions:
     default: false
   utilsmanager.feature.freecam:
     default: false
+  utilsmanager.feature.spawn.setspawn:

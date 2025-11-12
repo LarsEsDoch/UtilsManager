@@ -8,6 +8,7 @@ import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.scoreboard.Scoreboard;
 import dev.lars.utilsmanager.utils.RankStatements;
@@ -34,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class JoinListener implements Listener {
 
@@ -58,9 +60,13 @@ public class JoinListener implements Listener {
             if (PlayerSettingsAPI.getApi().getBedToggle(player)) {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
             } else {
-                Location loc = new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0);
-                player.teleport(loc);
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
+                Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+                if (loc == null) {
+                    player.teleport(Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation());
+                } else {
+                    player.teleport(loc);
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
+                }
             }
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> showTitleGe(player), 35);

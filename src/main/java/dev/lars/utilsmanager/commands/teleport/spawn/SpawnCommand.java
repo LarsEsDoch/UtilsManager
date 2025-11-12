@@ -1,7 +1,8 @@
-package dev.lars.utilsmanager.commands.teleport;
+package dev.lars.utilsmanager.commands.teleport.spawn;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -22,7 +23,7 @@ public class SpawnCommand implements BasicCommand {
             return;
         }
 
-        if (!(player.hasPermission("utilsmanager.spawn"))) {
+        if (!(player.hasPermission("utilsmanager.feature.spawn"))) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
@@ -30,7 +31,17 @@ public class SpawnCommand implements BasicCommand {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
-        Location loc = new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0);
+
+        Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+        if (loc == null) {
+            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                player.sendMessage(Statements.getPrefix().append(Component.text("Es konnte keine Spawn-Location gefunden werden!", NamedTextColor.RED)));
+            } else {
+                player.sendMessage(Statements.getPrefix().append(Component.text("No Spawn-Location could be found!", NamedTextColor.RED)));
+            }
+            return;
+        }
+
         player.teleport(loc);
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest zum Spawn teleportiert.", NamedTextColor.GREEN)));
@@ -40,22 +51,3 @@ public class SpawnCommand implements BasicCommand {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

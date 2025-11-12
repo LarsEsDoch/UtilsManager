@@ -2,6 +2,7 @@ package dev.lars.utilsmanager.listener.player;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
+import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,13 +18,11 @@ public class RespawnListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
-
         Player player = event.getPlayer();
         Location respawnLocation = event.getRespawnLocation();
         Location bedSpawn = player.getRespawnLocation();
         Location worldSpawn = player.getWorld().getSpawnLocation();
-
-        Location loc = new Location(Bukkit.getWorld("world"), -205.5, 78.0, -102.5, -90, 0);
+        Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
 
         if (PlayerSettingsAPI.getApi().getBedToggle(player) || !respawnLocation.equals(bedSpawn)) {
             if (LanguageAPI.getApi().getLanguage(player ) == 2) {
@@ -33,14 +32,23 @@ public class RespawnListener implements Listener {
             }
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
         } else {
-            event.setRespawnLocation(loc);
-            if (LanguageAPI.getApi().getLanguage(player ) == 2) {
-                player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest am Offiziellen Spawn wiederbelebt.", NamedTextColor.GOLD)));
+            if (loc != null) {
+                event.setRespawnLocation(loc);
+                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest am Spawn wiederbelebt.", NamedTextColor.GOLD)));
+                } else {
+                    player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at the spawn.", NamedTextColor.GOLD)));
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
             } else {
-                player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at the official Spawn.", NamedTextColor.GOLD)));
+                event.setRespawnLocation(worldSpawn);
+                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest am Welt Spawn wiederbelebt.", NamedTextColor.GOLD)));
+                } else {
+                    player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at the world spawn.", NamedTextColor.GOLD)));
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
             }
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
         }
     }
-
 }

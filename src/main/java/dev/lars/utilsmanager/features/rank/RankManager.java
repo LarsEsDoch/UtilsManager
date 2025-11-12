@@ -83,8 +83,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.pay", true);
                 attachment.setPermission("utilsmanager.price", true);
                 attachment.setPermission("utilsmanager.realtime", true);
-                attachment.setPermission("utilsmanager.setspawn", true);
-                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.feature.spawn", true);
                 attachment.setPermission("utilsmanager.timer", true);
                 attachment.setPermission("utilsmanager.timer.public", true);
                 attachment.setPermission("utilsmanager.togglebed", true);
@@ -126,6 +125,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.vanish", true);
                 attachment.setPermission("utilsmanager.feature.freecam", true);
                 attachment.setPermission("utilsmanager.maintenance", true);
+                attachment.setPermission("utilsmanager.feature.spawn.setspawn", true);
             }
             case 9: {
                 attachment.setPermission("utilsmanager.addcoins", true);
@@ -141,8 +141,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.pay", true);
                 attachment.setPermission("utilsmanager.price", true);
                 attachment.setPermission("utilsmanager.realtime", true);
-                attachment.setPermission("utilsmanager.setspawn", true);
-                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.feature.spawn", true);
                 attachment.setPermission("utilsmanager.timer", true);
                 attachment.setPermission("utilsmanager.togglebed", true);
                 attachment.setPermission("utilsmanager.togglescoreboard", true);
@@ -180,6 +179,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.vanish", true);
                 attachment.setPermission("utilsmanager.feature.freecam", true);
                 attachment.setPermission("utilsmanager.maintenance", true);
+                attachment.setPermission("utilsmanager.feature.spawn.setspawn", true);
             }
             case 8: {
                 attachment.setPermission("utilsmanager.addcoins", true);
@@ -195,8 +195,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.pay", true);
                 attachment.setPermission("utilsmanager.price", true);
                 attachment.setPermission("utilsmanager.realtime", true);
-                attachment.setPermission("utilsmanager.setspawn", true);
-                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.feature.spawn", true);
                 attachment.setPermission("utilsmanager.timer", true);
                 attachment.setPermission("utilsmanager.togglebed", true);
                 attachment.setPermission("utilsmanager.togglescoreboard", true);
@@ -238,8 +237,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.pay", true);
                 attachment.setPermission("utilsmanager.price", true);
                 attachment.setPermission("utilsmanager.realtime", true);
-                attachment.setPermission("utilsmanager.setspawn", true);
-                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.feature.spawn", true);
                 attachment.setPermission("utilsmanager.timer", true);
                 attachment.setPermission("utilsmanager.togglebed", true);
                 attachment.setPermission("utilsmanager.togglescoreboard", true);
@@ -269,8 +267,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.language", true);
                 attachment.setPermission("utilsmanager.pay", true);
                 attachment.setPermission("utilsmanager.price", true);
-                attachment.setPermission("utilsmanager.setspawn", true);
-                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.feature.spawn", true);
                 attachment.setPermission("utilsmanager.timer", true);
                 attachment.setPermission("utilsmanager.togglebed", true);
                 attachment.setPermission("utilsmanager.togglescoreboard", true);
@@ -297,7 +294,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.language", true);
                 attachment.setPermission("utilsmanager.pay", true);
                 attachment.setPermission("utilsmanager.price", true);
-                attachment.setPermission("utilsmanager.spawn", true);
+                attachment.setPermission("utilsmanager.feature.spawn", true);
                 attachment.setPermission("utilsmanager.timer", true);
                 attachment.setPermission("utilsmanager.togglebed", true);
                 attachment.setPermission("utilsmanager.togglescoreboard", true);
