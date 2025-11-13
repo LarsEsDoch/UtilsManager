@@ -174,7 +174,7 @@ public class PrefixCommand implements BasicCommand {
 
             items.put(4, new ItemBuilder(Material.PAPER)
                     .setDisplayName(Component.text("Obfuscated", NamedTextColor.WHITE, TextDecoration.OBFUSCATED))
-                    .setCustomId(prefixKey, "magic")
+                    .setCustomId(prefixKey, "obfuscated")
                     .setCustomModelData(4)
                     .build());
 
@@ -186,7 +186,7 @@ public class PrefixCommand implements BasicCommand {
 
             items.put(6, new ItemBuilder(Material.PAPER)
                     .setDisplayName(Component.text("Underlined", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
-                    .setCustomId(prefixKey, "underline")
+                    .setCustomId(prefixKey, "underlined")
                     .setCustomModelData(6)
                     .build());
 
@@ -207,7 +207,7 @@ public class PrefixCommand implements BasicCommand {
                 } else {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("You´ve set your prefix on ", NamedTextColor.WHITE))
-                            .append(Component.text("Black", NamedTextColor.BLACK))
+                            .append(Component.text("black", NamedTextColor.BLACK))
                             .append(Component.text(".", NamedTextColor.WHITE)));
                 }
                 break;
@@ -440,96 +440,151 @@ public class PrefixCommand implements BasicCommand {
             case "bold": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.BOLD)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.BOLD);
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("fett", NamedTextColor.GRAY, TextDecoration.BOLD))
+                                .append(Component.text(" deaktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've removed the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("bold", NamedTextColor.GRAY, TextDecoration.BOLD))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.BOLD);
-                }
-
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
-                            .append(Component.text("Fett", NamedTextColor.WHITE, TextDecoration.BOLD))
-                            .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You've set the prefix effect ", NamedTextColor.WHITE))
-                            .append(Component.text("bold", NamedTextColor.WHITE, TextDecoration.BOLD))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("fett", NamedTextColor.GRAY, TextDecoration.BOLD))
+                                .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've added the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("bold", NamedTextColor.GRAY, TextDecoration.BOLD))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 }
                 break;
             }
             case "italic": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.ITALIC)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.ITALIC);
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("kursiv", NamedTextColor.GRAY, TextDecoration.ITALIC))
+                                .append(Component.text(" deaktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've removed the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("italic", NamedTextColor.GRAY, TextDecoration.ITALIC))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.ITALIC);
-                }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
-                            .append(Component.text("Kursiv", NamedTextColor.WHITE, TextDecoration.ITALIC))
-                            .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You've set the prefix effect ", NamedTextColor.WHITE))
-                            .append(Component.text("italic", NamedTextColor.WHITE, TextDecoration.ITALIC))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("kursiv", NamedTextColor.GRAY, TextDecoration.ITALIC))
+                                .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've added the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("italic", NamedTextColor.GRAY, TextDecoration.ITALIC))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 }
                 break;
             }
             case "obfuscated": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.OBFUSCATED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.OBFUSCATED);
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("verschleiert", NamedTextColor.GRAY, TextDecoration.OBFUSCATED))
+                                .append(Component.text(" deaktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've removed the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("obfuscated", NamedTextColor.GRAY, TextDecoration.OBFUSCATED))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.OBFUSCATED);
+                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("verschleiert", NamedTextColor.GRAY, TextDecoration.OBFUSCATED))
+                                .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've added the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("obfuscated", NamedTextColor.GRAY, TextDecoration.OBFUSCATED))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
-                            .append(Component.text("Magie", NamedTextColor.WHITE, TextDecoration.OBFUSCATED))
-                            .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You've set the prefix effect ", NamedTextColor.WHITE))
-                            .append(Component.text("magic", NamedTextColor.WHITE, TextDecoration.OBFUSCATED))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
-                }
+
                 break;
             }
             case "strikethrough": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.STRIKETHROUGH)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.STRIKETHROUGH);
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("durchgestrichen", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
+                                .append(Component.text(" deaktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've removed the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("strikethrough", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.STRIKETHROUGH);
-                }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
-                            .append(Component.text("Durchgestrichen", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
-                            .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You've set the prefix effect ", NamedTextColor.WHITE))
-                            .append(Component.text("strikethrough", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("durchgestrichen", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
+                                .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've added the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("strikethrough", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 }
                 break;
             }
             case "underlined": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.UNDERLINED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.UNDERLINED);
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("unterstrichen", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
+                                .append(Component.text(" deaktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've removed the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("underlined", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.UNDERLINED);
-                }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Du hast den Prefix Effekt ", NamedTextColor.WHITE))
-                            .append(Component.text("Unterstrichen", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
-                            .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
-                } else {
-                    player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("You've set the prefix effect ", NamedTextColor.WHITE))
-                            .append(Component.text("underlined", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
-                            .append(Component.text(".", NamedTextColor.WHITE)));
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
+                                .append(Component.text("unterstrichen", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
+                                .append(Component.text(" aktiviert.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("You've added the prefix decoration ", NamedTextColor.WHITE))
+                                .append(Component.text("underlined", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 }
                 break;
             }
