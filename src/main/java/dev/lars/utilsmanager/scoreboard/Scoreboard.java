@@ -116,6 +116,10 @@ public class Scoreboard extends ScoreboardBuilder {
 
     private void run() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            if (!player.isOnline()) {
+                bukkitTask.cancel();
+                return;
+            }
             if (mode) {
                 coins = EconomyAPI.getApi().getBalance(player);
 
