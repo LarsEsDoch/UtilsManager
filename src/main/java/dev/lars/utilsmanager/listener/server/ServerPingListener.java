@@ -1,12 +1,14 @@
 package dev.lars.utilsmanager.listener.server;
 
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
+import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import dev.lars.utilsmanager.utils.Gradient;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -82,6 +84,10 @@ public class ServerPingListener implements Listener {
         String info = "Info: Server is online!";
         Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.GREEN, extraShift);
         event.motd(header.append(centered));
+        event.getListedPlayers().removeIf(listedPlayerInfo -> {
+            OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
+            return PlayerIdentityAPI.getApi().isVanished(offline);
+        });
     }
 
     private static List<String> wrapText(String text, int width) {
