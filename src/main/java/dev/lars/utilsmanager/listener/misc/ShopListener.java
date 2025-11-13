@@ -394,21 +394,18 @@ public class ShopListener implements Listener {
                             .append(Component.text("$.")));
                 }
                 EconomyAPI.getApi().increaseBalance(player, sellprice);
-                return;
             }
         }
     }
 
     @EventHandler
     public void onInventoryKlickPrefix(InventoryClickEvent event) {
-
-        World world = Bukkit.getWorld("world");
         Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem() == null) {
             return;
         }
 
-        if (event.getView().title().equals(Component.text("             Prefix", NamedTextColor.DARK_GREEN, TextDecoration.BOLD))) {
+        if (event.getView().title().equals(Component.text("            Prefix", NamedTextColor.DARK_PURPLE, TextDecoration.BOLD))) {
             event.setCancelled(true);
             NamespacedKey prefixKey = new NamespacedKey("utilsmanager", "prefix_id");
 
@@ -419,30 +416,6 @@ public class ShopListener implements Listener {
             PersistentDataContainer data = meta.getPersistentDataContainer();
             String id = data.get(prefixKey, PersistentDataType.STRING);
             if (id == null) return;
-
-            if (id.equalsIgnoreCase("reset")) {
-                int rankId = RankAPI.getApi().getRankId(player);
-
-                switch (rankId) {
-                    case 5 -> PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
-                    case 6 -> PrefixAPI.getApi().setColor(player, NamedTextColor.YELLOW);
-                    case 7 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_PURPLE);
-                    case 8 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_GRAY);
-                    case 9 -> PrefixAPI.getApi().setColor(player, NamedTextColor.RED);
-                    case 10 -> PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
-                }
-
-                PrefixAPI.getApi().setDecoration(player, null);
-
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD));
-                } else {
-                    player.sendMessage(Component.text("You’ve reset your prefix.", NamedTextColor.GOLD));
-                }
-
-                UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
-                return;
-            }
 
             if (id.equalsIgnoreCase("fail")) {
                 player.sendMessage(Component.text("You cannot use this prefix!", NamedTextColor.RED));

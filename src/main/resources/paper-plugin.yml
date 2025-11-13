@@ -76,8 +76,6 @@ permissions:
     default: false
   utilsmanager.home:
     default: false
-  ported:
-    default: false
   utilsmanager.timer.public:
     default: false
   utilsmanager.heal:

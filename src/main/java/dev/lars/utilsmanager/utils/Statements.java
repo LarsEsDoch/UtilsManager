@@ -15,6 +15,16 @@ public class Statements {
                 .append(Component.text(" ", NamedTextColor.GRAY));
     }
 
+    public static Component getUsage(Player player) {
+        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            return Component.text("Verwendung", NamedTextColor.GRAY)
+                    .append(Component.text(": ", NamedTextColor.DARK_GRAY));
+        } else {
+            return Component.text("Usage", NamedTextColor.GRAY)
+                    .append(Component.text(": ", NamedTextColor.DARK_GRAY));
+        }
+    }
+
     public static Component getNotAllowed(Player player) {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             return Component.text("Du bist nicht berechtigt um das auszuführen!", NamedTextColor.RED);

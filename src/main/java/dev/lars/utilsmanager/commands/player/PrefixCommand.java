@@ -24,21 +24,23 @@ import java.util.*;
 public class PrefixCommand implements BasicCommand {
 
     @Override
-    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
         if (!(stack.getExecutor() instanceof Player player)) {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
         }
+
         if (!player.hasPermission("utilsmanager.prefix")) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
+
         if (args.length == 0) {
             NamespacedKey prefixKey = new NamespacedKey("utilsmanager", "prefix_id");
 
             HashMap<Integer, ItemStack> items = new HashMap<>();
 
-            if (RankAPI.getApi().getRankId(player) == 10) {
+            if (RankAPI.getApi().getRankId(player) != 10) {
                 items.put(10, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Dark Red", NamedTextColor.DARK_RED))
                         .setCustomId(prefixKey, "fail")
@@ -50,7 +52,7 @@ public class PrefixCommand implements BasicCommand {
                         .build());
             }
 
-            if (RankAPI.getApi().getRankId(player) >= 9) {
+            if (RankAPI.getApi().getRankId(player) < 9) {
                 items.put(11, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Red", NamedTextColor.RED))
                         .setCustomId(prefixKey, "fail")
@@ -67,7 +69,7 @@ public class PrefixCommand implements BasicCommand {
                     .setCustomId(prefixKey, "gold")
                     .build());
 
-            if (RankAPI.getApi().getRankId(player) >= 6) {
+            if (RankAPI.getApi().getRankId(player) < 6) {
                 items.put(13, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Yellow", NamedTextColor.YELLOW))
                         .setCustomId(prefixKey, "fail")
@@ -99,7 +101,7 @@ public class PrefixCommand implements BasicCommand {
                     .setCustomId(prefixKey, "dark_aqua")
                     .build());
 
-            if (RankAPI.getApi().getRankId(player) >= 8) {
+            if (RankAPI.getApi().getRankId(player) < 8) {
                 items.put(20, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Dark Blue", NamedTextColor.DARK_BLUE))
                         .setCustomId(prefixKey, "fail")
@@ -121,7 +123,7 @@ public class PrefixCommand implements BasicCommand {
                     .setCustomId(prefixKey, "light_purple")
                     .build());
 
-            if (RankAPI.getApi().getRankId(player) >= 7) {
+            if (RankAPI.getApi().getRankId(player) < 7) {
                 items.put(23, new ItemBuilder(Material.BARRIER)
                         .setDisplayName(Component.text("Dark Purple", NamedTextColor.DARK_PURPLE))
                         .setCustomId(prefixKey, "fail")
@@ -171,7 +173,7 @@ public class PrefixCommand implements BasicCommand {
                     .build());
 
             items.put(4, new ItemBuilder(Material.PAPER)
-                    .setDisplayName(Component.text("Magic", NamedTextColor.WHITE, TextDecoration.OBFUSCATED))
+                    .setDisplayName(Component.text("Obfuscated", NamedTextColor.WHITE, TextDecoration.OBFUSCATED))
                     .setCustomId(prefixKey, "magic")
                     .setCustomModelData(4)
                     .build());
@@ -183,16 +185,17 @@ public class PrefixCommand implements BasicCommand {
                     .build());
 
             items.put(6, new ItemBuilder(Material.PAPER)
-                    .setDisplayName(Component.text("Underline", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
+                    .setDisplayName(Component.text("Underlined", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
                     .setCustomId(prefixKey, "underline")
                     .setCustomModelData(6)
                     .build());
 
-            Inventory inv = Bukkit.createInventory(null, 4 * 9, Component.text("             Prefix", NamedTextColor.DARK_GREEN, TextDecoration.BOLD));
+            Inventory inv = Bukkit.createInventory(null, 4 * 9, Component.text("            Prefix", NamedTextColor.DARK_PURPLE, TextDecoration.BOLD));
             items.forEach(inv::setItem);
             player.openInventory(inv);
             return;
         }
+
         switch (args[0].toLowerCase()) {
             case "black": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.BLACK);
@@ -389,7 +392,6 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "light_purple": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.LIGHT_PURPLE);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -405,7 +407,6 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "yellow": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.YELLOW);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -421,7 +422,6 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "white": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.WHITE);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -437,12 +437,11 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "bold": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.BOLD)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.BOLD);
                 } else {
-                    PrefixAPI.getApi().setDecoration(player, TextDecoration.BOLD);
+                    PrefixAPI.getApi().addDecoration(player, TextDecoration.BOLD);
                 }
 
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -458,12 +457,11 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "italic": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.ITALIC)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.ITALIC);
                 } else {
-                    PrefixAPI.getApi().setDecoration(player, TextDecoration.ITALIC);
+                    PrefixAPI.getApi().addDecoration(player, TextDecoration.ITALIC);
                 }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
@@ -478,12 +476,11 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "obfuscated": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.OBFUSCATED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.OBFUSCATED);
                 } else {
-                    PrefixAPI.getApi().setDecoration(player, TextDecoration.OBFUSCATED);
+                    PrefixAPI.getApi().addDecoration(player, TextDecoration.OBFUSCATED);
                 }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
@@ -498,12 +495,11 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "strikethrough": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.STRIKETHROUGH)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.STRIKETHROUGH);
                 } else {
-                    PrefixAPI.getApi().setDecoration(player, TextDecoration.STRIKETHROUGH);
+                    PrefixAPI.getApi().addDecoration(player, TextDecoration.STRIKETHROUGH);
                 }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
@@ -518,12 +514,11 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "underlined": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.UNDERLINED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.UNDERLINED);
                 } else {
-                    PrefixAPI.getApi().setDecoration(player, TextDecoration.UNDERLINED);
+                    PrefixAPI.getApi().addDecoration(player, TextDecoration.UNDERLINED);
                 }
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
@@ -538,8 +533,19 @@ public class PrefixCommand implements BasicCommand {
                 }
                 break;
             }
-
             case "reset": {
+                if (RankAPI.getApi().getRankId(player) == 1) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.WHITE);
+                }
+                if (RankAPI.getApi().getRankId(player) == 2) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.GREEN);
+                }
+                if (RankAPI.getApi().getRankId(player) == 3) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.AQUA);
+                }
+                if (RankAPI.getApi().getRankId(player) == 4) {
+                    PrefixAPI.getApi().setColor(player,NamedTextColor.BLUE);
+                }
                 if (RankAPI.getApi().getRankId(player) == 5) {
                     PrefixAPI.getApi().setColor(player,NamedTextColor.GOLD);
                 }
@@ -570,6 +576,7 @@ public class PrefixCommand implements BasicCommand {
                 sendUsage(player);
                 break;
         }
+
         UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
     }
 
@@ -592,11 +599,11 @@ public class PrefixCommand implements BasicCommand {
             colorSuggestions.add("green");
             colorSuggestions.add("italic");
             colorSuggestions.add("light_purple");
-            colorSuggestions.add("magic");
+            colorSuggestions.add("obfuscated");
             colorSuggestions.add("red");
             colorSuggestions.add("reset");
             colorSuggestions.add("strikethrough");
-            colorSuggestions.add("underline");
+            colorSuggestions.add("underlined");
             colorSuggestions.add("white");
             colorSuggestions.add("yellow");
 
@@ -607,17 +614,9 @@ public class PrefixCommand implements BasicCommand {
 
     private void sendUsage(Player player) {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
-            player.sendMessage(Component.text()
-                    .append(Component.text("Verwendung", NamedTextColor.GRAY))
-                    .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/prefix <Farbe>", NamedTextColor.BLUE))
-                    .build());
+            player.sendMessage(Statements.getUsage(player).append(Component.text("/prefix <Farbe/Dekoration>", NamedTextColor.BLUE)));
         } else {
-            player.sendMessage(Component.text()
-                    .append(Component.text("Use", NamedTextColor.GRAY))
-                    .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/prefix <Color>", NamedTextColor.BLUE))
-                    .build());
+            player.sendMessage(Statements.getUsage(player).append(Component.text("/prefix <Color/Decoration>", NamedTextColor.BLUE)));
         }
     }
 }
