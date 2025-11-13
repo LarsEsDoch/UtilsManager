@@ -5,6 +5,7 @@ import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.limitAPI.LimitAPI;
 import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
+import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
@@ -115,35 +116,36 @@ public class JoinListener implements Listener {
                 }
             }
 
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (LanguageAPI.getApi().getLanguage(p) == 2) {
-                    p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
-                            .append(Component.text(" hat den Server betreten.", NamedTextColor.WHITE)));
-                } else {
-                    p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
-                            .append(Component.text(" joined the server.", NamedTextColor.WHITE)));
-                }
-            }
-            UtilsManager.getInstance().getRankManager().setPermisssions(player);
-            UtilsManager.getInstance().getTablistManager().setTabList(player);
-            Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
-                StringBuilder message;
-
-                if (Bukkit.getOnlinePlayers().size() > 1) {
-                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs sind aktuell " + Bukkit.getOnlinePlayers().size() + " Spieler online.\n");
-                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
+            if (!PlayerIdentityAPI.getApi().isVanished(player)) {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (LanguageAPI.getApi().getLanguage(p) == 2) {
+                        p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
+                                .append(Component.text(" hat den Server betreten.", NamedTextColor.WHITE)));
+                    } else {
+                        p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
+                                .append(Component.text(" joined the server.", NamedTextColor.WHITE)));
                     }
-                } else {
-                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs ist aktuell nur er online.");
                 }
+                Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+                    StringBuilder message;
 
-                UtilsManager.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
-                UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
-            });
+                    if (Bukkit.getOnlinePlayers().size() > 1) {
+                        message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs sind aktuell " + Bukkit.getOnlinePlayers().size() + " Spieler online.\n");
+                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                            message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
+                        }
+                    } else {
+                        message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " ist dem Server beigetreten.\n\nEs ist aktuell nur er online.");
+                    }
+
+                    UtilsManager.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
+                });
+            }
         }
 
-
+        UtilsManager.getInstance().getRankManager().setPermisssions(player);
+        UtilsManager.getInstance().getTablistManager().setTabList(player);
+        UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
         event.joinMessage(Component.text(""));
     }
 
@@ -157,7 +159,7 @@ public class JoinListener implements Listener {
 
 
         Component GiftText = getComponent();
-        //player.sendMessage(GiftText);
+        player.sendMessage(GiftText);
 
 
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -170,15 +172,12 @@ public class JoinListener implements Listener {
             }
         }
         player.sendMessage(Statements.getPrefix().append(Component.text("Willkommen auf diesem Server! Habe Spaß und genieße es.", NamedTextColor.GOLD, TextDecoration.BOLD)));
-        UtilsManager.getInstance().getRankManager().setPermisssions(player);
-        UtilsManager.getInstance().getTablistManager().setTabList(player);
         Component LanguageText = getLanguageText();
         player.sendMessage(LanguageText);
         player.sendMessage(Statements.getPrefix().append(Component.text("Falls du Hilfe brauchst nutze die Serverfunktion: ", NamedTextColor.GOLD))
                 .append(Component.text("/help ", NamedTextColor.GRAY))
                 .append(Component.text("oder [Hilfe hier]", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("/help"))));
         Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
-            UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
             showTitleFi(player);
         }, 20);
     }

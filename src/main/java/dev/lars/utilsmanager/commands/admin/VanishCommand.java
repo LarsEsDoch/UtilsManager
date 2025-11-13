@@ -1,6 +1,8 @@
 package dev.lars.utilsmanager.commands.admin;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
+import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -21,8 +23,9 @@ public class VanishCommand implements BasicCommand {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
-        if (player.isInvisible()) {
+        if (PlayerIdentityAPI.getApi().isVanished(player)) {
             player.setInvisible(false);
+            PlayerIdentityAPI.getApi().setVanished(player, false);
             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun für alle wieder ", NamedTextColor.WHITE))
                         .append(Component.text("sichtbar ", NamedTextColor.GRAY)).append(Component.text("!", NamedTextColor.WHITE)));
@@ -32,6 +35,7 @@ public class VanishCommand implements BasicCommand {
             }
         } else {
             player.setInvisible(true);
+            PlayerIdentityAPI.getApi().setVanished(player, true);
             if(LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun für alle ", NamedTextColor.WHITE))
                                 .append(Component.text("unsichtbar ", NamedTextColor.GRAY)).append(Component.text("!", NamedTextColor.WHITE)));
@@ -40,5 +44,6 @@ public class VanishCommand implements BasicCommand {
                                 .append(Component.text("invisible ", NamedTextColor.GRAY)).append(Component.text("for everyone!", NamedTextColor.WHITE)));
             }
         }
+        UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
     }
 }

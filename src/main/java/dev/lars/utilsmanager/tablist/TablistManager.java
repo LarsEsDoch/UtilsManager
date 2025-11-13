@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.tablist;
 
+import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
@@ -40,6 +41,10 @@ public class TablistManager{
             ));
         }
 
+        int visibleCount = (int) Bukkit.getOnlinePlayers().stream()
+        .filter(p -> !PlayerIdentityAPI.getApi().isVanished(p) || p.equals(player))
+        .count();
+
         player.sendPlayerListHeader(
                 Component.text()
                         .append(Component.text("          ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH))
@@ -48,7 +53,7 @@ public class TablistManager{
                         .append(Component.text(" ]", NamedTextColor.DARK_GRAY))
                         .append(Component.text("          ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH))
                         .append(Component.newline())
-                        .append(Component.text(Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers(), NamedTextColor.GREEN))
+                        .append(Component.text(visibleCount + "/" + Bukkit.getMaxPlayers(), NamedTextColor.GREEN))
                         .build()
         );
         Spark spark = SparkProvider.get();
@@ -132,6 +137,9 @@ public class TablistManager{
         Scoreboard scoreboard = player.getScoreboard();
 
         for (Player target : Bukkit.getOnlinePlayers()) {
+            if (PlayerIdentityAPI.getApi().isVanished(target) && !target.equals(player)) {
+                continue;
+            }
             Integer rank = RankAPI.getApi().getRankId(target);
             NamedTextColor namedTextColor = PrefixAPI.getApi().getColor(target);
 
