@@ -41,7 +41,7 @@ public class ChunkCommand implements BasicCommand {
         switch (subCommand) {
             case "claimspawnchunks" -> handleClaimSpawnChunks(player, loc);
             case "claim" -> handleClaim(player, chunk, loc);
-            case "sell" -> handleSell(player, chunk, loc, args);
+            case "sell" -> handleSell(player, chunk, args);
             case "list" -> handleList(player);
             case "friend" -> handleFriend(player, chunk, loc, args);
             case "free" -> handleFree(player);
@@ -67,8 +67,8 @@ public class ChunkCommand implements BasicCommand {
                         ChunkAPI.getApi().claimChunk(player, spawnChunk);
                         
                         sendMessage(player, 
-                            "Du hast den Chunk " + formatChunkCoords(spawnChunk, loc) + " beansprucht!",
-                            "You claimed the Chunk " + formatChunkCoords(spawnChunk, loc) + " !",
+                            "Du hast den Chunk " + formatChunkCoordinates(spawnChunk) + " beansprucht!",
+                            "You claimed the Chunk " + formatChunkCoordinates(spawnChunk) + " !",
                             NamedTextColor.WHITE);
                     }
                 }
@@ -82,8 +82,8 @@ public class ChunkCommand implements BasicCommand {
         if (chunkOwner != null) {
             if (chunkOwner.equals(player.getUniqueId())) {
                 sendMessage(player,
-                    "Das ist bereits dein Chunk!" + formatChunkCoords(chunk, loc),
-                    "This is already your chunk!" + formatChunkCoords(chunk, loc),
+                    "Das ist bereits dein Chunk!" + formatChunkCoordinates(chunk),
+                    "This is already your chunk!" + formatChunkCoordinates(chunk),
                     NamedTextColor.RED);
                 return;
             }
@@ -100,8 +100,8 @@ public class ChunkCommand implements BasicCommand {
 
             OfflinePlayer owner = Bukkit.getOfflinePlayer(chunkOwner);
             sendMessage(player,
-                "Der Chunk gehört bereits " + owner.getName() + " !" + formatChunkCoords(chunk, loc),
-                "This chunk already belongs to " + owner.getName() + " !" + formatChunkCoords(chunk, loc),
+                "Der Chunk gehört bereits " + owner.getName() + " !" + formatChunkCoordinates(chunk),
+                "This chunk already belongs to " + owner.getName() + " !" + formatChunkCoordinates(chunk),
                 NamedTextColor.RED);
             return;
         }
@@ -122,8 +122,8 @@ public class ChunkCommand implements BasicCommand {
         LimitAPI.getApi().increaseMaxChunks(player, 1);
         
         sendMessage(player,
-            "Du hast den Chunk " + formatChunkCoords(chunk, loc) + " beansprucht!",
-            "You claimed the Chunk " + formatChunkCoords(chunk, loc) + " !",
+            "Du hast den Chunk " + formatChunkCoordinates(chunk) + " beansprucht!",
+            "You claimed the Chunk " + formatChunkCoordinates(chunk) + " !",
             NamedTextColor.WHITE);
         
         if (RankAPI.getApi().getRankId(player) <= 8) {
@@ -135,14 +135,14 @@ public class ChunkCommand implements BasicCommand {
         }
     }
 
-    private void handleSell(Player player, Chunk chunk, Location loc, String[] args) {
+    private void handleSell(Player player, Chunk chunk, String[] args) {
         if (args.length > 1 && args[1].equals("*")) {
             List<Chunk> chunks = ChunkAPI.getApi().getChunks(player);
             for (Chunk sellChunk : chunks) {
                 ChunkAPI.getApi().unclaimChunk(player, sellChunk);
                 sendMessage(player,
-                    "Du hast den Chunk: " + formatChunkCoords(sellChunk, loc) + " verkauft.",
-                    "You sold the chunk: " + formatChunkCoords(sellChunk, loc) + ".",
+                    "Du hast den Chunk: " + formatChunkCoordinates(sellChunk) + " verkauft.",
+                    "You sold the chunk: " + formatChunkCoordinates(sellChunk) + ".",
                     NamedTextColor.WHITE);
             }
             return;
@@ -152,8 +152,8 @@ public class ChunkCommand implements BasicCommand {
         
         if (chunkOwner == null) {
             sendMessage(player,
-                "Der Chunk hat keinen Besitzer! " + formatChunkCoords(chunk, loc),
-                "This chunk has no owner!" + formatChunkCoords(chunk, loc),
+                "Der Chunk hat keinen Besitzer! " + formatChunkCoordinates(chunk),
+                "This chunk has no owner!" + formatChunkCoordinates(chunk),
                 NamedTextColor.RED);
             return;
         }
@@ -161,8 +161,8 @@ public class ChunkCommand implements BasicCommand {
         if (!chunkOwner.equals(player.getUniqueId())) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(chunkOwner);
             sendMessage(player,
-                "Der Chunk gehört " + owner.getName() + " !" + formatChunkCoords(chunk, loc),
-                "This chunk owns " + owner.getName() + " !" + formatChunkCoords(chunk, loc),
+                "Der Chunk gehört " + owner.getName() + " !" + formatChunkCoordinates(chunk),
+                "This chunk owns " + owner.getName() + " !" + formatChunkCoordinates(chunk),
                 NamedTextColor.RED);
             return;
         }
@@ -173,8 +173,8 @@ public class ChunkCommand implements BasicCommand {
         }
         
         sendMessage(player,
-            "Du hast den Chunk " + formatChunkCoords(chunk, loc) + " verkauft!",
-            "You sold the Chunk " + formatChunkCoords(chunk, loc) + " !",
+            "Du hast den Chunk " + formatChunkCoordinates(chunk) + " verkauft!",
+            "You sold the Chunk " + formatChunkCoordinates(chunk) + " !",
             NamedTextColor.WHITE);
         
         if (RankAPI.getApi().getRankId(player) <= 8) {
@@ -330,8 +330,8 @@ public class ChunkCommand implements BasicCommand {
         String playerNameEn = addAll ? "all players" : friend.getName();
         
         sendMessage(player,
-            "Du hast " + playerName + " zu den Freunden dieses Chunks hinzugefügt. Chunk: " + formatChunkCoords(chunk, loc),
-            "You add " + playerNameEn + " to the friends of this chunk. Chunk: " + formatChunkCoords(chunk, loc),
+            "Du hast " + playerName + " zu den Freunden des chunks: " + formatChunkCoordinates(chunk),
+            "You added " + playerNameEn + " to the friends of the chunk: " + formatChunkCoordinates(chunk),
             NamedTextColor.WHITE);
     }
 
@@ -375,8 +375,8 @@ public class ChunkCommand implements BasicCommand {
         String playerNameEn = removeAll ? "all players" : friend.getName();
         
         sendMessage(player,
-            "Du hast " + playerName + " von den Freunden dieses Chunks entfernt. Chunk: " + formatChunkCoords(chunk, loc),
-            "You removed " + playerNameEn + " from the friends of this chunk. Chunk: " + formatChunkCoords(chunk, loc),
+            "Du hast " + playerName + " von den Freunden dieses Chunks entfernt. Chunk: " + formatChunkCoordinates(chunk),
+            "You removed " + playerNameEn + " from the friends of this chunk. Chunk: " + formatChunkCoordinates(chunk),
             NamedTextColor.WHITE);
     }
 
@@ -408,7 +408,7 @@ public class ChunkCommand implements BasicCommand {
     private void handleInfo(Player player, Chunk chunk, Location loc) {
         UUID chunkOwnerId = ChunkAPI.getApi().getChunkOwner(chunk);
         String owner = chunkOwnerId == null ? "---" : Bukkit.getOfflinePlayer(chunkOwnerId).getName();
-        String chunkCoords = formatChunkCoords(chunk, loc);
+        String chunkCoords = formatChunkCoordinates(chunk);
         Component friends = chunkOwnerId == null ? Component.text("---", NamedTextColor.GRAY) 
             : formatFriendListInfo(ChunkAPI.getApi().getFriends(chunk));
         String flags = "EntitySpawning: " + (isGerman(player) ? "Aktiviert" : "Activated");
@@ -499,7 +499,7 @@ public class ChunkCommand implements BasicCommand {
             .append(Component.text("EntitySpawning ", NamedTextColor.GOLD))
             .append(Component.text(enableFlag ? status + "! " : "! ", enableFlag ? statusColor : NamedTextColor.WHITE))
             .append(Component.text("Chunk: ", NamedTextColor.WHITE))
-            .append(Component.text(formatChunkCoords(chunk, loc), NamedTextColor.DARK_BLUE)));
+            .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.DARK_BLUE)));
     }
     
     private boolean validateChunkOwnership(Player player, Chunk chunk, Location loc) {
@@ -507,8 +507,8 @@ public class ChunkCommand implements BasicCommand {
         
         if (chunkOwner == null) {
             sendMessage(player,
-                "Der Chunk hat keinen Besitzer! " + formatChunkCoords(chunk, loc),
-                "This chunk has no owner!" + formatChunkCoords(chunk, loc),
+                "Der Chunk hat keinen Besitzer! " + formatChunkCoordinates(chunk),
+                "This chunk has no owner!" + formatChunkCoordinates(chunk),
                 NamedTextColor.RED);
             return false;
         }
@@ -516,8 +516,8 @@ public class ChunkCommand implements BasicCommand {
         if (!chunkOwner.equals(player.getUniqueId())) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(chunkOwner);
             sendMessage(player,
-                "Der Chunk gehört nicht dir! Besitzer: " + owner.getName() + "!" + formatChunkCoords(chunk, loc),
-                "This chunk isn´t yours! Owner: " + owner.getName() + "!" + formatChunkCoords(chunk, loc),
+                "Der Chunk gehört nicht dir! Besitzer: " + owner.getName() + "!" + formatChunkCoordinates(chunk),
+                "This chunk isn´t yours! Owner: " + owner.getName() + "!" + formatChunkCoordinates(chunk),
                 NamedTextColor.RED);
             return false;
         }
@@ -532,13 +532,13 @@ public class ChunkCommand implements BasicCommand {
         String prepositionEn = isAdd ? "to" : "from";
         
         sendMessage(player,
-            "Du hast " + playerNameDe + " " + prepositionDe + " den Freunden dieses Chunks " + actionDe + ". Chunk: " + formatChunkCoords(chunk, loc),
-            "You " + actionEn + " " + playerNameEn + " " + prepositionEn + " the friends of this chunk. Chunk: " + formatChunkCoords(chunk, loc),
+            "Du hast " + playerNameDe + " " + prepositionDe + " den Freunden dieses Chunks " + actionDe + ". Chunk: " + formatChunkCoordinates(chunk),
+            "You " + actionEn + " " + playerNameEn + " " + prepositionEn + " the friends of this chunk. Chunk: " + formatChunkCoordinates(chunk),
             NamedTextColor.WHITE);
     }
 
-    private String formatChunkCoords(Chunk chunk, Location loc) {
-        return "(" + chunk.getX() + "," + chunk.getZ() + "," + loc.getWorld().getName() + ")";
+    private String formatChunkCoordinates(Chunk chunk) {
+        return "(" + chunk.getX() + "," + chunk.getZ() + "," + chunk.getWorld().getName() + ")";
     }
 
     private boolean isGerman(Player player) {

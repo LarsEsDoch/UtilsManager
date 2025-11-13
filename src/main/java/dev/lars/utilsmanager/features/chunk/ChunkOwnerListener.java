@@ -6,19 +6,20 @@ import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Openable;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Switch;
-import org.bukkit.entity.Animals;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.EnumSet;
@@ -27,7 +28,7 @@ import java.util.Set;
 
 public class ChunkOwnerListener implements Listener {
 
-    private static final Set<Material> SAFE_INTERACTABLES = EnumSet.of(
+    private static final Set<Material> SAFE_INTERACTABLE = EnumSet.of(
         Material.OAK_DOOR, Material.SPRUCE_DOOR, Material.BIRCH_DOOR, Material.JUNGLE_DOOR,
         Material.ACACIA_DOOR, Material.DARK_OAK_DOOR, Material.CRIMSON_DOOR, Material.WARPED_DOOR,
         Material.IRON_DOOR,
@@ -64,7 +65,6 @@ public class ChunkOwnerListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Chunk chunk = event.getBlock().getChunk();
         Player player = event.getPlayer();
-        Location loc = player.getLocation();
         if (RankAPI.getApi().getRankId(player) >= 9) {
             return;
         }
@@ -79,11 +79,11 @@ public class ChunkOwnerListener implements Listener {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
         }
@@ -93,7 +93,6 @@ public class ChunkOwnerListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         Chunk chunk = event.getBlock().getChunk();
         Player player = event.getPlayer();
-        Location loc = player.getLocation();
         if (RankAPI.getApi().getRankId(player) >= 9) {
             return;
         }
@@ -108,11 +107,11 @@ public class ChunkOwnerListener implements Listener {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
         }
@@ -151,11 +150,11 @@ public class ChunkOwnerListener implements Listener {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
             return;
@@ -169,11 +168,11 @@ public class ChunkOwnerListener implements Listener {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                     .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                    .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                    .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
         } else {
             player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                     .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                    .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                    .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
         }
         event.setCancelled(true);
     }
@@ -182,7 +181,7 @@ public class ChunkOwnerListener implements Listener {
         Material mat = block.getType();
         BlockData data = block.getBlockData();
 
-        if (SAFE_INTERACTABLES.contains(mat)) return true;
+        if (SAFE_INTERACTABLE.contains(mat)) return true;
         if (data instanceof Openable) return true;
         if (data instanceof Switch) return true;
         if (data instanceof Bed) return true;
@@ -213,11 +212,11 @@ public class ChunkOwnerListener implements Listener {
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
                 }
                 event.setCancelled(true);
             }
@@ -258,11 +257,11 @@ public class ChunkOwnerListener implements Listener {
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
                 }
                 event.setCancelled(true);
             }
@@ -295,11 +294,11 @@ public class ChunkOwnerListener implements Listener {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                        .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                        .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
             }
             event.setCancelled(true);
         }
@@ -326,11 +325,11 @@ public class ChunkOwnerListener implements Listener {
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("This chunk isn´t yours and you aren´t a friend or trusted! Owner: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
-                            .append(Component.text("(" + chunk + ")", NamedTextColor.YELLOW)));
+                            .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
                 }
                 event.setCancelled(true);
             }
@@ -338,18 +337,23 @@ public class ChunkOwnerListener implements Listener {
     }
      */
 
-    @EventHandler
+    /*@EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
         Chunk chunk = event.getEntity().getLocation().getChunk();
         Location loc = event.getLocation();
         if(!(event.getEntity() instanceof Animals)) {
             return;
         }
-        /*if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
+        if (ChunkAPI.getApi().getChunkOwner(chunk) == null) {
             return;
         }
         if (!ChunkAPI.getApi().getEntitySpawning(chunk)) {
             event.setCancelled(true);
-        }*/
+        }
+    }
+    */
+
+    private String formatChunkCoordinates(Chunk chunk) {
+        return "(" + chunk.getX() + "," + chunk.getZ() + "," + chunk.getWorld().getName() + ")";
     }
 }
