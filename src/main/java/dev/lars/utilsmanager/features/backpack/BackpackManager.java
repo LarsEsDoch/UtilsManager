@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -18,52 +19,82 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
+import java.util.*;
 
 public class BackpackManager implements Listener {
+
+    private final Map<UUID, Set<Player>> openBackpacks = new HashMap<>();
+
     public void openBackpack(Player player) {
-        BackpackAPI.getApi().getBackpackAsync(player).thenAccept(data -> {
-            Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
-                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getBackpackSlots(player), Component.text("§6Backpack"));
-
-                if (data != null && !data.isEmpty()) {
-                    ItemStack[] items = deserializeItems(data);
-                    inv.setContents(items);
-                }
-
-                player.openInventory(inv);
-            });
-        });
+        openBackpack(player, player);
     }
 
-    public void openOfflineBackpack(OfflinePlayer offlinePlayer, Player player) {
-        BackpackAPI.getApi().getBackpackAsync(offlinePlayer).thenAccept(data -> {
+    public void openOfflineBackpack(OfflinePlayer offlinePlayer, Player viewer) {
+        openBackpack(viewer, offlinePlayer);
+    }
+
+    private void openBackpack(Player viewer, OfflinePlayer owner) {
+        BackpackAPI.getApi().getBackpackAsync(owner).thenAccept(data -> {
             Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
-                Inventory inv = Bukkit.createInventory(player, LimitAPI.getApi().getBackpackSlots(offlinePlayer), Component.text("§6Backpack"));
+                Inventory inv = Bukkit.createInventory(viewer, LimitAPI.getApi().getBackpackSlots(owner), Component.text("§6Backpack"));
 
                 if (data != null && !data.isEmpty()) {
                     ItemStack[] items = deserializeItems(data);
                     inv.setContents(items);
                 }
 
-                player.openInventory(inv);
+                viewer.openInventory(inv);
+
+                openBackpacks.computeIfAbsent(owner.getUniqueId(), k -> new HashSet<>()).add(viewer);
             });
         });
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         if (event.getView().title().equals(Component.text("§6Backpack"))) {
-            Player player = (Player) event.getPlayer();
-            Inventory inv = event.getInventory();
+            Player viewer = (Player) event.getWhoClicked();
+            UUID ownerId = openBackpacks.entrySet().stream()
+                    .filter(e -> e.getValue().contains(viewer))
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(null);
 
+            if (ownerId != null) {
+                Inventory inv = event.getInventory();
+                String data = serializeItems(inv.getContents());
+
+                OfflinePlayer owner = Bukkit.getOfflinePlayer(ownerId);
+                BackpackAPI.getApi().setBackpackAsync(owner, data);
+
+                for (Player otherViewer : openBackpacks.get(ownerId)) {
+                    if (otherViewer.equals(viewer)) continue;
+                    otherViewer.getOpenInventory().getTopInventory().setContents(inv.getContents());
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player viewer = (Player) event.getPlayer();
+        UUID ownerId = openBackpacks.entrySet().stream()
+                .filter(e -> e.getValue().contains(viewer))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+
+        if (ownerId != null) {
+            Inventory inv = event.getInventory();
             String data = serializeItems(inv.getContents());
 
-            BackpackAPI.getApi().setBackpackAsync(player, data)
-                .exceptionally(ex -> {
-                    Bukkit.getLogger().severe("Failed to save backpack for " + player.getName() + ": " + ex.getMessage());
-                    return null;
-                });
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(ownerId);
+            BackpackAPI.getApi().setBackpackAsync(owner, data);
+
+            openBackpacks.get(ownerId).remove(viewer);
+            if (openBackpacks.get(ownerId).isEmpty()) {
+                openBackpacks.remove(ownerId);
+            }
         }
     }
 
@@ -82,6 +113,7 @@ public class BackpackManager implements Listener {
              throw new IllegalStateException("Failed to serialize items", e);
         }
     }
+
     public ItemStack[] deserializeItems (String base64){
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(base64));
              BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {

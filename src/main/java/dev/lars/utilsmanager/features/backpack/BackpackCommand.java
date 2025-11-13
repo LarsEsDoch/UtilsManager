@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-
 public class BackpackCommand implements BasicCommand {
 
     @Override
@@ -35,16 +34,8 @@ public class BackpackCommand implements BasicCommand {
             return;
         }
 
-        if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
-            OfflinePlayer openPlayer = Bukkit.getOfflinePlayer(args[0]);
-            if (openPlayer == null) {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
-                } else {
-                    player.sendMessage(NamedTextColor.RED + "The Player doesn't exist!");
-                }
-                return;
-            }
+        OfflinePlayer openPlayer = Bukkit.getOfflinePlayer(args[0]);
+        if (openPlayer.hasPlayedBefore()) {
             UtilsManager.getInstance().getBackpackManager().openOfflineBackpack(openPlayer, player);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Rucksack von ", NamedTextColor.DARK_RED))
@@ -65,7 +56,7 @@ public class BackpackCommand implements BasicCommand {
     }
 
     @Override
-    public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
+    public @NotNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
         if (RankAPI.getApi().getRankId(player) < 9) return Collections.emptyList();
         if (args.length == 1 || args.length == 0) {

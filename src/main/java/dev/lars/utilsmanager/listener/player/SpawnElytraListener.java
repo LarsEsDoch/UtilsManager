@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpawnElytraListener implements Listener {
-
     private final Integer spawnRadius;
     private final Integer multiplyValue;
     private final World world;
@@ -31,9 +30,8 @@ public class SpawnElytraListener implements Listener {
 
     public SpawnElytraListener() {
         multiplyValue = 5;
-        spawnRadius = 25;
+        spawnRadius = 120;
         world = Bukkit.getWorld("world");
-
         run();
     }
 

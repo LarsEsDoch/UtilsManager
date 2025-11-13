@@ -27,17 +27,16 @@ public class ToggleBedCommand implements BasicCommand {
         if (PlayerSettingsAPI.getApi().getBedToggle(player)) {
             PlayerSettingsAPI.getApi().setBedToggle(player, false);
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendMessage(Statements.getPrefix().append(Component.text("Du Spawnst nun nicht mehr am Spawn!", NamedTextColor.GRAY)));
-            } else {
-                player.sendMessage(Statements.getPrefix().append(Component.text("You aren´t longer spawning on the spawn!", NamedTextColor.GRAY)));
-            }
-
-        } else {
-            PlayerSettingsAPI.getApi().setBedToggle(player, true);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du Spawnst nun am Spawn!", NamedTextColor.GRAY)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("You are now spawning on the spawn!", NamedTextColor.GRAY)));
+            }
+        } else {
+            PlayerSettingsAPI.getApi().setBedToggle(player, true);
+            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                player.sendMessage(Statements.getPrefix().append(Component.text("Du Spawnst nun nicht mehr am Spawn!", NamedTextColor.GRAY)));
+            } else {
+                player.sendMessage(Statements.getPrefix().append(Component.text("You aren´t longer spawning on the spawn!", NamedTextColor.GRAY)));
             }
         }
     }
