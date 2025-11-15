@@ -56,6 +56,12 @@ public class ServerPingListener implements Listener {
         if (Bukkit.hasWhitelist()) {
             String info = "Info: Whitelist enabled!";
             Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.GOLD, extraShift);
+            event.getListedPlayers().removeIf(listedPlayerInfo -> {
+                OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
+                return PlayerIdentityAPI.getApi().isVanished(offline);
+            });
+            long visibleCount = event.getListedPlayers().size();
+            event.setNumPlayers((int) visibleCount);
             event.motd(header.append(centered));
             return;
         }
@@ -70,6 +76,12 @@ public class ServerPingListener implements Listener {
             Component firstLine = centerLines(List.of(lines.getFirst()), totalWidth, NamedTextColor.GOLD, extraShift);
             List<String> detailLines = lines.size() > 1 ? lines.subList(1, lines.size()) : List.of();
             Component details = centerLines(detailLines, totalWidth, NamedTextColor.RED, extraShift);
+            event.getListedPlayers().removeIf(listedPlayerInfo -> {
+                OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
+                return PlayerIdentityAPI.getApi().isVanished(offline);
+            });
+            long visibleCount = event.getListedPlayers().size();
+            event.setNumPlayers((int) visibleCount);
             event.motd(header.append(firstLine).append(details));
             return;
         }
@@ -77,6 +89,10 @@ public class ServerPingListener implements Listener {
         if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
             String info = "Info: Server is full!";
             Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.RED, extraShift);
+            event.getListedPlayers().removeIf(listedPlayerInfo -> {
+                OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
+                return PlayerIdentityAPI.getApi().isVanished(offline);
+            });
             event.motd(header.append(centered));
             return;
         }
@@ -88,6 +104,8 @@ public class ServerPingListener implements Listener {
             OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
             return PlayerIdentityAPI.getApi().isVanished(offline);
         });
+        long visibleCount = event.getListedPlayers().size();
+        event.setNumPlayers((int) visibleCount);
     }
 
     private static List<String> wrapText(String text, int width) {
