@@ -126,7 +126,7 @@ public class Registrar {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("toggletime", "Decide if the time should snyc with local time zone", new RealTimeCommand());
+            commands.register("toggletime", "Decide if the time should sync with local time zone", new RealTimeCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -206,7 +206,7 @@ public class Registrar {
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("freeezee", "Scare and freeze a player", new FreezeCommand());
+            commands.register("freeze", "Scare and freeze a player", new FreezeCommand());
         });
 
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
