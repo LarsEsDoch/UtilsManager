@@ -44,9 +44,7 @@ public class SpawnElytraListener implements Listener {
                     player.setAllowFlight(false);
                     player.setGliding(false);
                     boosted.remove(player);
-                    Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> {
-                        flying.remove(player);
-                    }, 5);
+                    Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> flying.remove(player), 5);
                 }
             });
         }, 0, 3);

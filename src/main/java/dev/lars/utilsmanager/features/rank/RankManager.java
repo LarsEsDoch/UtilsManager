@@ -308,6 +308,8 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.home", true);
                 attachment.setPermission("utilsmanager.search", true);
                 attachment.setPermission("utilsmanager.feature.freecam", true);
+                attachment.setPermission("minecraft.debugstick", true);
+                attachment.setPermission("minecraft.debugstick.always", true);
             }
             case 4: {
                 attachment.setPermission("utilsmanager.backpack", true);

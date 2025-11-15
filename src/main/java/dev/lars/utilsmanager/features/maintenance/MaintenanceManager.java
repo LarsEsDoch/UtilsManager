@@ -20,6 +20,7 @@ public class MaintenanceManager {
 
     public MaintenanceManager() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            if (Bukkit.getOnlinePlayers().isEmpty()) return;
             if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
                 Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
 

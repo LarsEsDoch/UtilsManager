@@ -2,17 +2,12 @@ package dev.lars.utilsmanager.listener.misc;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
-import dev.lars.apimanager.apis.rankAPI.RankAPI;
-import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.admin;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.utilsmanager.utils.CheckPlayers;
 import dev.lars.utilsmanager.utils.RankStatements;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -8,56 +9,68 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class HealCommand implements BasicCommand {
 
-    Player sendplayer;
-    Player player;
     @Override
-    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        sendplayer = (Player) stack.getSender();
-        if (!sendplayer.hasPermission("utilsmanager.heal")) {
-            sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
+        Player sender = (Player) stack.getSender();
+        if (!sender.hasPermission("utilsmanager.heal")) {
+            sender.sendMessage(Statements.getNotAllowed(sender));
             return;
         }
 
         if (args.length == 0) {
-            sendUsage(sendplayer);
+            sendUsage(sender);
             return;
         }
 
-        player = Bukkit.getPlayer(args[0]);
-        if (!Bukkit.getOnlinePlayers().contains(player)) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-                sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
-            } else {
-                sendplayer.sendMessage(Component.text("This player dosen't exits!", NamedTextColor.RED));
-            }
-            return;
-        }
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
+        Player target = Bukkit.getPlayer(args[0]);
+        if (CheckPlayers.checkPlayer(sender, target)) return;
+        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+            sender.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler ", NamedTextColor.GREEN).append(RankStatements.getRank(target)).append(Component.text(target.getName(), NamedTextColor.GREEN)))
                     .append(Component.text(" geheilt!", NamedTextColor.GREEN)));
         } else {
-            sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You healed the player ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
+            sender.sendMessage(Statements.getPrefix().append(Component.text("You healed the player ", NamedTextColor.GREEN).append(RankStatements.getRank(target)).append(Component.text(target.getName(), NamedTextColor.GREEN)))
                     .append(Component.text("!", NamedTextColor.GREEN)));
         }
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
-            player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest geheilt!", NamedTextColor.GREEN)));
+        if (LanguageAPI.getApi().getLanguage(target) == 2) {
+            target.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest geheilt!", NamedTextColor.GREEN)));
         } else {
-            player.sendMessage(Statements.getPrefix().append(Component.text("You were healed!", NamedTextColor.GREEN)));
+            target.sendMessage(Statements.getPrefix().append(Component.text("You were healed!", NamedTextColor.GREEN)));
         }
-        player.setHealth(20.0);
+        target.setHealth(20.0);
     }
 
-    private void sendUsage(CommandSender sender) {
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
-            sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/invsee <Spieler>");
+    @Override
+    public @NotNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String @NotNull [] args) {
+        Player player = (Player) commandSourceStack.getSender();
+        if (!player.hasPermission("utilsmanager.heal")) return Collections.emptyList();
+        if (args.length == 1 || args.length == 0) {
+            List<String> names = new ArrayList<>();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                names.add(p.getName());
+            }
+
+            return names;
+        }
+        return Collections.emptyList();
+    }
+
+    private void sendUsage(Player sender) {
+        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+            sender.sendMessage(Statements.getUsage(sender)
+                    .append(Component.text("/heal <Spieler>", NamedTextColor.BLUE)));
         } else {
-            sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/invsee <player>");
+            sender.sendMessage(Statements.getUsage(sender)
+                    .append(Component.text("/heal <player>")));
         }
     }
 }

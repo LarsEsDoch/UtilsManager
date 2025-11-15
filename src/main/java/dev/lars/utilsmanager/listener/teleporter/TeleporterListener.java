@@ -24,6 +24,7 @@ public class TeleporterListener implements Listener {
 
     public TeleporterListener() {
         Bukkit.getScheduler().runTaskTimer(ApiManager.getInstance(), bukkitTask -> {
+            if (Bukkit.getOnlinePlayers().isEmpty()) return;
             Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
             if (loc == null) return;
             for (Player player: Bukkit.getOnlinePlayers()) {

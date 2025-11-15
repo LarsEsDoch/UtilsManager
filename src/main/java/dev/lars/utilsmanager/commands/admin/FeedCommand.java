@@ -13,6 +13,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class FeedCommand implements BasicCommand {
 
     Player sendplayer;
@@ -20,7 +25,7 @@ public class FeedCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         sendplayer = (Player) stack.getSender();
-        if (!sendplayer.hasPermission("utilsmanager.heal")) {
+        if (!sendplayer.hasPermission("utilsmanager.feed")) {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }
@@ -45,6 +50,21 @@ public class FeedCommand implements BasicCommand {
             sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You feed the player ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
                     .append(Component.text("!", NamedTextColor.GREEN)));
         }
+    }
+
+    @Override
+    public @NotNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String @NotNull [] args) {
+        Player player = (Player) commandSourceStack.getSender();
+        if (!player.hasPermission("utilsmanager.feed")) return Collections.emptyList();
+        if (args.length == 1 || args.length == 0) {
+            List<String> names = new ArrayList<>();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                names.add(p.getName());
+            }
+
+            return names;
+        }
+        return Collections.emptyList();
     }
 
     private void sendUsage(CommandSender sender) {

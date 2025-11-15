@@ -17,6 +17,7 @@ public class RealTime {
 
     public void updateActivation() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+            if (Bukkit.getOnlinePlayers().isEmpty()) return;
             activated = ServerSettingsAPI.getApi().isRealTimeEnabled();
         }, 20, 20);
     }
