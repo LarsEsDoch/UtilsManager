@@ -61,16 +61,15 @@ public class BackpackManager implements Listener {
                     .orElse(null);
 
             if (ownerId != null) {
-                Inventory inv = event.getInventory();
-                String data = serializeItems(inv.getContents());
+                Bukkit.getScheduler().runTask(UtilsManager.getInstance(), () -> {
+                    Inventory inv = event.getInventory();
 
-                OfflinePlayer owner = Bukkit.getOfflinePlayer(ownerId);
-                BackpackAPI.getApi().setBackpackAsync(owner, data);
-
-                for (Player otherViewer : openBackpacks.get(ownerId)) {
-                    if (otherViewer.equals(viewer)) continue;
-                    otherViewer.getOpenInventory().getTopInventory().setContents(inv.getContents());
-                }
+                    for (Player otherViewer : openBackpacks.get(ownerId)) {
+                        if (otherViewer.equals(viewer)) continue;
+                        if (otherViewer.getOpenInventory().getTopInventory().equals(inv)) continue;
+                        otherViewer.getOpenInventory().getTopInventory().setContents(inv.getContents());
+                    }
+                });
             }
         }
     }
@@ -98,35 +97,35 @@ public class BackpackManager implements Listener {
         }
     }
 
-    public String serializeItems (ItemStack[]items){
+    public String serializeItems(ItemStack[] items) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
-             dataOutput.writeInt(items.length);
+            dataOutput.writeInt(items.length);
 
-             for (ItemStack item : items) {
-                 dataOutput.writeObject(item);
-             }
-             dataOutput.flush();
+            for (ItemStack item : items) {
+                dataOutput.writeObject(item);
+            }
+            dataOutput.flush();
 
-             return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+            return Base64.getEncoder().encodeToString(outputStream.toByteArray());
         } catch (IOException e) {
-             throw new IllegalStateException("Failed to serialize items", e);
+            throw new IllegalStateException("Failed to serialize items", e);
         }
     }
 
-    public ItemStack[] deserializeItems (String base64){
+    public ItemStack[] deserializeItems(String base64) {
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(base64));
              BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
-             int size = dataInput.readInt();
-             ItemStack[] items = new ItemStack[size];
+            int size = dataInput.readInt();
+            ItemStack[] items = new ItemStack[size];
 
-             for (int i = 0; i < size; i++) {
-                 items[i] = (ItemStack) dataInput.readObject();
-             }
+            for (int i = 0; i < size; i++) {
+                items[i] = (ItemStack) dataInput.readObject();
+            }
 
-             return items;
+            return items;
         } catch (IOException | ClassNotFoundException e) {
-             throw new IllegalStateException("Failed to deserialize items", e);
+            throw new IllegalStateException("Failed to deserialize items", e);
         }
     }
 }

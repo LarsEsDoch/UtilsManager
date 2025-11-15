@@ -52,7 +52,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Registrar {
 
-    public static void listenerRegistration(JavaPlugin plugin) {
+    public static void listenerRegistration(JavaPlugin plugin, BackpackManager backpackManager) {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new JoinListener(), plugin);
         pluginManager.registerEvents(new QuitListener(), plugin);
@@ -74,7 +74,7 @@ public class Registrar {
         pluginManager.registerEvents(new MaintenanceListener(), plugin);
         pluginManager.registerEvents(new RecipeLoader(), plugin);
         pluginManager.registerEvents(new NetherListener(), plugin);
-        pluginManager.registerEvents(new BackpackManager(), plugin);
+        pluginManager.registerEvents(backpackManager, plugin);
     }
 
     public static void commandRegistration(JavaPlugin plugin) {

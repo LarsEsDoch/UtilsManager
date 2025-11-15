@@ -107,7 +107,7 @@ public final class UtilsManager extends JavaPlugin {
     }
 
     private void registerEventsAndCommands() {
-        Registrar.listenerRegistration(this);
+        Registrar.listenerRegistration(this, backpackManager);
         Registrar.commandRegistration(this);
     }
 
