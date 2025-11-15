@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.utils;
 
+import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import net.kyori.adventure.text.Component;
@@ -19,6 +20,10 @@ public class RankStatements {
         TextDecoration[] decorations = prefixDecoration.toArray(new TextDecoration[0]);
 
         Component nameComponent = Component.text(player.getName(), prefixColor, decorations);
+
+        if (PlayerIdentityAPI.getApi().getNickname(player) != null) {
+            nameComponent = Component.text(PlayerIdentityAPI.getApi().getNickname(player), prefixColor, decorations);
+        }
 
         Component prefix = switch (rank) {
             case 2 -> Component.text("Premium ", NamedTextColor.GREEN);
