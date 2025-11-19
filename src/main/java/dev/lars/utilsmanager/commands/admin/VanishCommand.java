@@ -78,16 +78,18 @@ public class VanishCommand implements BasicCommand {
             Bukkit.getScheduler().runTaskAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                 StringBuilder message = new StringBuilder();
 
-                if (Bukkit.getOnlinePlayers().isEmpty()) {
+                if (Bukkit.getOnlinePlayers().size() == 1) {
                     message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs ist jetzt kein Spieler mehr online.");
-                } if(Bukkit.getOnlinePlayers().size() == 1) {
+                } if(Bukkit.getOnlinePlayers().size() == 2) {
                     message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs ist jetzt nur noch 1 Spieler online.\n");
                     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        if (onlinePlayer == player) continue;
                         message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
                     }
-                } if (Bukkit.getOnlinePlayers().size() > 1) {
-                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs sind jetzt nur noch " + (Bukkit.getOnlinePlayers().size()) + " Spieler online.\n");
+                } if (Bukkit.getOnlinePlayers().size() > 2) {
+                    message = new StringBuilder(RankStatements.getUnformattedRank(player) + player.getName() + " hat den Server verlassen.\n\nEs sind jetzt nur noch " + (Bukkit.getOnlinePlayers().size() - 1) + " Spieler online.\n");
                     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        if (onlinePlayer == player) continue;
                         message.append(RankStatements.getUnformattedRank(onlinePlayer)).append(onlinePlayer.getName()).append("\n");
                     }
                 }
