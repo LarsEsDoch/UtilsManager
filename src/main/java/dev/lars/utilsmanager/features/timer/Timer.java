@@ -13,14 +13,10 @@ import org.bukkit.entity.Player;
 public class Timer {
 
     public Timer() {
-        run();
-    }
-
-    private void run() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (!TimerAPI.getApi().isEnabled(player)) {
-                    return;
+                    continue;
                 }
                 if (TimerAPI.getApi().isPublic(player)) {
                     sendActionBarPublic(player);
@@ -32,9 +28,6 @@ public class Timer {
                         }
                     }
                     break;
-                }
-                if(!(player.hasPermission("utilsmanager.timer"))) {
-                    return;
                 }
                 sendActionBar(player);
                 if (TimerAPI.getApi().isRunning(player)) {
