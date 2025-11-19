@@ -19,16 +19,14 @@ public class FreeCamLeaveListener implements Listener {
         Player player = event.getPlayer();
         if (player.getGameMode() != GameMode.SPECTATOR) return;
         if (player.getTargetEntity(6) != null) return;
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            FreeCamManager freeCamManager = UtilsManager.getInstance().getFreeCamManager();
-            if (freeCamManager.exitFreeCam(player)) {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun zurück im Überlebens Modus.", NamedTextColor.GREEN)));
-                } else {
-                    player.sendMessage(Statements.getPrefix().append(Component.text("You're now back in Survival mode.", NamedTextColor.GREEN)));
-                }
-                event.setCancelled(true);
+        FreeCamManager freeCamManager = UtilsManager.getInstance().getFreeCamManager();
+        if (freeCamManager.exitFreeCam(player)) {
+            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun zurück im Überlebens Modus.", NamedTextColor.GREEN)));
+            } else {
+                player.sendMessage(Statements.getPrefix().append(Component.text("You're now back in Survival mode.", NamedTextColor.GREEN)));
             }
+            event.setCancelled(true);
         }
     }
 }
