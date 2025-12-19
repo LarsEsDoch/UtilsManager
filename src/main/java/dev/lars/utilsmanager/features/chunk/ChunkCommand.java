@@ -41,7 +41,6 @@ public class ChunkCommand implements BasicCommand {
         String subCommand = args[0].toLowerCase();
 
         switch (subCommand) {
-            case "claimspawnchunks" -> handleClaimSpawnChunks(player, loc);
             case "claim" -> {
                 if (args.length > 1) {
                     String posArg = args[1].toLowerCase();
@@ -235,6 +234,12 @@ public class ChunkCommand implements BasicCommand {
 
                     if (chunkOwner == null) {
                         ChunkAPI.getApi().claimChunk(player, claimChunk);
+
+                        sendMessage(player,
+                                        "Du hast den Chunk " + formatChunkCoordinates(claimChunk) + " beansprucht!",
+                                        "You claimed the Chunk " + formatChunkCoordinates(claimChunk) + " !",
+                                        NamedTextColor.WHITE);
+
                         if (!isAdmin) {
                             LimitAPI.getApi().increaseMaxChunks(player, 1);
                         }
@@ -244,6 +249,10 @@ public class ChunkCommand implements BasicCommand {
                     } else {
                         if (isAdmin) {
                             ChunkAPI.getApi().claimChunk(player, claimChunk);
+                            sendMessage(player,
+                                        "Du hast den Chunk " + formatChunkCoordinates(claimChunk) + " beansprucht!",
+                                        "You claimed the Chunk " + formatChunkCoordinates(claimChunk) + " !",
+                                        NamedTextColor.WHITE);
                             claimed++;
                         } else {
                             ownedByOthers++;
