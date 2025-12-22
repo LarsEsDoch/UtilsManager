@@ -4,7 +4,6 @@ import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.RankStatements;
-import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -20,46 +19,25 @@ public class RankManager {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Instant now = Instant.now();
                 Instant expiresAt = RankAPI.getApi().getExpiresAt(player);
+                if (expiresAt == null) continue;
                 if (expiresAt.compareTo(now) <= 0) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Du bist nun kein ", NamedTextColor.RED))
-                                .append(RankStatements.getCleanRank(player))
-                                .append(Component.text("mehr.", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("You aren´t longer a ", NamedTextColor.RED))
-                                .append(RankStatements.getCleanRank(player))
-                                .append(Component.text(".", NamedTextColor.RED)));
-                    }
                     int rankId = RankAPI.getApi().getRankId(player);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.kick(Component.text("Du bist nun kein ", NamedTextColor.RED)
-                                .append(RankStatements.getCleanRank(player))
-                                .append(Component.text("mehr.", NamedTextColor.RED)));
-                    } else {
-                        player.kick(Component.text("You aren´t longer a ", NamedTextColor.RED)
-                                .append(RankStatements.getCleanRank(player))
-                                .append(Component.text(".", NamedTextColor.RED)));
-                    }
                     RankAPI.getApi().setRank(player, rankId-1, 182);
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Du bist nun ein ", NamedTextColor.GREEN))
+                        player.kick(Component.text("Du bist nun ein ", NamedTextColor.RED)
                                 .append(RankStatements.getCleanRank(player))
-                                .append(Component.text(".", NamedTextColor.GREEN)));
+                                .append(Component.text("mehr!", NamedTextColor.RED)));
                     } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("You are now a ", NamedTextColor.GREEN))
+                        player.kick(Component.text("You are now a ", NamedTextColor.RED)
                                 .append(RankStatements.getCleanRank(player))
-                                .append(Component.text(".", NamedTextColor.GREEN)));
+                                .append(Component.text("!", NamedTextColor.RED)));
                     }
                 }
             }
         }, 0, 60 * 20);
     }
 
-    public void setPermisssions(Player player) {
+    public void setPermissions(Player player) {
         PermissionAttachment attachment = player.addAttachment(UtilsManager.getInstance());
         Integer rankId = RankAPI.getApi().getRankId(player);
         if (rankId == null) {
