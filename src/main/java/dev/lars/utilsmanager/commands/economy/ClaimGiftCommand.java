@@ -28,7 +28,17 @@ public class ClaimGiftCommand implements BasicCommand {
             return;
         }
         String gift = args[0];
-        if (!EconomyAPI.getApi().getGifts(player).contains(gift)) {
+        try {
+            Integer.parseInt(gift);
+        } catch (Exception e) {
+            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                player.sendMessage(Statements.getPrefix().append(Component.text("Geschenkwert muss eine Zahl sein!", NamedTextColor.RED)));
+            } else {
+                player.sendMessage(Statements.getPrefix().append(Component.text("Gift value must be a number!", NamedTextColor.RED)));
+            }
+            return;
+        }
+        if (!EconomyAPI.getApi().getGifts(player).contains(Integer.parseInt(gift))) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Dir steht nicht dieses Geschenk zu!", NamedTextColor.RED)));
             } else {
