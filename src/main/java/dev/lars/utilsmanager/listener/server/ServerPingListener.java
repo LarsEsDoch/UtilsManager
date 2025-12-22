@@ -12,11 +12,17 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.map.MapFont;
+import org.bukkit.map.MinecraftFont;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerPingListener implements Listener {
+
+    private static final MapFont MINECRAFT_FONT = MinecraftFont.Font;
+    private static final int MOTD_WIDTH_PIXELS = 154;
+    private static final int SPACE_WIDTH = MINECRAFT_FONT.getWidth(" ");
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onServerPing(PaperServerListPingEvent event) {
@@ -32,11 +38,12 @@ public class ServerPingListener implements Listener {
         int length = serverName.length();
 
         Component serverNameComponent = Component.empty();
+        List<String> gradient_colors = ServerSettingsAPI.getApi().getServerNameGradient();
         for (int i = 0; i < length; i++) {
             serverNameComponent = serverNameComponent.append(Gradient.gradient(
                     String.valueOf(serverName.charAt(i)),
-                    "#50FB08",
-                    "#006EFF",
+                    gradient_colors.getFirst(),
+                    gradient_colors.get(1),
                     i,
                     length - 1
             ));
@@ -49,56 +56,52 @@ public class ServerPingListener implements Listener {
                 .append(Component.text(serverVersion, NamedTextColor.GOLD))
                 .append(Component.text("] ", NamedTextColor.WHITE))
                 .append(Component.text(" M", NamedTextColor.GOLD, TextDecoration.OBFUSCATED))
-                .append(Component.text("\n "));
+                .append(Component.text("\n"));
 
-        int extraShift = 5;
+        int extraShift = 10;
 
         if (Bukkit.hasWhitelist()) {
             String info = "Info: Whitelist enabled!";
-            Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.GOLD, extraShift);
+            Component centered = centerLinesPixelAccurate(wrapText(info, totalWidth), NamedTextColor.GOLD, extraShift);
+            event.motd(header.append(centered));
             event.getListedPlayers().removeIf(listedPlayerInfo -> {
                 OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
                 return PlayerIdentityAPI.getApi().isVanished(offline);
             });
             long visibleCount = event.getListedPlayers().size();
             event.setNumPlayers((int) visibleCount);
-            event.motd(header.append(centered));
             return;
         }
 
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-            List<String> lines = new ArrayList<>();
-            lines.add("Info: Server is in maintenance!");
-            String maintenanceReason = ServerSettingsAPI.getApi().getMaintenanceReason().trim();
-            if (!maintenanceReason.isEmpty()) {
-                lines.addAll(wrapText(maintenanceReason, totalWidth));
-            }
-            Component firstLine = centerLines(List.of(lines.getFirst()), totalWidth, NamedTextColor.GOLD, extraShift);
-            List<String> detailLines = lines.size() > 1 ? lines.subList(1, lines.size()) : List.of();
-            Component details = centerLines(detailLines, totalWidth, NamedTextColor.RED, extraShift);
+            String maintenance = "Info: Server is in maintenance!";
+            Component centered = centerLinesPixelAccurate(wrapText(maintenance, totalWidth), NamedTextColor.GOLD, extraShift + 2);
+            event.motd(header.append(centered));
+
             event.getListedPlayers().removeIf(listedPlayerInfo -> {
                 OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
                 return PlayerIdentityAPI.getApi().isVanished(offline);
             });
             long visibleCount = event.getListedPlayers().size();
             event.setNumPlayers((int) visibleCount);
-            event.motd(header.append(firstLine).append(details));
             return;
         }
 
         if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
             String info = "Info: Server is full!";
-            Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.RED, extraShift);
+            Component centered = centerLinesPixelAccurate(wrapText(info, totalWidth), NamedTextColor.RED, extraShift);
+            event.motd(header.append(centered));
             event.getListedPlayers().removeIf(listedPlayerInfo -> {
                 OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
                 return PlayerIdentityAPI.getApi().isVanished(offline);
             });
-            event.motd(header.append(centered));
+            long visibleCount = event.getListedPlayers().size();
+            event.setNumPlayers((int) visibleCount);
             return;
         }
 
         String info = "Info: Server is online!";
-        Component centered = centerLines(wrapText(info, totalWidth), totalWidth, NamedTextColor.GREEN, extraShift);
+        Component centered = centerLinesPixelAccurate(wrapText(info, totalWidth), NamedTextColor.GREEN, extraShift);
         event.motd(header.append(centered));
         event.getListedPlayers().removeIf(listedPlayerInfo -> {
             OfflinePlayer offline = Bukkit.getOfflinePlayer(listedPlayerInfo.id());
@@ -131,15 +134,26 @@ public class ServerPingListener implements Listener {
         return lines;
     }
 
-    private static Component centerLines(List<String> lines, int width, net.kyori.adventure.text.format.NamedTextColor color, int extraShift) {
+    private static int getPixelWidth(String text) {
+        String stripped = text.replaceAll("[§&][0-9a-fk-or]", "");
+        return MINECRAFT_FONT.getWidth(stripped);
+    }
+
+    private static int calculateCenterSpaces(String text) {
+        int textWidth = getPixelWidth(text);
+        int padding = (MOTD_WIDTH_PIXELS - textWidth) / 2;
+        return Math.max(0, padding / SPACE_WIDTH);
+    }
+
+    private static Component centerLinesPixelAccurate(List<String> lines, NamedTextColor color, int extraShift) {
         if (lines == null || lines.isEmpty()) {
             return Component.empty();
         }
         Component result = Component.empty();
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
-            int padding = Math.max(0, (width - line.length()) / 2 + extraShift);
-            String pad = " ".repeat(padding);
+            int spacesNeeded = calculateCenterSpaces(line) + extraShift;
+            String pad = " ".repeat(Math.max(0, spacesNeeded));
             result = result.append(Component.text(pad)).append(Component.text(line, color));
             if (i < lines.size() - 1) {
                 result = result.append(Component.text("\n"));
