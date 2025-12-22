@@ -143,7 +143,7 @@ public class JoinListener implements Listener {
             }
         }
 
-        UtilsManager.getInstance().getRankManager().setPermisssions(player);
+        UtilsManager.getInstance().getRankManager().setPermissions(player);
         UtilsManager.getInstance().getTablistManager().setTabList(player);
         UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
         event.joinMessage(Component.text(""));

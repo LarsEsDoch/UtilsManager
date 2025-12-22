@@ -69,7 +69,7 @@ public class ServerPingListener implements Listener {
         if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
             List<String> lines = new ArrayList<>();
             lines.add("Info: Server is in maintenance!");
-            String maintenanceReason = ServerSettingsAPI.getApi().getMaintenanceReason() == null ? "" : ServerSettingsAPI.getApi().getMaintenanceReason().trim();
+            String maintenanceReason = ServerSettingsAPI.getApi().getMaintenanceReason().trim();
             if (!maintenanceReason.isEmpty()) {
                 lines.addAll(wrapText(maintenanceReason, totalWidth));
             }
