@@ -31,6 +31,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -275,7 +276,8 @@ public class JoinListener implements Listener {
                         }
                         if (month == 12 & day == 24) {
                             subTitle = Component.text("Merry ", NamedTextColor.GREEN)
-                                    .append(Component.text("Christmas!", NamedTextColor.RED));
+                                    .append(Component.text("Christmas", NamedTextColor.RED)
+                                            .append(Component.text("!", NamedTextColor.GOLD)));
                         }
                         if (month == 12 & day == 31) {
                             subTitle = Component.text("Happy ", NamedTextColor.GREEN)
@@ -361,7 +363,8 @@ public class JoinListener implements Listener {
                         }
                         if (month == 12 & day == 24) {
                             subTitle = Component.text("Merry ", NamedTextColor.GREEN)
-                                    .append(Component.text("Christmas!", NamedTextColor.RED));
+                                    .append(Component.text("Christmas", NamedTextColor.RED)
+                                            .append(Component.text("!", NamedTextColor.GOLD)));
                         }
                         if (month == 12 & day == 31) {
                             subTitle = Component.text("Happy ", NamedTextColor.GREEN)
@@ -461,7 +464,8 @@ public class JoinListener implements Listener {
                         }
                         if (month == 12 & day == 24) {
                             subTitle = Component.text("Fröhliche", NamedTextColor.GREEN)
-                                    .append(Component.text(" Weihnachten!", NamedTextColor.RED));
+                                    .append(Component.text(" Weihnachten", NamedTextColor.RED))
+                                            .append(Component.text("!", NamedTextColor.GOLD));
                         }
                         if (month == 12 & day == 31) {
                             subTitle = Component.text("Fröhliches", NamedTextColor.GREEN)

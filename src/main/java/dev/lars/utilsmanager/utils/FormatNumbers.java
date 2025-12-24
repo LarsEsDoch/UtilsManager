@@ -40,7 +40,7 @@ public class FormatNumbers {
 
         if (days > 0) {
             for (char c : String.format("%02d", days).toCharArray()) {
-                component = component.append(Gradient.gradient(String.valueOf(c), "#00FFFF", "#8000FF", index, timeString.length()));
+                component = component.append(Gradient.gradient(String.valueOf(c), "#8000FF", "#00FFFF", index, timeString.length()));
                 index++;
             }
             component = component.append(Component.text("d ", NamedTextColor.GRAY));
@@ -48,7 +48,7 @@ public class FormatNumbers {
 
         if (hours > 0 || days > 0) {
             for (char c : String.format("%02d", hours).toCharArray()) {
-                component = component.append(Gradient.gradient(String.valueOf(c), "#00FFFF", "#8000FF", index, timeString.length()));
+                component = component.append(Gradient.gradient(String.valueOf(c), "#8000FF", "#00FFFF", index, timeString.length()));
                 index++;
             }
             component = component.append(Component.text("h ", NamedTextColor.GRAY));
@@ -56,14 +56,14 @@ public class FormatNumbers {
 
         if (minutes > 0 || hours > 0 || days > 0) {
             for (char c : String.format("%02d", minutes).toCharArray()) {
-                component = component.append(Gradient.gradient(String.valueOf(c), "#00FFFF", "#8000FF", index, timeString.length()));
+                component = component.append(Gradient.gradient(String.valueOf(c), "#8000FF", "#00FFFF", index, timeString.length()));
                 index++;
             }
             component = component.append(Component.text("m ", NamedTextColor.GRAY));
         }
 
         for (char c : String.format("%02d", seconds).toCharArray()) {
-            component = component.append(Gradient.gradient(String.valueOf(c), "#00FFFF", "#8000FF", index, timeString.length()));
+            component = component.append(Gradient.gradient(String.valueOf(c), "#8000FF", "#00FFFF", index, timeString.length()));
             index++;
         }
         component = component.append(Component.text("s", NamedTextColor.GRAY));
