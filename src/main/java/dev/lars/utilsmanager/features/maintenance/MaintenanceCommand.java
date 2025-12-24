@@ -53,20 +53,39 @@ public class MaintenanceCommand implements BasicCommand {
                                 .append(Component.text("Nothing changed! Maintenance is currently activated!", NamedTextColor.RED)));
                     }
                 } else {
-                    ServerSettingsAPI.getApi().enableMaintenance("", null, null, null);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Die Wartung hat begonnen.", NamedTextColor.GREEN)));
-                    } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Maintenance was started.", NamedTextColor.GREEN)));
-                    }
-                    for (Player onlinePlayer : getOnlinePlayers()) {
-                        if (onlinePlayer.isOp() || RankAPI.getApi().getRankId(onlinePlayer) > 7) continue;
-                        if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
-                            onlinePlayer.kick(Component.text("Der Server ist nun in Wartung! Bitte warten Sie, bis es weitere Informationen gibt."));
+                    if (ServerSettingsAPI.getApi().getMaintenanceStart() == null) {
+                        ServerSettingsAPI.getApi().enableMaintenance("", null, null, null);
+                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                            player.sendMessage(Statements.getPrefix()
+                                    .append(Component.text("Die Wartung hat begonnen.", NamedTextColor.GREEN)));
                         } else {
-                            onlinePlayer.kick(Component.text("The server is in maintenance! Please wait until there is more information."));
+                            player.sendMessage(Statements.getPrefix()
+                                    .append(Component.text("Maintenance was started.", NamedTextColor.GREEN)));
+                        }
+                        for (Player onlinePlayer : getOnlinePlayers()) {
+                            if (onlinePlayer.isOp() || RankAPI.getApi().getRankId(onlinePlayer) > 7) continue;
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                                onlinePlayer.kick(Component.text("Der Server ist nun in Wartung! Bitte warten Sie, bis es weitere Informationen gibt."));
+                            } else {
+                                onlinePlayer.kick(Component.text("The server is in maintenance! Please wait until there is more information."));
+                            }
+                        }
+                    } else {
+                        ServerSettingsAPI.getApi().setMaintenanceEnabled(true);
+                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                            player.sendMessage(Statements.getPrefix()
+                                    .append(Component.text("Die Wartung hat nun frühzeitiger begonnen als geplant.", NamedTextColor.GREEN)));
+                        } else {
+                            player.sendMessage(Statements.getPrefix()
+                                    .append(Component.text("Maintenance was started earlier than planned.", NamedTextColor.GREEN)));
+                        }
+                        for (Player onlinePlayer : getOnlinePlayers()) {
+                            if (onlinePlayer.isOp() || RankAPI.getApi().getRankId(onlinePlayer) > 7) continue;
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                                onlinePlayer.kick(Component.text("Der Server ist nun in Wartung! Bitte warten Sie, bis es weitere Informationen gibt."));
+                            } else {
+                                onlinePlayer.kick(Component.text("The server is in maintenance! Please wait until there is more information."));
+                            }
                         }
                     }
                 }
@@ -74,12 +93,79 @@ public class MaintenanceCommand implements BasicCommand {
             }
             case "off": {
                 if (!ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
+                    Instant maintenanceStart = ServerSettingsAPI.getApi().getMaintenanceStart();
+                    if (maintenanceStart == null) {
+                        if (LanguageAPI.getApi().getLanguage(player) == 2) {player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));} else {player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));}
                     } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));
+
+                        Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
+                        Instant maintenanceDeadline = ServerSettingsAPI.getApi().getMaintenanceDeadline();
+                        Instant now = Instant.now();
+
+                        ServerSettingsAPI.getApi().disableMaintenance();
+                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                            player.sendMessage(Statements.getPrefix()
+                                    .append(Component.text("Die geplante Wartung wurde abgebrochen.", NamedTextColor.WHITE)));
+
+                            long startDuration = Math.abs(Duration.between(maintenanceStart, now).getSeconds());
+                                Component formattedStart = FormatNumbers.formatDuration(startDuration);
+                                player.sendMessage(Statements.getPrefix()
+                                        .append(Component.text("Die Wartung hätte in ", NamedTextColor.GRAY))
+                                        .append(formattedStart)
+                                        .append(Component.text(" begonnen.", NamedTextColor.GRAY)));
+
+                            if (maintenanceEnd != null) {
+                                long endDuration = Duration.between(maintenanceStart, maintenanceEnd).getSeconds();
+                                Component formattedEnd = FormatNumbers.formatDuration(Math.abs(endDuration));
+
+                                player.sendMessage(Statements.getPrefix()
+                                            .append(Component.text("Die Wartung sollte voraussichtlich ", NamedTextColor.BLUE))
+                                            .append(formattedEnd)
+                                            .append(Component.text(" gebraucht.", NamedTextColor.BLUE)));
+                            }
+
+                            if (maintenanceDeadline != null) {
+                                long deadlineDuration = Duration.between(now, maintenanceDeadline).getSeconds();
+                                Component formattedDeadline = FormatNumbers.formatDuration(Math.abs(deadlineDuration));
+
+                                player.sendMessage(Statements.getPrefix()
+                                            .append(Component.text("Die Wartung hätte in ", NamedTextColor.GOLD))
+                                            .append(formattedDeadline)
+                                            .append(Component.text(" automatisch beendet werden sollen.", NamedTextColor.GOLD)));
+                            }
+                        } else {
+                            player.sendMessage(Statements.getPrefix()
+                                    .append(Component.text("The planned maintenance was cancelled.", NamedTextColor.WHITE)));
+
+                            long startDuration = Math.abs(Duration.between(maintenanceStart, now).getSeconds());
+                                Component formattedStart = FormatNumbers.formatDuration(startDuration);
+                                player.sendMessage(Statements.getPrefix()
+                                        .append(Component.text("The maintenance should've started in ", NamedTextColor.GRAY))
+                                        .append(formattedStart)
+                                        .append(Component.text(".", NamedTextColor.GRAY)));
+
+                            if (maintenanceEnd != null) {
+                                long endDuration = Duration.between(maintenanceStart, maintenanceEnd).getSeconds();
+                                Component formattedEnd = FormatNumbers.formatDuration(Math.abs(endDuration));
+
+                                player.sendMessage(Statements.getPrefix()
+                                            .append(Component.text("The maintenance was estimated to take ", NamedTextColor.BLUE))
+                                            .append(formattedEnd)
+                                            .append(Component.text(" .", NamedTextColor.BLUE)));
+                            }
+
+                            if (maintenanceDeadline != null) {
+                                long deadlineDuration = Duration.between(now, maintenanceDeadline).getSeconds();
+                                Component formattedDeadline = FormatNumbers.formatDuration(Math.abs(deadlineDuration));
+
+                                player.sendMessage(Statements.getPrefix()
+                                            .append(Component.text("The maintenance would have been automatically disabled in ", NamedTextColor.GOLD))
+                                            .append(formattedDeadline)
+                                            .append(Component.text(".", NamedTextColor.GOLD)));
+                            }
+                        }
                     }
                 } else {
                     Instant maintenanceStart = ServerSettingsAPI.getApi().getMaintenanceStart();
@@ -207,17 +293,6 @@ public class MaintenanceCommand implements BasicCommand {
                     return;
                 }
 
-                if (!ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));
-                    }
-                    break;
-                }
-
                 Instant startTime = TimeUtil.parseTimeToInstant(args[1]);
                 if (startTime == null) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -232,10 +307,10 @@ public class MaintenanceCommand implements BasicCommand {
                 ServerSettingsAPI.getApi().setMaintenanceStart(startTime);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("Der Wartungsstart wurde erfolgreich aktualisiert!", NamedTextColor.GREEN)));
+                            .append(Component.text("Die Wartung wurde erfolgreich geplant!", NamedTextColor.GREEN)));
                 } else {
                     player.sendMessage(Statements.getPrefix()
-                            .append(Component.text("The maintenance start was successfully updated!", NamedTextColor.GREEN)));
+                            .append(Component.text("The maintenance was successfully planned!", NamedTextColor.GREEN)));
                 }
                 break;
             }
@@ -255,7 +330,18 @@ public class MaintenanceCommand implements BasicCommand {
                     return;
                 }
 
-                if (!ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                if (ServerSettingsAPI.getApi().getMaintenanceStart() == null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen geplant!", NamedTextColor.RED)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nothing changed! There is no maintenance planned!", NamedTextColor.RED)));
+                    }
+                    break;
+                }
+
+                if (ServerSettingsAPI.getApi().getMaintenanceStart() != null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
@@ -303,7 +389,18 @@ public class MaintenanceCommand implements BasicCommand {
                     return;
                 }
 
-                if (!ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                if (ServerSettingsAPI.getApi().getMaintenanceStart() == null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen geplant!", NamedTextColor.RED)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nothing changed! There is no maintenance planned!", NamedTextColor.RED)));
+                    }
+                    break;
+                }
+
+                if (ServerSettingsAPI.getApi().getMaintenanceStart() != null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
@@ -351,7 +448,18 @@ public class MaintenanceCommand implements BasicCommand {
                     return;
                 }
 
-                if (!ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                if (ServerSettingsAPI.getApi().getMaintenanceStart() == null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen geplant!", NamedTextColor.RED)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Nothing changed! There is no maintenance planned!", NamedTextColor.RED)));
+                    }
+                    break;
+                }
+
+                if (ServerSettingsAPI.getApi().getMaintenanceStart() != null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
