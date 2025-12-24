@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -96,9 +97,9 @@ public class AddCoinsCommand implements BasicCommand {
     }
 
     @Override
-    public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
+    public @NonNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String @NonNull [] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (!player.hasPermission("utilsmanager.sudo")) return Collections.emptyList();
+        if (!player.hasPermission("utilsmanager.addcoins")) return Collections.emptyList();
         if (args.length == 1 || args.length == 0) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
