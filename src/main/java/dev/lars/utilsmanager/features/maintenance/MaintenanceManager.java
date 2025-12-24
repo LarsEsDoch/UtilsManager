@@ -207,4 +207,58 @@ public class MaintenanceManager {
             }
         }, 20, 20);
     }
+
+    public static Component kickMessage(Player player) {
+        boolean german = LanguageAPI.getApi().getLanguage(player) == 2;
+
+        Component message = Component.text(
+                german
+                        ? "Wir entschuldigen uns, aber der Server ist derzeit in Wartung!\n"
+                        : "We apologize but the server is currently under maintenance!\n",
+                NamedTextColor.RED
+        );
+
+        String reason = ServerSettingsAPI.getApi().getMaintenanceReason();
+        if (reason != null && !reason.isBlank()) {
+            message = message
+                    .append(Component.text(
+                            german ? "Grund: " : "Reason: ",
+                            NamedTextColor.WHITE
+                    ))
+                    .append(Component.text(reason + "\n", NamedTextColor.BLUE));
+        }
+
+        Instant now = Instant.now();
+        Instant estimatedEndTime = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
+        Instant deadline = ServerSettingsAPI.getApi().getMaintenanceDeadline();
+        Component timeComponent = null;
+
+        if (estimatedEndTime != null && estimatedEndTime.isAfter(now)) {
+            long seconds = Duration.between(now, estimatedEndTime).getSeconds();
+            timeComponent = FormatNumbers.formatDuration(seconds);
+
+            message = message.append(Component.text(
+                    german
+                            ? "Voraussichtlich verbleibende Zeit: "
+                            : "Estimated remaining time: ",
+                    NamedTextColor.WHITE
+            ));
+        } else if (deadline != null && deadline.isAfter(now)) {
+            long seconds = Duration.between(now, deadline).getSeconds();
+            timeComponent = FormatNumbers.formatDuration(seconds);
+
+            message = message.append(Component.text(
+                    german
+                            ? "Endet in: "
+                            : "Ends in: ",
+                    NamedTextColor.WHITE
+            ));
+        }
+
+        if (timeComponent != null) {
+            message = message.append(timeComponent);
+        }
+
+        return message;
+    }
 }
