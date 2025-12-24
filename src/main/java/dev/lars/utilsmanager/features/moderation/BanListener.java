@@ -27,7 +27,7 @@ public class BanListener implements Listener {
         UtilsManager.getInstance().getBanManager().checkBanned(player);
         if (BanAPI.getApi().isBanned(player)) {
             Instant now = Instant.now();
-            Instant end = BanAPI.getApi().getEnd(player);
+            Instant end = BanAPI.getApi().getExpiration(player);
             if (end == null) return;
 
             String remaining = getTimeDifference(now, end);
@@ -74,7 +74,7 @@ public class BanListener implements Listener {
         }
 
         Player banned = (Player) event.getRightClicked();
-        BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", 7);
+        BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", Instant.now().plus(Duration.ofDays(7)));
         String message = "Der Spieler " + RankStatements.getUnformattedRank(banned) + banned.getName() + " wurde von" + RankStatements.getRank(player) + player.getName() + " gebannt für 7 Tage !";
         UtilsManager.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
@@ -102,7 +102,7 @@ public class BanListener implements Listener {
         }
 
         Player banned = (Player) event.getEntity();
-        BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", 7);
+        BanAPI.getApi().setBanned(banned, NamedTextColor.WHITE + "Banned by " + RankStatements.getRank(player) + player.getName() + NamedTextColor.WHITE + "!!!", Instant.now().plus(Duration.ofDays(7)));
         String message = "Der Spieler " + RankStatements.getUnformattedRank(banned) + banned.getName() + " wurde von" + RankStatements.getUnformattedRank(player) + player.getName() + " gebannt für 7 Tage !";
         UtilsManager.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }

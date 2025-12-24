@@ -18,7 +18,7 @@ public class BanManager {
             for (Player target : Bukkit.getOnlinePlayers()) {
                 if (BanAPI.getApi().isBanned(target)) {
                     Instant now = Instant.now();
-                Instant end = BanAPI.getApi().getEnd(target);
+                Instant end = BanAPI.getApi().getExpiration(target);
 
                 if (end == null) {
                     target.kick(
@@ -53,7 +53,7 @@ public class BanManager {
     public void checkBanned(Player target) {
         if (BanAPI.getApi().isBanned(target)) {
             Instant now = Instant.now();
-            Instant end = BanAPI.getApi().getEnd(target);
+            Instant end = BanAPI.getApi().getExpiration(target);
             if (end != null && end.isBefore(now)) {
                 BanAPI.getApi().setUnBanned(target);
             }

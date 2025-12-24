@@ -14,6 +14,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -117,7 +119,7 @@ public class BanCommand implements BasicCommand {
                     .append(Component.text(reason.toString(), NamedTextColor.GREEN))
                     .append(Component.text(".", NamedTextColor.YELLOW)));
         }
-        BanAPI.getApi().setBanned(player, reason.toString(), time);
+        BanAPI.getApi().setBanned(player, reason.toString(), Instant.now().plus(Duration.ofDays(time)));
         String message = "Der Spieler " + RankStatements.getUnformattedRank(player) + player.getName() + " wurde von" + RankStatements.getUnformattedRank(player) + player.getName() + " mit dem Grund " + reason + " für 7 Tage gebannt!";
         UtilsManager.getInstance().getDiscordBot().sendPunishmentMessage(message);
     }
