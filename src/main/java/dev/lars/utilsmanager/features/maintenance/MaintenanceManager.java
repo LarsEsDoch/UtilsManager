@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 
 public class MaintenanceManager {
@@ -42,7 +40,7 @@ public class MaintenanceManager {
 
 
     public MaintenanceManager() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
             Instant now = Instant.now();
             boolean maintenanceEnabled = ServerSettingsAPI.getApi().isMaintenanceEnabled();
             Instant maintenanceStart = ServerSettingsAPI.getApi().getMaintenanceStart();
@@ -78,91 +76,90 @@ public class MaintenanceManager {
             }
             if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (!player.isOp() || !player.hasPermission("utilsmanager.maintenance")) {
-                        Bukkit.getScheduler().runTask(UtilsManager.getInstance(), bukkitTask1 -> {
-                            player.kick(kickMessage(player));
-                        });
-                    } else {
-                        if (maintenanceEnd != null) {
-                            long secondsUntilMaintenanceEnd = Duration.between(now, maintenanceEnd).getSeconds();
-                            Component formatedTime = FormatNumbers.formatDuration(secondsUntilMaintenanceEnd);
-                            if (now.isBefore(maintenanceEnd)) {
-                                if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceEnd)) {
-                                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                                            player.sendMessage(Statements.getPrefix()
-                                                    .append(Component.text("Die Server Wartung sollte voraussichtlich in ", NamedTextColor.AQUA))
-                                                    .append(formatedTime)
-                                                    .append(Component.text(" zu ende sein!", NamedTextColor.AQUA)));
-                                    } else {
-                                        player.sendMessage(Statements.getPrefix()
-                                                .append(Component.text("Server maintenance is expected to be completed in ", NamedTextColor.AQUA))
-                                                .append(formatedTime)
-                                                .append(Component.text(" !", NamedTextColor.AQUA)));
-                                    }
-                                    Bukkit.getConsoleSender().sendMessage(Statements.getPrefix()
+                    if (!player.isOp() && !player.hasPermission("utilsmanager.maintenance")) {
+                        Bukkit.getScheduler().runTask(UtilsManager.getInstance(), bukkitTask1 -> player.kick(kickMessage(player)));
+                    }
+                }
+                if (maintenanceEnd != null) {
+                    long secondsUntilMaintenanceEnd = Duration.between(now, maintenanceEnd).getSeconds();
+                    Component formatedTime = FormatNumbers.formatDuration(secondsUntilMaintenanceEnd);
+                    if (now.isBefore(maintenanceEnd)) {
+                        if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceEnd)) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                                    player.sendMessage(Statements.getPrefix()
+                                            .append(Component.text("Die Server Wartung sollte voraussichtlich in ", NamedTextColor.AQUA))
+                                            .append(formatedTime)
+                                            .append(Component.text(" zu ende sein!", NamedTextColor.AQUA)));
+                                } else {
+                                    player.sendMessage(Statements.getPrefix()
                                             .append(Component.text("Server maintenance is expected to be completed in ", NamedTextColor.AQUA))
                                             .append(formatedTime)
                                             .append(Component.text(" !", NamedTextColor.AQUA)));
                                 }
-                            } else {
-                                if (secondsUntilMaintenanceEnd != 0) {
-                                    if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceEnd)) {
-                                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                                            Component stopMaintenanceGermanCommand = Component.text("[Jetzt ausschalten]", NamedTextColor.DARK_RED)
-                                                    .clickEvent(ClickEvent.runCommand("/maintenance off"))
-                                                    .hoverEvent(HoverEvent.showText(Component.text("Alle Spieler können wieder beitreten und Discord Status Nachrichten werden gesendet!", NamedTextColor.YELLOW)));
-
-                                            player.sendMessage(Statements.getPrefix().append(Component.text("Die Server Wartung sollte laut voraussichtlicher Zeit seit ", NamedTextColor.DARK_PURPLE))
-                                                    .append(formatedTime.color(NamedTextColor.DARK_RED))
-                                                    .append(Component.text("zu Ende sein!", NamedTextColor.DARK_PURPLE)));
-                                            player.sendMessage(Statements.getPrefix().append(Component.text("Bitte beenden sie die Wartung sobald wie möglich! ", NamedTextColor.GRAY))
-                                                    .append(stopMaintenanceGermanCommand));
-
-                                        } else {
-                                            Component stopMaintenanceEnglischCommand = Component.text("[Turn off now]", NamedTextColor.DARK_RED)
-                                                    .clickEvent(ClickEvent.runCommand("/maintenance off"))
-                                                    .hoverEvent(HoverEvent.showText(Component.text("All players can join again and Discord Status Messages will be send!", NamedTextColor.YELLOW)));
-
-                                            player.sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should be since ", NamedTextColor.DARK_PURPLE))
-                                                    .append(formatedTime.color(NamedTextColor.DARK_RED))
-                                                    .append(Component.text(" over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
-                                            player.sendMessage(Statements.getPrefix().append(Component.text("Please end the maintenance as soon as possible! ", NamedTextColor.GRAY))
-                                                    .append(stopMaintenanceEnglischCommand));
-
-                                        }
-                                        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should be since ", NamedTextColor.DARK_PURPLE))
-                                                .append(formatedTime.color(NamedTextColor.DARK_RED))
-                                                .append(Component.text(" over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
-                                    }
-                                } else {
+                            }
+                            Bukkit.getConsoleSender().sendMessage(Statements.getPrefix()
+                                    .append(Component.text("Server maintenance is expected to be completed in ", NamedTextColor.AQUA))
+                                    .append(formatedTime)
+                                    .append(Component.text(" !", NamedTextColor.AQUA)));
+                        }
+                    } else {
+                        if (secondsUntilMaintenanceEnd != 0) {
+                            if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceEnd)) {
+                                for (Player player : Bukkit.getOnlinePlayers()) {
                                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                                         Component stopMaintenanceGermanCommand = Component.text("[Jetzt ausschalten]", NamedTextColor.DARK_RED)
                                                 .clickEvent(ClickEvent.runCommand("/maintenance off"))
                                                 .hoverEvent(HoverEvent.showText(Component.text("Alle Spieler können wieder beitreten und Discord Status Nachrichten werden gesendet!", NamedTextColor.YELLOW)));
 
-                                        player.sendMessage(Statements.getPrefix().append(Component.text("Die Server Wartung sollte laut voraussichtlicher Zeit", NamedTextColor.DARK_PURPLE))
-                                                .append(Component.text(" jetzt ", NamedTextColor.DARK_RED))
+                                        player.sendMessage(Statements.getPrefix().append(Component.text("Die Server Wartung sollte laut voraussichtlicher Zeit seit ", NamedTextColor.DARK_PURPLE))
+                                                .append(formatedTime.color(NamedTextColor.DARK_RED))
                                                 .append(Component.text("zu Ende sein!", NamedTextColor.DARK_PURPLE)));
                                         player.sendMessage(Statements.getPrefix().append(Component.text("Bitte beenden sie die Wartung sobald wie möglich! ", NamedTextColor.GRAY))
                                                 .append(stopMaintenanceGermanCommand));
-
                                     } else {
                                         Component stopMaintenanceEnglischCommand = Component.text("[Turn off now]", NamedTextColor.DARK_RED)
                                                 .clickEvent(ClickEvent.runCommand("/maintenance off"))
                                                 .hoverEvent(HoverEvent.showText(Component.text("All players can join again and Discord Status Messages will be send!", NamedTextColor.YELLOW)));
 
-                                        player.sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should be", NamedTextColor.DARK_PURPLE))
-                                                .append(Component.text(" now ", NamedTextColor.DARK_RED))
-                                                .append(Component.text("over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
+                                        player.sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should be since ", NamedTextColor.DARK_PURPLE))
+                                                .append(formatedTime.color(NamedTextColor.DARK_RED))
+                                                .append(Component.text(" over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
                                         player.sendMessage(Statements.getPrefix().append(Component.text("Please end the maintenance as soon as possible! ", NamedTextColor.GRAY))
                                                 .append(stopMaintenanceEnglischCommand));
-
                                     }
-                                    Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should ", NamedTextColor.DARK_PURPLE))
+                                }
+                                Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should be since ", NamedTextColor.DARK_PURPLE))
+                                        .append(formatedTime.color(NamedTextColor.DARK_RED))
+                                        .append(Component.text(" over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
+                            }
+                        } else {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                                    Component stopMaintenanceGermanCommand = Component.text("[Jetzt ausschalten]", NamedTextColor.DARK_RED)
+                                            .clickEvent(ClickEvent.runCommand("/maintenance off"))
+                                            .hoverEvent(HoverEvent.showText(Component.text("Alle Spieler können wieder beitreten und Discord Status Nachrichten werden gesendet!", NamedTextColor.YELLOW)));
+
+                                    player.sendMessage(Statements.getPrefix().append(Component.text("Die Server Wartung sollte laut voraussichtlicher Zeit", NamedTextColor.DARK_PURPLE))
+                                            .append(Component.text(" jetzt ", NamedTextColor.DARK_RED))
+                                            .append(Component.text("zu Ende sein!", NamedTextColor.DARK_PURPLE)));
+                                    player.sendMessage(Statements.getPrefix().append(Component.text("Bitte beenden sie die Wartung sobald wie möglich! ", NamedTextColor.GRAY))
+                                            .append(stopMaintenanceGermanCommand));
+                                } else {
+                                    Component stopMaintenanceEnglischCommand = Component.text("[Turn off now]", NamedTextColor.DARK_RED)
+                                            .clickEvent(ClickEvent.runCommand("/maintenance off"))
+                                            .hoverEvent(HoverEvent.showText(Component.text("All players can join again and Discord Status Messages will be send!", NamedTextColor.YELLOW)));
+
+                                    player.sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should be", NamedTextColor.DARK_PURPLE))
                                             .append(Component.text(" now ", NamedTextColor.DARK_RED))
-                                            .append(Component.text("be over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
+                                            .append(Component.text("over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
+                                    player.sendMessage(Statements.getPrefix().append(Component.text("Please end the maintenance as soon as possible! ", NamedTextColor.GRAY))
+                                            .append(stopMaintenanceEnglischCommand));
                                 }
                             }
+                            Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("The server maintenance should ", NamedTextColor.DARK_PURPLE))
+                                    .append(Component.text(" now ", NamedTextColor.DARK_RED))
+                                    .append(Component.text("be over according to the estimated time!", NamedTextColor.DARK_PURPLE)));
                         }
                     }
                 }
@@ -195,11 +192,12 @@ public class MaintenanceManager {
                                         .append(formatedTime)
                                         .append(Component.text(" !", NamedTextColor.AQUA)));
                             }
-                            Bukkit.getConsoleSender().sendMessage(Statements.getPrefix()
-                                    .append(Component.text("Server maintenance will automatically end in ", NamedTextColor.AQUA))
-                                    .append(formatedTime)
-                                    .append(Component.text(" !", NamedTextColor.AQUA)));
                         }
+                        Bukkit.getConsoleSender().sendMessage(Statements.getPrefix()
+                                .append(Component.text("Server maintenance will automatically end in ", NamedTextColor.AQUA))
+                                .append(formatedTime)
+                                .append(Component.text(" !", NamedTextColor.AQUA)));
+
                     }
                 }
             }
@@ -232,7 +230,7 @@ public class MaintenanceManager {
         Component timeComponent = null;
 
         if (estimatedEndTime != null && estimatedEndTime.isAfter(now)) {
-            long seconds = Duration.between(now, estimatedEndTime).getSeconds();
+            long seconds = Math.max(0, Duration.between(now, estimatedEndTime).getSeconds());
             timeComponent = FormatNumbers.formatDuration(seconds);
 
             message = message.append(Component.text(
@@ -242,7 +240,7 @@ public class MaintenanceManager {
                     NamedTextColor.WHITE
             ));
         } else if (deadline != null && deadline.isAfter(now)) {
-            long seconds = Duration.between(now, deadline).getSeconds();
+            long seconds = Math.max(0, Duration.between(now, deadline).getSeconds());
             timeComponent = FormatNumbers.formatDuration(seconds);
 
             message = message.append(Component.text(
