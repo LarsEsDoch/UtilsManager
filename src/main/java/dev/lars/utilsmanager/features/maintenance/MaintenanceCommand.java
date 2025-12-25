@@ -341,17 +341,6 @@ public class MaintenanceCommand implements BasicCommand {
                     break;
                 }
 
-                if (ServerSettingsAPI.getApi().getMaintenanceStart() != null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));
-                    }
-                    break;
-                }
-
                 Instant endTime = TimeUtil.parseTimeToInstant(args[1]);
                 if (endTime == null) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -400,17 +389,6 @@ public class MaintenanceCommand implements BasicCommand {
                     break;
                 }
 
-                if (ServerSettingsAPI.getApi().getMaintenanceStart() != null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));
-                    }
-                    break;
-                }
-
                 Instant deadlineTime = TimeUtil.parseTimeToInstant(args[1]);
                 if (deadlineTime == null) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
@@ -455,17 +433,6 @@ public class MaintenanceCommand implements BasicCommand {
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nothing changed! There is no maintenance planned!", NamedTextColor.RED)));
-                    }
-                    break;
-                }
-
-                if (ServerSettingsAPI.getApi().getMaintenanceStart() != null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));
-                    } else {
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));
                     }
                     break;
                 }
