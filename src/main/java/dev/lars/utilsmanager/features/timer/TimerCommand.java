@@ -5,6 +5,8 @@ import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.timerAPI.ITimerAPI;
 import dev.lars.apimanager.apis.timerAPI.TimerAPI;
 import dev.lars.utilsmanager.utils.Statements;
+import dev.lars.utilsmanager.utils.SuggestHelper;
+import dev.lars.utilsmanager.utils.TimeUtil;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -13,10 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.time.Instant;
+import java.util.*;
 
 public class TimerCommand implements BasicCommand {
 
@@ -152,55 +152,49 @@ public class TimerCommand implements BasicCommand {
                     } else {
                         player.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer time <time>");
                     }
-
                     return;
                 }
 
-                try {
-
-                    timer.setRunning(player,false);
-                    if(timer.isTimerEnabled(player)) {
-                        timer.setTime(player, Integer.parseInt(args[1]));
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                            player.sendMessage(Statements.getPrefix()
-                                    .append(Component.text("Der Timer wurde auf ", NamedTextColor.WHITE))
-                                    .append(Component.text(timer.getTime(player), NamedTextColor.GOLD))
-                                    .append(Component.text(" gesetzt.", NamedTextColor.WHITE)));
-                        } else {
-                            player.sendMessage(Statements.getPrefix()
-                                    .append(Component.text("The timer was set on ", NamedTextColor.WHITE))
-                                    .append(Component.text(timer.getTime(player), NamedTextColor.GOLD))
-                                    .append(Component.text(".", NamedTextColor.WHITE)));
-                        }
-
-                    } else {
-                        timer.setTime(player, Integer.parseInt(args[1]));
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                            player.sendMessage(Statements.getPrefix()
-                                    .append(Component.text("Der Zeit wurde auf ", NamedTextColor.WHITE))
-                                    .append(Component.text(timer.getTime(player), NamedTextColor.GOLD))
-                                    .append(Component.text(" gesetzt.", NamedTextColor.WHITE)));
-                        } else {
-                            player.sendMessage(Statements.getPrefix()
-                                    .append(Component.text("The time was set on ", NamedTextColor.WHITE))
-                                    .append(Component.text(timer.getTime(player), NamedTextColor.GOLD))
-                                    .append(Component.text(".", NamedTextColor.WHITE)));
-                        }
-
-                    }
-                } catch (NumberFormatException e) {
+                Long seconds = TimeUtil.parseTimeToSeconds(args[1]);
+                if (seconds == null) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Parameter 2 muss eine Zahl sein.", NamedTextColor.RED)));
-                        player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Und maximal 10 Zeichen lang sein.", NamedTextColor.RED)));
+                                .append(Component.text("Ungültiges Zeitformat! Erwartetes Format: Zahl gefolgt von s/m/h/d (z. B. '30s', '5m', '2h', '7d')", NamedTextColor.RED)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("Parameter 2 must be a number.", NamedTextColor.RED)));
+                                .append(Component.text("Invalid time format! Expected format: number followed by s/m/h/d (e.g., '30s', '5m', '2h', '7d')", NamedTextColor.RED)));
+                    }
+                    break;
+                }
+
+                timer.setRunning(player,false);
+                if(timer.isTimerEnabled(player)) {
+                    timer.setTime(player, Math.toIntExact(seconds));
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
-                                .append(Component.text("And maxium 10 letters long.", NamedTextColor.RED)));
+                                .append(Component.text("Der Timer wurde auf ", NamedTextColor.WHITE))
+                                .append(Component.text(args[1], NamedTextColor.GOLD))
+                                .append(Component.text(" gesetzt.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("The timer was set on ", NamedTextColor.WHITE))
+                                .append(Component.text(args[1], NamedTextColor.GOLD))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
                     }
 
+                } else {
+                    timer.setTime(player, Math.toIntExact(seconds));
+                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("Der Zeit wurde auf ", NamedTextColor.WHITE))
+                                .append(Component.text(args[1], NamedTextColor.GOLD))
+                                .append(Component.text(" gesetzt.", NamedTextColor.WHITE)));
+                    } else {
+                        player.sendMessage(Statements.getPrefix()
+                                .append(Component.text("The time was set on ", NamedTextColor.WHITE))
+                                .append(Component.text(args[1], NamedTextColor.GOLD))
+                                .append(Component.text(".", NamedTextColor.WHITE)));
+                    }
                 }
                 break;
             }

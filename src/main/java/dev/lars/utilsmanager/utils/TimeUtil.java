@@ -11,7 +11,7 @@ public class TimeUtil {
 
     public static Instant parseTimeToInstant(String timeString) {
         if (timeString == null || timeString.isBlank()) {
-            throw new IllegalArgumentException("Time string cannot be null or empty");
+            return null;
         }
 
         Matcher matcher = TIME_PATTERN.matcher(timeString.toLowerCase().trim());
@@ -37,16 +37,14 @@ public class TimeUtil {
         return Instant.now().plus(duration);
     }
 
-    public static long parseTimeToMillis(String timeString) {
+    public static Long parseTimeToMillis(String timeString) {
         if (timeString == null || timeString.isBlank()) {
-            throw new IllegalArgumentException("Time string cannot be null or empty");
+            return null;
         }
 
         Matcher matcher = TIME_PATTERN.matcher(timeString.toLowerCase().trim());
         if (!matcher.matches()) {
-            throw new IllegalArgumentException(
-                "Invalid time format: '" + timeString + "'. Expected format: number followed by s/m/h/d"
-            );
+            return null;
         }
 
         long amount = Long.parseLong(matcher.group(1));
@@ -57,24 +55,30 @@ public class TimeUtil {
             case "m" -> amount * 60 * 1000;
             case "h" -> amount * 60 * 60 * 1000;
             case "d" -> amount * 24 * 60 * 60 * 1000;
-            default -> throw new IllegalArgumentException("Unknown time unit: " + unit);
+            default -> null;
         };
     }
 
-    public static long parseTimeToTicks(String timeString) {
-        return parseTimeToMillis(timeString) / 50;
+    public static Long parseTimeToSeconds(String timeString) {
+        Long millis = parseTimeToMillis(timeString);
+        if (millis == null) return null;
+        return millis / 1000;
+    }
+
+    public static Long parseTimeToTicks(String timeString) {
+        Long millis = parseTimeToMillis(timeString);
+        if (millis == null) return null;
+        return millis / 50;
     }
 
     public static Duration parseTimeToDuration(String timeString) {
         if (timeString == null || timeString.isBlank()) {
-            throw new IllegalArgumentException("Time string cannot be null or empty");
+            return null;
         }
 
         Matcher matcher = TIME_PATTERN.matcher(timeString.toLowerCase().trim());
         if (!matcher.matches()) {
-            throw new IllegalArgumentException(
-                "Invalid time format: '" + timeString + "'. Expected format: number followed by s/m/h/d"
-            );
+            return null;
         }
 
         long amount = Long.parseLong(matcher.group(1));
@@ -85,7 +89,7 @@ public class TimeUtil {
             case "m" -> Duration.ofMinutes(amount);
             case "h" -> Duration.ofHours(amount);
             case "d" -> Duration.ofDays(amount);
-            default -> throw new IllegalArgumentException("Unknown time unit: " + unit);
+            default -> null;
         };
     }
 }
