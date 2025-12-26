@@ -1,6 +1,6 @@
 package dev.lars.utilsmanager.scoreboard;
 
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Gradient;
 import net.kyori.adventure.text.Component;
@@ -35,7 +35,7 @@ public abstract class ScoreboardBuilder {
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         final int[] rgb = {1};
-        String text = ServerSettingsAPI.getApi().getServerName();
+        String text = ServerStateAPI.getApi().getServerName();
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             setDisplayName(Gradient.animatedGradient(text, "#50FB08", "#006EFF", rgb[0]));
 

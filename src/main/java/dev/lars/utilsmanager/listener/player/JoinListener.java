@@ -9,7 +9,7 @@ import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.scoreboard.Scoreboard;
 import dev.lars.utilsmanager.utils.RankStatements;
@@ -31,7 +31,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -52,7 +51,7 @@ public class JoinListener implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 50, 0));
 
         if (!player.hasPlayedBefore()) {
-            Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+            Location loc = ServerStateAPI.getApi().getSpawnLocation();
             if (loc == null) {
                 player.teleport(Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation());
             } else {
@@ -60,7 +59,9 @@ public class JoinListener implements Listener {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
             }
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
-            LimitAPI.getApi().setMaxChunks(player, 128);
+            LimitAPI.getApi().setMaxChunks(player, 1024);
+            RankAPI.getApi().setRank(player, 5, 3650);
+            LimitAPI.getApi().setBackpackSlots(player, 27);
             Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask -> {
                 firstJoin(player);
             }, 1);
@@ -68,7 +69,7 @@ public class JoinListener implements Listener {
             if (PlayerSettingsAPI.getApi().getBedToggle(player)) {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 2);
             } else {
-                Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+                Location loc = ServerStateAPI.getApi().getSpawnLocation();
                 if (loc == null) {
                     player.teleport(Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation());
                 } else {

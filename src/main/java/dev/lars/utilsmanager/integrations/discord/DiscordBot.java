@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.integrations.discord;
 
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.maintenanceAPI.MaintenanceAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -42,7 +43,7 @@ public class DiscordBot {
                     .awaitReady();
 
             jda.getPresence().setStatus(OnlineStatus.ONLINE);
-            jda.getPresence().setActivity(Activity.customStatus("🎮 Spielt auf " + ServerSettingsAPI.getApi().getServerName()));
+            jda.getPresence().setActivity(Activity.customStatus("🎮 Spielt auf " + ServerStateAPI.getApi().getServerName()));
             Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Discord bot started!", NamedTextColor.GREEN)));
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -63,7 +64,7 @@ public class DiscordBot {
     }
 
     public void sendStatusMessage(String message) {
-        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
+        if (MaintenanceAPI.getApi().isMaintenanceEnabled()) return;
 
         TextChannel channel = jda.getTextChannelById(serverStatusChannelID);
         if (channel == null) return;
@@ -82,7 +83,7 @@ public class DiscordBot {
     }
 
     public void sendPlayerMessage(String message) {
-        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
+        if (MaintenanceAPI.getApi().isMaintenanceEnabled()) return;
         TextChannel channel = jda.getTextChannelById(playerStatusChannelID);
 
         if (channel != null) {
@@ -102,7 +103,7 @@ public class DiscordBot {
     }
 
     public void sendPunishmentMessage(String message) {
-        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) return;
+        if (MaintenanceAPI.getApi().isMaintenanceEnabled()) return;
         TextChannel channel = jda.getTextChannelById(punishmentsChannelID);
         if (channel != null) {
             channel.sendMessage(message).queue();

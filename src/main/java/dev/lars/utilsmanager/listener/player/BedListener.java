@@ -1,7 +1,7 @@
 package dev.lars.utilsmanager.listener.player;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverFeatureAPI.ServerFeatureAPI;
 import dev.lars.apimanager.apis.timerAPI.TimerAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
@@ -21,7 +21,7 @@ public class BedListener{
             if (time < 12600 || time >= 23460) {
                 return;
             }
-            if (ServerSettingsAPI.getApi().isRealTimeEnabled()) {
+            if (ServerFeatureAPI.getApi().isRealTimeEnabled()) {
                 return;
             }
             int sleepingPlayers = 0;

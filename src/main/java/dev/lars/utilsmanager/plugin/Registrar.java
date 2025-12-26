@@ -32,7 +32,7 @@ import dev.lars.utilsmanager.features.rank.RankShopListener;
 import dev.lars.utilsmanager.features.realtime.RealTimeCommand;
 import dev.lars.utilsmanager.features.timer.TimerCommand;
 import dev.lars.utilsmanager.listener.misc.FunListeners;
-import dev.lars.utilsmanager.listener.misc.NetherListener;
+import dev.lars.utilsmanager.listener.misc.DimensionListener;
 import dev.lars.utilsmanager.listener.misc.ShopListener;
 import dev.lars.utilsmanager.listener.misc.StairClickListener;
 import dev.lars.utilsmanager.listener.player.*;
@@ -73,7 +73,7 @@ public class Registrar {
         pluginManager.registerEvents(new FreeCamLeaveListener(), plugin);
         pluginManager.registerEvents(new MaintenanceListener(), plugin);
         pluginManager.registerEvents(new RecipeLoader(), plugin);
-        pluginManager.registerEvents(new NetherListener(), plugin);
+        pluginManager.registerEvents(new DimensionListener(), plugin);
         pluginManager.registerEvents(backpackManager, plugin);
     }
 

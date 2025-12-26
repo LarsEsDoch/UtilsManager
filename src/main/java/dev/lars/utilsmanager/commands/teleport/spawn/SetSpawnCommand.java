@@ -1,7 +1,7 @@
 package dev.lars.utilsmanager.commands.teleport.spawn;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -26,7 +26,7 @@ public class SetSpawnCommand implements BasicCommand {
         }
 
         Location loc = player.getLocation();
-        ServerSettingsAPI.getApi().setSpawnLocation(loc);
+        ServerStateAPI.getApi().setSpawnLocation(loc);
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Der Spawn wurde erfolgreich gesetzt.", NamedTextColor.GREEN)));
         } else {

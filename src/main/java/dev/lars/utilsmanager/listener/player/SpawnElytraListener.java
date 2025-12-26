@@ -1,7 +1,7 @@
 package dev.lars.utilsmanager.listener.player;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -91,7 +91,7 @@ public class SpawnElytraListener implements Listener {
 
     private boolean isInSpawnRadius(Player player) {
         if (!player.getWorld().equals(world)) return false;
-        Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+        Location loc = ServerStateAPI.getApi().getSpawnLocation();
         if (loc == null) return false;
         return loc.distance(player.getLocation()) <= spawnRadius;
     }

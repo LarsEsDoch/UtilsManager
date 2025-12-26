@@ -1,8 +1,8 @@
 package dev.lars.utilsmanager.features.maintenance;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.apimanager.apis.maintenanceAPI.MaintenanceAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
 import dev.lars.utilsmanager.utils.FormatNumbers;
 import dev.lars.utilsmanager.utils.Statements;
 import dev.lars.utilsmanager.utils.SuggestHelper;
@@ -13,13 +13,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static org.bukkit.Bukkit.getOnlinePlayers;
 
@@ -44,7 +45,7 @@ public class MaintenanceCommand implements BasicCommand {
 
         switch (args[0].toLowerCase()) {
             case "on": {
-                if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                if (MaintenanceAPI.getApi().isMaintenanceEnabled()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell ist die Wartung schon aktiviert!", NamedTextColor.RED)));
@@ -53,8 +54,8 @@ public class MaintenanceCommand implements BasicCommand {
                                 .append(Component.text("Nothing changed! Maintenance is currently activated!", NamedTextColor.RED)));
                     }
                 } else {
-                    if (ServerSettingsAPI.getApi().getMaintenanceStart() == null) {
-                        ServerSettingsAPI.getApi().enableMaintenance("", null, null, null);
+                    if (MaintenanceAPI.getApi().getMaintenanceStart() == null) {
+                        MaintenanceAPI.getApi().enableMaintenance("", null, null, null);
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Die Wartung hat begonnen.", NamedTextColor.GREEN)));
@@ -71,7 +72,7 @@ public class MaintenanceCommand implements BasicCommand {
                             }
                         }
                     } else {
-                        ServerSettingsAPI.getApi().setMaintenanceEnabled(true);
+                        MaintenanceAPI.getApi().setMaintenanceEnabled(true);
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Die Wartung hat nun frühzeitiger begonnen als geplant.", NamedTextColor.GREEN)));
@@ -92,19 +93,19 @@ public class MaintenanceCommand implements BasicCommand {
                 break;
             }
             case "off": {
-                if (!ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
-                    Instant maintenanceStart = ServerSettingsAPI.getApi().getMaintenanceStart();
+                if (!MaintenanceAPI.getApi().isMaintenanceEnabled()) {
+                    Instant maintenanceStart = MaintenanceAPI.getApi().getMaintenanceStart();
                     if (maintenanceStart == null) {
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen!", NamedTextColor.RED)));} else {player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nothing changed! There is currently no maintenance!", NamedTextColor.RED)));}
                     } else {
 
-                        Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
-                        Instant maintenanceDeadline = ServerSettingsAPI.getApi().getMaintenanceDeadline();
+                        Instant maintenanceEnd = MaintenanceAPI.getApi().getMaintenanceEstimatedEnd();
+                        Instant maintenanceDeadline = MaintenanceAPI.getApi().getMaintenanceDeadline();
                         Instant now = Instant.now();
 
-                        ServerSettingsAPI.getApi().disableMaintenance();
+                        MaintenanceAPI.getApi().disableMaintenance();
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Die geplante Wartung wurde abgebrochen.", NamedTextColor.WHITE)));
@@ -168,12 +169,12 @@ public class MaintenanceCommand implements BasicCommand {
                         }
                     }
                 } else {
-                    Instant maintenanceStart = ServerSettingsAPI.getApi().getMaintenanceStart();
-                    Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
-                    Instant maintenanceDeadline = ServerSettingsAPI.getApi().getMaintenanceDeadline();
+                    Instant maintenanceStart = MaintenanceAPI.getApi().getMaintenanceStart();
+                    Instant maintenanceEnd = MaintenanceAPI.getApi().getMaintenanceEstimatedEnd();
+                    Instant maintenanceDeadline = MaintenanceAPI.getApi().getMaintenanceDeadline();
                     Instant now = Instant.now();
 
-                    ServerSettingsAPI.getApi().disableMaintenance();
+                    MaintenanceAPI.getApi().disableMaintenance();
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Die aktuelle Wartung wurde nun ausgestaltet.", NamedTextColor.WHITE)));
@@ -304,7 +305,7 @@ public class MaintenanceCommand implements BasicCommand {
                     }
                     break;
                 }
-                ServerSettingsAPI.getApi().setMaintenanceStart(startTime);
+                MaintenanceAPI.getApi().setMaintenanceStart(startTime);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Die Wartung wurde erfolgreich geplant!", NamedTextColor.GREEN)));
@@ -330,7 +331,7 @@ public class MaintenanceCommand implements BasicCommand {
                     return;
                 }
 
-                if (ServerSettingsAPI.getApi().getMaintenanceStart() == null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                if (MaintenanceAPI.getApi().getMaintenanceStart() == null && !MaintenanceAPI.getApi().isMaintenanceEnabled()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen geplant!", NamedTextColor.RED)));
@@ -352,7 +353,7 @@ public class MaintenanceCommand implements BasicCommand {
                     }
                     break;
                 }
-                ServerSettingsAPI.getApi().setMaintenanceEstimatedEnd(endTime);
+                MaintenanceAPI.getApi().setMaintenanceEstimatedEnd(endTime);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Das Wartungsende wurde erfolgreich aktualisiert!", NamedTextColor.GREEN)));
@@ -378,7 +379,7 @@ public class MaintenanceCommand implements BasicCommand {
                     return;
                 }
 
-                if (ServerSettingsAPI.getApi().getMaintenanceStart() == null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                if (MaintenanceAPI.getApi().getMaintenanceStart() == null && !MaintenanceAPI.getApi().isMaintenanceEnabled()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen geplant!", NamedTextColor.RED)));
@@ -400,7 +401,7 @@ public class MaintenanceCommand implements BasicCommand {
                     }
                     break;
                 }
-                ServerSettingsAPI.getApi().setMaintenanceDeadline(deadlineTime);
+                MaintenanceAPI.getApi().setMaintenanceDeadline(deadlineTime);
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Die Wartungsdeadline wurde erfolgreich aktualisiert!", NamedTextColor.GREEN)));
@@ -426,7 +427,7 @@ public class MaintenanceCommand implements BasicCommand {
                     return;
                 }
 
-                if (ServerSettingsAPI.getApi().getMaintenanceStart() == null && !ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+                if (MaintenanceAPI.getApi().getMaintenanceStart() == null && !MaintenanceAPI.getApi().isMaintenanceEnabled()) {
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Nichts hat sich geändert! Aktuell sind keine Wartungen geplant!", NamedTextColor.RED)));
@@ -441,7 +442,7 @@ public class MaintenanceCommand implements BasicCommand {
                 for (int i = 1; i < args.length; i++) {
                     reason.append(args[i]).append(" ");
                 }
-                ServerSettingsAPI.getApi().setMaintenanceReasonAsync(reason.toString());
+                MaintenanceAPI.getApi().setMaintenanceReasonAsync(reason.toString());
                 if (LanguageAPI.getApi().getLanguage(player) == 2) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Wartungsgrund wurde erfolgreich aktualisiert!", NamedTextColor.GREEN)));

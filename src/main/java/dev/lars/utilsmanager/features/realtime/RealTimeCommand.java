@@ -1,7 +1,7 @@
 package dev.lars.utilsmanager.features.realtime;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverFeatureAPI.ServerFeatureAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -24,8 +24,8 @@ public class RealTimeCommand implements BasicCommand {
             }
         }
 
-        boolean newState = !ServerSettingsAPI.getApi().isRealTimeEnabled();
-        ServerSettingsAPI.getApi().setRealTimeEnabled(newState);
+        boolean newState = !ServerFeatureAPI.getApi().isRealTimeEnabled();
+        ServerFeatureAPI.getApi().setRealTimeEnabled(newState);
 
         if (sender instanceof Player player) {
             if (newState) {

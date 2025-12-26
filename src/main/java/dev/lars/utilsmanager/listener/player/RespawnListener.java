@@ -2,7 +2,7 @@ package dev.lars.utilsmanager.listener.player;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -24,7 +24,7 @@ public class RespawnListener implements Listener {
         Location respawnLocation = event.getRespawnLocation();
         Location bedSpawn = player.getRespawnLocation();
         Location worldSpawn = Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation();
-        Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+        Location loc = ServerStateAPI.getApi().getSpawnLocation();
 
         if (PlayerSettingsAPI.getApi().getBedToggle(player) || !respawnLocation.equals(bedSpawn)) {
             if (LanguageAPI.getApi().getLanguage(player ) == 2) {

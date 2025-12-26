@@ -1,7 +1,7 @@
 package dev.lars.utilsmanager.features.maintenance;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.maintenanceAPI.MaintenanceAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.FormatNumbers;
 import dev.lars.utilsmanager.utils.Statements;
@@ -42,16 +42,16 @@ public class MaintenanceManager {
     public MaintenanceManager() {
         Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
             Instant now = Instant.now();
-            boolean maintenanceEnabled = ServerSettingsAPI.getApi().isMaintenanceEnabled();
-            Instant maintenanceStart = ServerSettingsAPI.getApi().getMaintenanceStart();
-            Instant maintenanceEnd = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
-            Instant maintenanceDeadline = ServerSettingsAPI.getApi().getMaintenanceDeadline();
+            boolean maintenanceEnabled = MaintenanceAPI.getApi().isMaintenanceEnabled();
+            Instant maintenanceStart = MaintenanceAPI.getApi().getMaintenanceStart();
+            Instant maintenanceEnd = MaintenanceAPI.getApi().getMaintenanceEstimatedEnd();
+            Instant maintenanceDeadline = MaintenanceAPI.getApi().getMaintenanceDeadline();
             if (maintenanceStart != null && maintenanceStart.isAfter(now) && !maintenanceEnabled) {
                 long secondsUntilMaintenanceStart = Duration.between(now, maintenanceStart).getSeconds();
                 Component formatedTime = FormatNumbers.formatDuration(secondsUntilMaintenanceStart);
 
                 if (secondsUntilMaintenanceStart <= 0) {
-                    ServerSettingsAPI.getApi().setMaintenanceEnabled(true);
+                    MaintenanceAPI.getApi().setMaintenanceEnabled(true);
                 }
 
                 if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceStart)) {
@@ -74,7 +74,7 @@ public class MaintenanceManager {
                             .append(Component.text("!", NamedTextColor.AQUA)));
                 }
             }
-            if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+            if (MaintenanceAPI.getApi().isMaintenanceEnabled()) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (!player.isOp() && !player.hasPermission("utilsmanager.maintenance")) {
                         Bukkit.getScheduler().runTask(UtilsManager.getInstance(), bukkitTask1 -> player.kick(kickMessage(player)));
@@ -163,8 +163,8 @@ public class MaintenanceManager {
                         }
                     }
                 }
-                if (ServerSettingsAPI.getApi().isMaintenanceEnabled() && maintenanceDeadline != null && maintenanceDeadline.isBefore(now)) {
-                    ServerSettingsAPI.getApi().disableMaintenance();
+                if (MaintenanceAPI.getApi().isMaintenanceEnabled() && maintenanceDeadline != null && maintenanceDeadline.isBefore(now)) {
+                    MaintenanceAPI.getApi().disableMaintenance();
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Component.text("Die Server Wartung wurde nun automatisch beendet!", NamedTextColor.GOLD));
@@ -175,8 +175,8 @@ public class MaintenanceManager {
                     Bukkit.getConsoleSender().sendMessage(Statements.getPrefix()
                             .append(Component.text("Server maintenance was now automatically ended!", NamedTextColor.GOLD)));
                 }
-                if (ServerSettingsAPI.getApi().isMaintenanceEnabled() && maintenanceDeadline != null && maintenanceDeadline.isAfter(now) && maintenanceEnd == null
-                    || ServerSettingsAPI.getApi().isMaintenanceEnabled() && maintenanceDeadline != null && maintenanceDeadline.isAfter(now) && maintenanceEnd != null && now.isAfter(maintenanceEnd)) {
+                if (MaintenanceAPI.getApi().isMaintenanceEnabled() && maintenanceDeadline != null && maintenanceDeadline.isAfter(now) && maintenanceEnd == null
+                    || MaintenanceAPI.getApi().isMaintenanceEnabled() && maintenanceDeadline != null && maintenanceDeadline.isAfter(now) && maintenanceEnd != null && now.isAfter(maintenanceEnd)) {
                     long secondsUntilMaintenanceDeadline = Duration.between(now, maintenanceDeadline).getSeconds();
                     Component formatedTime = FormatNumbers.formatDuration(secondsUntilMaintenanceDeadline);
                     if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceDeadline)) {
@@ -214,7 +214,7 @@ public class MaintenanceManager {
                 NamedTextColor.RED
         );
 
-        String reason = ServerSettingsAPI.getApi().getMaintenanceReason();
+        String reason = MaintenanceAPI.getApi().getMaintenanceReason();
         if (reason != null && !reason.isBlank()) {
             message = message
                     .append(Component.text(
@@ -225,8 +225,8 @@ public class MaintenanceManager {
         }
 
         Instant now = Instant.now();
-        Instant estimatedEndTime = ServerSettingsAPI.getApi().getMaintenanceEstimatedEnd();
-        Instant deadline = ServerSettingsAPI.getApi().getMaintenanceDeadline();
+        Instant estimatedEndTime = MaintenanceAPI.getApi().getMaintenanceEstimatedEnd();
+        Instant deadline = MaintenanceAPI.getApi().getMaintenanceDeadline();
         Component timeComponent = null;
 
         if (estimatedEndTime != null && estimatedEndTime.isAfter(now)) {

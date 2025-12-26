@@ -1,8 +1,9 @@
 package dev.lars.utilsmanager.listener.server;
 
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
+import dev.lars.apimanager.apis.maintenanceAPI.MaintenanceAPI;
 import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Gradient;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -26,8 +27,8 @@ public class ServerPingListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onServerPing(PaperServerListPingEvent event) {
-        String serverName = ServerSettingsAPI.getApi().getServerName();
-        String serverVersion = ServerSettingsAPI.getApi().getServerVersion();
+        String serverName = ServerStateAPI.getApi().getServerName();
+        String serverVersion = ServerStateAPI.getApi().getServerVersion();
 
         int totalWidth = 45;
         int nameLength = serverName.length();
@@ -38,7 +39,7 @@ public class ServerPingListener implements Listener {
         int length = serverName.length();
 
         Component serverNameComponent = Component.empty();
-        List<String> gradient_colors = ServerSettingsAPI.getApi().getServerNameGradient();
+        List<String> gradient_colors = ServerStateAPI.getApi().getServerNameGradient();
         for (int i = 0; i < length; i++) {
             serverNameComponent = serverNameComponent.append(Gradient.gradient(
                     String.valueOf(serverName.charAt(i)),
@@ -73,7 +74,7 @@ public class ServerPingListener implements Listener {
             return;
         }
 
-        if (ServerSettingsAPI.getApi().isMaintenanceEnabled()) {
+        if (MaintenanceAPI.getApi().isMaintenanceEnabled()) {
             String maintenance = "Info: Server is in maintenance!";
             Component centered = centerLinesPixelAccurate(wrapText(maintenance, totalWidth), NamedTextColor.GOLD, extraShift + 2);
             event.motd(header.append(centered));

@@ -1,6 +1,6 @@
 package dev.lars.utilsmanager.features.realtime;
 
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverFeatureAPI.ServerFeatureAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import org.bukkit.Bukkit;
 
@@ -18,7 +18,7 @@ public class RealTime {
     public void updateActivation() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
             if (Bukkit.getOnlinePlayers().isEmpty()) return;
-            activated = ServerSettingsAPI.getApi().isRealTimeEnabled();
+            activated = ServerFeatureAPI.getApi().isRealTimeEnabled();
         }, 20, 20);
     }
 

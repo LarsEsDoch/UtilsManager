@@ -3,7 +3,7 @@ package dev.lars.utilsmanager.tablist;
 import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.apimanager.apis.statusAPI.StatusAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Gradient;
@@ -27,7 +27,7 @@ public class TablistManager{
     static TextDecoration type;
 
     public void setTabList(Player player) {
-        String serverName = ServerSettingsAPI.getApi().getServerName();
+        String serverName = ServerStateAPI.getApi().getServerName();
         int length = serverName.length();
 
         Component serverNameComponent = Component.empty();

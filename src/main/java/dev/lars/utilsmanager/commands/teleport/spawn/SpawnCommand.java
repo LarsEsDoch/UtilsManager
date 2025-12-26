@@ -2,7 +2,7 @@ package dev.lars.utilsmanager.commands.teleport.spawn;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -31,7 +31,7 @@ public class SpawnCommand implements BasicCommand {
             return;
         }
 
-        Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+        Location loc = ServerStateAPI.getApi().getSpawnLocation();
         if (loc == null) {
             if (LanguageAPI.getApi().getLanguage(player) == 2) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Es konnte keine Spawn-Location gefunden werden!", NamedTextColor.RED)));

@@ -2,7 +2,7 @@ package dev.lars.utilsmanager.listener.teleporter;
 
 import dev.lars.apimanager.ApiManager;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
-import dev.lars.apimanager.apis.serverSettingsAPI.ServerSettingsAPI;
+import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,7 +25,7 @@ public class TeleporterListener implements Listener {
     public TeleporterListener() {
         Bukkit.getScheduler().runTaskTimer(ApiManager.getInstance(), bukkitTask -> {
             if (Bukkit.getOnlinePlayers().isEmpty()) return;
-            Location loc = ServerSettingsAPI.getApi().getSpawnLocation();
+            Location loc = ServerStateAPI.getApi().getSpawnLocation();
             if (loc == null) return;
             for (Player player: Bukkit.getOnlinePlayers()) {
                 if (!(player.hasPermission("utilsmanager.feature.spawn"))) {
