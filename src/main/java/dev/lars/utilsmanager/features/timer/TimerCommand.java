@@ -382,7 +382,8 @@ public class TimerCommand implements BasicCommand {
                     }
                     return;
                 }
-                if(Objects.equals(args[1], "on")) {
+                if(args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("yes")
+                    || args[1].equalsIgnoreCase("y") || args[1].equalsIgnoreCase("ja") || Objects.equals(args[1], "j")) {
                     if(TimerAPI.getApi().isPublic(player)) {
                         if (LanguageAPI.getApi().getLanguage(player) == 2) {
                             player.sendMessage(Statements.getPrefix()
@@ -421,7 +422,8 @@ public class TimerCommand implements BasicCommand {
                     break;
                 }
 
-                if(Objects.equals(args[1], "off")) {
+                if(args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false") || args[1].equalsIgnoreCase("np")
+                    || args[1].equalsIgnoreCase("n") || args[1].equalsIgnoreCase("nein")) {
                     for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                         if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                             if (onlinePlayer != player) {
@@ -466,7 +468,7 @@ public class TimerCommand implements BasicCommand {
                 } else {
                     player.sendMessage(NamedTextColor.WHITE + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer public <on/off>");
                 }
-                return;
+                break;
             }
             default:
                 sendUsage(player);
@@ -474,24 +476,52 @@ public class TimerCommand implements BasicCommand {
         }
     }
 
-   @Override
-   public @NotNull Collection<String> suggest(final @NotNull CommandSourceStack commandSourceStack, final String[] args) {
-       if (args.length == 0 || args.length == 1) {
-           Collection<String> timerCommands = new ArrayList<>();
-           timerCommands.add("resume");
-           timerCommands.add("stop");
-           timerCommands.add("time");
-           timerCommands.add("reset");
-           timerCommands.add("off");
-           timerCommands.add("on");
-           timerCommands.add("timer");
-           timerCommands.add("stopwatch");
-           timerCommands.add("public");
+    @Override
+    public @NotNull Collection<String> suggest(final @NotNull CommandSourceStack commandSourceStack, final String[] args) {
+         Player player = (Player) commandSourceStack.getSender();
+         if (!player.hasPermission("utilsmanager.timer")) return Collections.emptyList();
 
-           return timerCommands;
-       }
-       return Collections.emptyList();
-   }
+         if (args.length == 0) {
+             return List.of(
+                     "resume",
+                     "stop",
+                     "time",
+                     "reset",
+                     "off",
+                     "on",
+                     "timer",
+                     "stopwatch",
+                     "public"
+             );
+         }
+
+         if (args.length == 1) {
+             return SuggestHelper.filter(args[0],
+                     "resume",
+                     "stop",
+                     "time",
+                     "reset",
+                     "off",
+                     "on",
+                     "timer",
+                     "stopwatch",
+                     "public"
+             );
+         }
+
+         if (args[0].equalsIgnoreCase("public") && args.length == 3) {
+             return List.of( "on", "off");
+         }
+
+         if (args[0].equalsIgnoreCase("public") && args.length == 4) {
+             return SuggestHelper.filter(args[0], "on", "off");
+         }
+
+         if (args[0].equalsIgnoreCase("time")) {
+             return SuggestHelper.getTimeSuggestions(args[1]);
+         }
+         return Collections.emptyList();
+    }
 
     private void sendUsage(Player player) {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
