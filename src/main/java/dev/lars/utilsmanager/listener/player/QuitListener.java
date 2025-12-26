@@ -25,7 +25,7 @@ public class QuitListener implements Listener {
                             .append(Component.text(" hat den Server verlassen.", NamedTextColor.WHITE)));
                 } else {
                     onlinePlayer.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
-                            .append(Component.text(" left the network.", NamedTextColor.WHITE)));
+                            .append(Component.text(" left the server.", NamedTextColor.WHITE)));
                 }
             }
 

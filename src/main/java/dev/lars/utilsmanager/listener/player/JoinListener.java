@@ -61,6 +61,7 @@ public class JoinListener implements Listener {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
             LimitAPI.getApi().setMaxChunks(player, 1024);
             RankAPI.getApi().setRank(player, 5, 3650);
+            PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
             LimitAPI.getApi().setBackpackSlots(player, 27);
             Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask -> {
                 firstJoin(player);
@@ -152,14 +153,6 @@ public class JoinListener implements Listener {
     }
 
     public void firstJoin(Player player) {
-        LanguageAPI.getApi().setLanguage(player, 2);
-
-        RankAPI.getApi().setRank(player, 5, 30);
-        PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
-        LimitAPI.getApi().setBackpackSlots(player, 27);
-
-
-
         Component GiftText = getComponent();
         player.sendMessage(GiftText);
 
@@ -170,16 +163,24 @@ public class JoinListener implements Listener {
                         .append(Component.text(" hat den Server zum ersten mal betreten.", NamedTextColor.WHITE)));
             } else {
                 p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
-                        .append(Component.text(" joined the server for the first time.", NamedTextColor.WHITE)));
+                        .append(Component.text(" has joined the server for the first time.", NamedTextColor.WHITE)));
             }
         }
-        player.sendMessage(Statements.getPrefix().append(Component.text("Willkommen auf diesem Server! Habe Spaß und genieße es.", NamedTextColor.GOLD, TextDecoration.BOLD)));
-        Component LanguageText = getLanguageText();
-        player.sendMessage(LanguageText);
-        player.sendMessage(Statements.getPrefix().append(Component.text("Falls du Hilfe brauchst nutze die Serverfunktion: ", NamedTextColor.GOLD))
+
+        player.sendMessage(Statements.getPrefix().append(
+                Component.text("Welcome to this server! Have fun and enjoy your time.", NamedTextColor.GOLD, TextDecoration.BOLD)
+        ));
+
+        Component languageText = getLanguageText();
+        player.sendMessage(languageText);
+
+        player.sendMessage(Statements.getPrefix()
+                .append(Component.text("If you need help, use the server function (Noch keine Zeit gehabt o7): ", NamedTextColor.GOLD))
                 .append(Component.text("/help ", NamedTextColor.GRAY))
-                .append(Component.text("oder [Hilfe hier]", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("/help"))));
-        Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
+                .append(Component.text("or [Help here]", NamedTextColor.AQUA)
+                        .clickEvent(ClickEvent.runCommand("/help"))));
+
+        Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), task -> {
             showTitleFi(player);
         }, 20);
     }
@@ -289,8 +290,8 @@ public class JoinListener implements Listener {
                             subTitle = Component.text("Scary ", NamedTextColor.BLACK)
                                     .append(Component.text("Halloween!", NamedTextColor.GOLD));
                         }
-                        LocalDate ostern = berechneOstern(Calendar.YEAR);
-                        if (month == ostern.getMonthValue() & day == ostern.getDayOfMonth()) {
+                        LocalDate ester = calculateOstern(Calendar.YEAR);
+                        if (month == ester.getMonthValue() & day == ester.getDayOfMonth()) {
                             subTitle = Component.text("Happy ", NamedTextColor.GREEN)
                                     .append(Component.text("Easter!", NamedTextColor.LIGHT_PURPLE));
                         }
@@ -376,7 +377,7 @@ public class JoinListener implements Listener {
                             subTitle = Component.text("Scary ", NamedTextColor.BLACK)
                                     .append(Component.text("Halloween!", NamedTextColor.GOLD));
                         }
-                        LocalDate ostern = berechneOstern(Calendar.YEAR);
+                        LocalDate ostern = calculateOstern(Calendar.YEAR);
                         if (month == ostern.getMonthValue() & day == ostern.getDayOfMonth()) {
                             subTitle = Component.text("Happy ", NamedTextColor.GREEN)
                                     .append(Component.text("Easter!", NamedTextColor.LIGHT_PURPLE));
@@ -477,7 +478,7 @@ public class JoinListener implements Listener {
                             subTitle = Component.text("Gruseliges ", NamedTextColor.BLACK)
                                     .append(Component.text("Halloween!", NamedTextColor.GOLD));
                         }
-                        LocalDate ostern = berechneOstern(Calendar.YEAR);
+                        LocalDate ostern = calculateOstern(Calendar.YEAR);
                         if (month == ostern.getMonthValue() & day == ostern.getDayOfMonth()) {
                             subTitle = Component.text("Fröhliche ", NamedTextColor.GREEN)
                                     .append(Component.text("Ostern!", NamedTextColor.LIGHT_PURPLE));
@@ -527,7 +528,7 @@ public class JoinListener implements Listener {
         }).start();
     }
 
-    public static LocalDate berechneOstern(int year) {
+    public static LocalDate calculateOstern(int year) {
         int k = year / 100;
         int m = 15 + (3 * k + 3) / 4 - (8 * k + 13) / 25;
         int s = 2 - (3 * k + 3) / 4;
