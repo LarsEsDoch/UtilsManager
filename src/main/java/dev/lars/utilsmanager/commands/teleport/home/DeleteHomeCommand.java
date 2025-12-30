@@ -3,16 +3,16 @@ package dev.lars.utilsmanager.commands.teleport.home;
 import dev.lars.apimanager.apis.homeAPI.HomeAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
+import dev.lars.utilsmanager.utils.SuggestHelper;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class DeleteHomeCommand implements BasicCommand {
 
@@ -59,10 +59,15 @@ public class DeleteHomeCommand implements BasicCommand {
     }
 
     @Override
-    public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
+    public @NonNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        if (args.length == 0 || args.length == 1) {
-            return new ArrayList<>(HomeAPI.getApi().getOwnHomes(player));
+        Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getOwnHomes(player), Collections.emptyList());
+
+        if (args.length == 0) {
+            return homes;
+        }
+        if (args.length == 1) {
+            return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
         }
         return Collections.emptyList();
     }

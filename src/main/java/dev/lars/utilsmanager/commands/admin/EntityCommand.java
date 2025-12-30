@@ -2,6 +2,7 @@ package dev.lars.utilsmanager.commands.admin;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
+import dev.lars.utilsmanager.utils.SuggestHelper;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -9,12 +10,16 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class EntityCommand implements BasicCommand {
+
+    private static final List<String> ENTITY_NAMES =
+        Arrays.stream(EntityType.values())
+              .map(Enum::name)
+              .toList();
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
@@ -65,22 +70,30 @@ public class EntityCommand implements BasicCommand {
     }
 
     @Override
-    public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
-        if (args.length == 0 || args.length == 1) {
-            Collection<String> entityList = new ArrayList<>();
-            for (EntityType entity : EntityType.values()) {
-                entityList.add(entity.name().toLowerCase());
-            }
-            return entityList;
+    public @NonNull Collection<String> suggest(final @NonNull CommandSourceStack commandSourceStack, final String[] args) {
+        Player player = (Player) commandSourceStack.getSender();
+        if(!player.hasPermission("utilsmanager.entity")) {
+            player.sendMessage(Statements.getNotAllowed(player));
+            return Collections.emptyList();
+        }
+        if (args.length == 0) {
+            return ENTITY_NAMES;
+        }
+        if (args.length == 1) {
+            return SuggestHelper.filter(args[0], ENTITY_NAMES.toArray(new String[0]));
         }
         return Collections.emptyList();
     }
 
     private void sendUsage(Player player) {
         if (LanguageAPI.getApi().getLanguage(player) == 2) {
-            player.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/entity <Entität> <Anzahl>");
+            player.sendMessage(Statements.getUsage(player)
+                    .append(Component.text("/entity <Entität> <Anzahl>", NamedTextColor.BLUE))
+            );
         } else {
-            player.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/entity <entity> <amount>");
+            player.sendMessage(Statements.getUsage(player)
+                    .append(Component.text("/entity <entity> <amount>", NamedTextColor.BLUE))
+            );
         }
     }
 }

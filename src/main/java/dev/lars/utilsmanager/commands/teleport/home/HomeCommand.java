@@ -4,6 +4,7 @@ import dev.lars.apimanager.apis.courtAPI.CourtAPI;
 import dev.lars.apimanager.apis.homeAPI.HomeAPI;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
+import dev.lars.utilsmanager.utils.SuggestHelper;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -11,11 +12,9 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class HomeCommand implements BasicCommand {
 
@@ -68,13 +67,15 @@ public class HomeCommand implements BasicCommand {
     }
 
     @Override
-    public Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
-        if (args.length == 0 || args.length == 1) {
-            List<String> homes = new ArrayList<>();
-            for (String string : HomeAPI.getApi().getHomes((Player) commandSourceStack.getSender())) {
-                homes.add(string.toLowerCase());
-            }
+    public @NonNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
+        Player player = (Player) commandSourceStack.getSender();
+        Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getHomes(player), Collections.emptyList());
+
+        if (args.length == 0) {
             return homes;
+        }
+        if (args.length == 1) {
+            return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
         }
         return Collections.emptyList();
     }
