@@ -69,13 +69,24 @@ public class HomeCommand implements BasicCommand {
     @Override
     public @NonNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
         Player player = (Player) commandSourceStack.getSender();
-        Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getHomes(player), Collections.emptyList());
+        if (player.hasPermission("utilsmanager.admin")) {
+            Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getAllHomes(), Collections.emptyList());
 
-        if (args.length == 0) {
-            return homes;
-        }
-        if (args.length == 1) {
-            return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
+            if (args.length == 0) {
+                return homes;
+            }
+            if (args.length == 1) {
+                return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
+            }
+        } else {
+           Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getHomes(player), Collections.emptyList());
+
+            if (args.length == 0) {
+                return homes;
+            }
+            if (args.length == 1) {
+                return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
+            }
         }
         return Collections.emptyList();
     }

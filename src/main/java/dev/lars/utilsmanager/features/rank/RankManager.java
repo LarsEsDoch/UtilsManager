@@ -48,6 +48,7 @@ public class RankManager {
         }
         switch (rankId) {
             case 10: {
+                attachment.setPermission("utilsmanager.admin", true);
                 attachment.setPermission("utilsmanager.addcoins", true);
                 attachment.setPermission("utilsmanager.setcoins", true);
                 attachment.setPermission("utilsmanager.backpack", true);
@@ -106,6 +107,7 @@ public class RankManager {
                 attachment.setPermission("utilsmanager.feature.spawn.setspawn", true);
             }
             case 9: {
+                attachment.setPermission("utilsmanager.admin", true);
                 attachment.setPermission("utilsmanager.addcoins", true);
                 attachment.setPermission("utilsmanager.setcoins", true);
                 attachment.setPermission("utilsmanager.backpack", true);

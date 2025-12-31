@@ -17,7 +17,7 @@ import java.util.*;
 public class DeleteHomeCommand implements BasicCommand {
 
     @Override
-    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String @NonNull [] args) {
         if (!(stack.getExecutor() instanceof Player player)) {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
@@ -32,55 +32,72 @@ public class DeleteHomeCommand implements BasicCommand {
             return;
         }
 
-        String HomeName = args[0];
-        if (!HomeAPI.getApi().doesOwnHomeExist(player, HomeName)) {
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
-                player.sendMessage(Statements.getPrefix().append(Component.text("Der Home ", NamedTextColor.RED))
-                        .append(Component.text(HomeName, NamedTextColor.YELLOW))
-                        .append(Component.text(" existiert nicht!", NamedTextColor.RED)));
-            } else {
-                player.sendMessage(Statements.getPrefix().append(Component.text("The home ", NamedTextColor.RED))
-                        .append(Component.text(HomeName, NamedTextColor.YELLOW))
-                        .append(Component.text(" does not exist!", NamedTextColor.RED)));
-            }
+        String homeName = args[0];
+        boolean isAdmin = player.hasPermission("utilsmanager.admin");
+        boolean homeExists = isAdmin
+                ? HomeAPI.getApi().doesHomeExist(homeName)
+                : HomeAPI.getApi().doesOwnHomeExist(player, homeName);
+
+        if (!homeExists) {
+            boolean german = LanguageAPI.getApi().getLanguage(player) == 2;
+
+            Component message = Statements.getPrefix()
+                    .append(Component.text(
+                            german ? "Der Home " : "The home ",
+                            NamedTextColor.RED))
+                    .append(Component.text(homeName, NamedTextColor.YELLOW))
+                    .append(Component.text(
+                            german ? " existiert nicht!" : " does not exist!",
+                            NamedTextColor.RED));
+
+            player.sendMessage(message);
             return;
         }
 
+        HomeAPI.getApi().deleteHome(HomeAPI.getApi().getHomeId(player, homeName));
         if(LanguageAPI.getApi().getLanguage(player) == 2) {
-            player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Homepunkt ", NamedTextColor.YELLOW))
-                    .append(Component.text(HomeName, NamedTextColor.RED))
+            player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Home ", NamedTextColor.YELLOW))
+                    .append(Component.text(homeName, NamedTextColor.RED))
                     .append(Component.text(" gelöscht!", NamedTextColor.YELLOW)));
         } else {
-            player.sendMessage(Statements.getPrefix().append(Component.text("You've deleted the homepoint ", NamedTextColor.YELLOW))
-                    .append(Component.text(HomeName, NamedTextColor.RED))
+            player.sendMessage(Statements.getPrefix().append(Component.text("You've deleted the home ", NamedTextColor.YELLOW))
+                    .append(Component.text(homeName, NamedTextColor.RED))
                     .append(Component.text("!", NamedTextColor.YELLOW)));
         }
-        HomeAPI.getApi().deleteHome(HomeAPI.getApi().getHomeId(player, HomeName));
     }
 
     @Override
-    public @NonNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String[] args) {
+    public @NonNull Collection<String> suggest(final CommandSourceStack commandSourceStack, final String @NonNull [] args) {
         Player player = (Player) commandSourceStack.getSender();
-        Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getOwnHomes(player), Collections.emptyList());
+        if (player.hasPermission("utilsmanager.admin")) {
+            Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getAllHomes(), Collections.emptyList());
 
-        if (args.length == 0) {
-            return homes;
-        }
-        if (args.length == 1) {
-            return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
+            if (args.length == 0) {
+                return homes;
+            }
+            if (args.length == 1) {
+                return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
+            }
+        } else {
+           Collection<String> homes = Objects.requireNonNullElse(HomeAPI.getApi().getOwnHomes(player), Collections.emptyList());
+
+            if (args.length == 0) {
+                return homes;
+            }
+            if (args.length == 1) {
+                return SuggestHelper.filter(args[0], homes.toArray(new String[0]));
+            }
         }
         return Collections.emptyList();
     }
 
-    private void sendUsage(Player sender) {
-        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
-            sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
-                    .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/sethome <Name>", NamedTextColor.BLUE)));
+    private void sendUsage(Player player) {
+        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            player.sendMessage(Statements.getUsage(player)
+                    .append(Component.text("/deletehome <Name>", NamedTextColor.BLUE)));
         } else {
-            sender.sendMessage(Component.text("Use", NamedTextColor.GRAY)
-                    .append(Component.text(": ", NamedTextColor.DARK_GRAY))
-                    .append(Component.text("/sethome <name>", NamedTextColor.BLUE)));
+            player.sendMessage(Statements.getUsage(player)
+                    .append(Component.text("/deletehome <name>", NamedTextColor.BLUE)));
         }
     }
 }

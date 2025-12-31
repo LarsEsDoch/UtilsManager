@@ -19,6 +19,8 @@ dependencies:
       join-classpath: true
 
 permissions:
+  utilsmanager.admin:
+    default: false
   utilsmanager.addcoins:
     default: false
   utilsmanager.backpack:
