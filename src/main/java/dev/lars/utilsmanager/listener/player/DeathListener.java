@@ -1,194 +1,144 @@
 package dev.lars.utilsmanager.listener.player;
 
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
+import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.RankStatements;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
 public class DeathListener implements Listener {
 
-    private Integer X;
-    private Integer Y;
-    private Integer Z;
-
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        if (event.getEntity().getKiller() == null) return;
-        if (event.getEntity().getKiller() != null) {
-            Player killer = event.getEntity().getKiller();
-            Player p = event.getEntity();
+        Player victim = event.getEntity();
 
-            X = Math.toIntExact(Math.round(p.getLocation().getX()));
-            Y = Math.toIntExact(Math.round(p.getLocation().getY()));
-            Z = Math.toIntExact(Math.round(p.getLocation().getZ()));
+        Entity killerEntity = victim.getKiller();
+        if (killerEntity == null) {
+            EntityDamageEvent last = victim.getLastDamageCause();
+            if (last instanceof EntityDamageByEntityEvent edbee) {
+                killerEntity = edbee.getDamager();
+            }
+        }
 
-            if (LanguageAPI.getApi().getLanguage(killer) == 2) {
-                killer.sendMessage(
-                        Component.text()
-                                .append(Statements.getPrefix())
-                                .append(Component.text("Du hast ", NamedTextColor.DARK_RED))
-                                .append(p.displayName().color(NamedTextColor.YELLOW))
-                                .append(Component.text(" getötet!", NamedTextColor.DARK_RED)));
-            } else {
-                killer.sendMessage(
-                        Component.text()
-                                .append(Statements.getPrefix())
-                                .append(Component.text("You have killed ", NamedTextColor.DARK_RED))
-                                .append(p.displayName().color(NamedTextColor.YELLOW))
-                                .append(Component.text("!", NamedTextColor.DARK_RED)));
+        if (killerEntity == null) {
+            event.deathMessage(Component.empty());
+            return;
+        }
+
+        if (killerEntity instanceof Player killer) {
+            int x = victim.getLocation().getBlockX();
+            int y = victim.getLocation().getBlockY();
+            int z = victim.getLocation().getBlockZ();
+
+            boolean killerGerman = LanguageAPI.getApi().getLanguage(killer) == 2;
+            Component killerMessage = Component.text()
+                    .append(Statements.getPrefix())
+                    .append(Component.text(killerGerman ? "Du hast " : "You have killed ", NamedTextColor.DARK_RED))
+                    .append(victim.displayName().color(NamedTextColor.YELLOW))
+                    .append(Component.text(killerGerman ? " getötet!" : "!", NamedTextColor.DARK_RED)).build();
+            killer.sendMessage(killerMessage);
+
+            boolean victimGerman = LanguageAPI.getApi().getLanguage(victim) == 2;
+            Component victimMessage = Component.text()
+                    .append(Statements.getPrefix())
+                    .append(Component.text(victimGerman ? "Du wurdest von " : "You were killed by ", NamedTextColor.RED))
+                    .append(killer.displayName().color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
+                    .append(Component.text(victimGerman ? " bei den Koordinaten " : " on coordinates ", NamedTextColor.BLUE))
+                    .append(Component.text(x + " " + y + " " + z, NamedTextColor.BLUE))
+                    .append(Component.text(victimGerman ? " getötet." : ".", NamedTextColor.RED)).build();
+            victim.sendMessage(victimMessage);
+
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                boolean langGerman = LanguageAPI.getApi().getLanguage(online) == 2;
+                Component broadcast = Component.text()
+                        .append(Statements.getPrefix())
+                        .append(victim.displayName().color(NamedTextColor.RED).decorate(TextDecoration.BOLD))
+                        .append(Component.text(langGerman ? " wurde von " : " was killed by ", NamedTextColor.WHITE))
+                        .append(killer.displayName().color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD)).build();
+                online.sendMessage(broadcast);
             }
 
-            if (LanguageAPI.getApi().getLanguage(p) == 2) {
-                p.sendMessage(
-                        Component.text()
-                                .append(Statements.getPrefix())
-                                .append(Component.text("Du wurdest von ", NamedTextColor.RED))
-                                .append(killer.displayName().color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
-                                .append(Component.text(" bei den Koordinaten ", NamedTextColor.BLUE))
-                                .append(Component.text(X + " " + Y + " " + Z, NamedTextColor.BLUE))
-                                .append(Component.text(" getötet.", NamedTextColor.RED)));
-            } else {
-                p.sendMessage(
-                        Component.text()
-                                .append(Statements.getPrefix())
-                                .append(Component.text("You were killed by ", NamedTextColor.RED))
-                                .append(killer.displayName().color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
-                                .append(Component.text(" on coordinate ", NamedTextColor.BLUE))
-                                .append(Component.text(X + " " + Y + " " + Z, NamedTextColor.BLUE))
-                                .append(Component.text(".", NamedTextColor.RED)));
-            }
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                    player.sendMessage(
-                            Component.text()
-                                    .append(Statements.getPrefix())
-                                    .append(p.displayName().color(NamedTextColor.RED).decorate(TextDecoration.BOLD))
-                                    .append(Component.text(" wurde von "))
-                                    .append(killer.displayName().color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD))
-                                    .append(Component.text(" getötet!")));
-                } else {
-                    player.sendMessage(
-                            Component.text()
-                                    .append(Statements.getPrefix())
-                                    .append(p.displayName().color(NamedTextColor.RED).decorate(TextDecoration.BOLD))
-                                    .append(Component.text(" was killed by "))
-                                    .append(killer.displayName().color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD)));
-                }
-
-            }
         } else {
-            if (event.getEntity().getKiller().getName().contains("❤")) {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String monsterType = event.getEntity().getKiller().getType().name();
+            Component customName = killerEntity.customName();
+            String monsterName;
 
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(
-                                Component.text()
-                                        .append(Statements.getPrefix())
-                                        .append(RankStatements.getRank(player))
-                                        .append(Component.text(" wurde von einem/r ", NamedTextColor.WHITE))
-                                        .append(Component.text(monsterType, NamedTextColor.RED))
-                                        .append(Component.text(" getötet!", NamedTextColor.WHITE))
-                                        .build()
-                        );
-                    } else {
-                        player.sendMessage(
-                                Component.text()
-                                        .append(Statements.getPrefix())
-                                        .append(RankStatements.getRank(player))
-                                        .append(Component.text(" was slain by ", NamedTextColor.WHITE))
-                                        .append(Component.text(monsterType, NamedTextColor.RED))
-                                        .append(Component.text("!", NamedTextColor.WHITE))
-                                        .build()
-                        );
-                    }
+            if (customName != null) {
+                String plainName = PlainTextComponentSerializer.plainText().serialize(customName);
+
+                if (plainName.contains("❤")) {
+                    monsterName = killerEntity.getType().name();
+                } else {
+                    monsterName = plainName;
                 }
             } else {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String monsterType = event.getEntity().getKiller().getName();
-
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(
-                                Component.text()
-                                        .append(Statements.getPrefix())
-                                        .append(RankStatements.getRank(player))
-                                        .append(Component.text(" wurde von einem/r ", NamedTextColor.WHITE))
-                                        .append(Component.text(monsterType, NamedTextColor.RED))
-                                        .append(Component.text(" getötet!", NamedTextColor.WHITE))
-                                        .build()
-                        );
-                    } else {
-                        player.sendMessage(
-                                Component.text()
-                                        .append(Statements.getPrefix())
-                                        .append(RankStatements.getRank(player))
-                                        .append(Component.text(" was slain by ", NamedTextColor.WHITE))
-                                        .append(Component.text(monsterType, NamedTextColor.RED))
-                                        .append(Component.text("!", NamedTextColor.WHITE))
-                                        .build()
-                        );
-                    }
-                }
+                monsterName = killerEntity.getType().name();
             }
+            monsterName = monsterName.replace('_', ' ');
 
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                boolean langGerman = LanguageAPI.getApi().getLanguage(online) == 2;
+                Component msg = Component.text()
+                        .append(Statements.getPrefix())
+                        .append(RankStatements.getRank(online))
+                        .append(Component.text(langGerman ? " wurde von einem/r " : " was slain by ", NamedTextColor.WHITE))
+                        .append(Component.text(monsterName, NamedTextColor.RED))
+                        .append(Component.text(langGerman ? " getötet!" : "!", NamedTextColor.WHITE)).build();
+                online.sendMessage(msg);
+            }
         }
-        event.deathMessage(Component.text(""));
+
+        event.deathMessage(Component.empty());
     }
 
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
-        Entity entity = event.getEntity();
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onEntityDamage(EntityDamageEvent event) {
+        NamespacedKey heartsKey = new NamespacedKey(UtilsManager.getInstance(), "displayed_hearts");
+        Entity ent = event.getEntity();
 
-        if (entity instanceof Monster && entity.customName() != null && Objects.requireNonNull(entity.customName()).contains(Component.text("❤"))) {
-            entity.customName(Component.text(""));
-            entity.setCustomNameVisible(false);
-            /*event.setCancelled(true);
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), bukkitTask ->  {
-                event.setCancelled(false);
-            }, 1);
+        if (!(ent instanceof Monster monster)) return;
 
-             */
+        if (monster.isDead()) return;
+
+        double damage;
+        try {
+            damage = event.getFinalDamage();
+        } catch (NoSuchMethodError e) {
+            damage = event.getDamage();
         }
-    }
 
-    @EventHandler
-    public void onEntityDamage(EntityDamageByEntityEvent event) {
-        Entity entity = event.getEntity();
+        double healthAfter = monster.getHealth() - damage;
+        if (healthAfter > 0.0001) return;
 
-        if (entity instanceof Monster) {
-            Monster monster = (Monster) entity;
-            double currentHealth = monster.getHealth();
-            double damage = event.getDamage();
-            if (damage >= currentHealth) {
-                entity.setCustomName("");
-                entity.setCustomNameVisible(false);
-                event.setCancelled(true);
-                ((Monster) entity).setHealth(0);
-            }
-        }
-        if (entity instanceof Player) {
-            Player player = (Player) entity;
-            if (event.getDamager() instanceof Monster) {
-                double currentHealth = player.getHealth();
-                double damage = event.getDamage();
-                if (damage >= currentHealth) {
-                    event.getDamager().setCustomName(event.getDamager().getType().name());
-                }
-            }
+        Component comp = monster.customName();
+        if (comp == null) return;
+
+        String plain = PlainTextComponentSerializer.plainText().serialize(comp);
+
+        if (!plain.contains("❤")) return;
+
+        monster.customName(null);
+        monster.setCustomNameVisible(false);
+
+        if (monster.getPersistentDataContainer().has(heartsKey, PersistentDataType.INTEGER)) {
+            monster.getPersistentDataContainer().remove(heartsKey);
         }
     }
 }

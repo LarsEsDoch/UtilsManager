@@ -50,6 +50,10 @@ public class JoinListener implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 50, 0));
 
+        LimitAPI.getApi().setMaxChunks(player, 1024);
+        if (RankAPI.getApi().getRankId(player) < 5) RankAPI.getApi().setRank(player, 5, 3650);
+        LimitAPI.getApi().setBackpackSlots(player, 27);
+
         if (!player.hasPlayedBefore()) {
             Location loc = ServerStateAPI.getApi().getSpawnLocation();
             if (loc == null) {
@@ -58,11 +62,8 @@ public class JoinListener implements Listener {
                 player.teleport(loc);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
             }
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
-            LimitAPI.getApi().setMaxChunks(player, 1024);
-            RankAPI.getApi().setRank(player, 5, 3650);
             PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
-            LimitAPI.getApi().setBackpackSlots(player, 27);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
             Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), bukkitTask -> {
                 firstJoin(player);
             }, 1);

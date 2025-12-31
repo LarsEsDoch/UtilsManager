@@ -3,6 +3,7 @@ package dev.lars.utilsmanager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import dev.lars.utilsmanager.entity.EntitySummons;
+import dev.lars.utilsmanager.entity.HeartDisplayManager;
 import dev.lars.utilsmanager.features.backpack.BackpackManager;
 import dev.lars.utilsmanager.features.court.CourtManager;
 import dev.lars.utilsmanager.features.freecam.FreeCamManager;
@@ -35,6 +36,7 @@ public final class UtilsManager extends JavaPlugin {
     private TablistManager tablistManager;
     private RankManager rankManager;
     private EntitySummons entitySummons;
+    private HeartDisplayManager heartDisplayManager;
     private QuestManager questManager;
     private BanManager banManager;
     private CourtManager courtManager;
@@ -77,6 +79,7 @@ public final class UtilsManager extends JavaPlugin {
         new RealTime();
         new BedListener();
         entitySummons = new EntitySummons();
+        heartDisplayManager = new HeartDisplayManager();
         courtManager = new CourtManager();
         banManager = new BanManager();
         new TeleporterListener();
@@ -102,7 +105,7 @@ public final class UtilsManager extends JavaPlugin {
 
     private void registerGameFeatures() {
         new RecipeLoader().registerRecipes();
-        entitySummons.EntityHearths();
+        heartDisplayManager.start();
         rankManager.checkRanks();
     }
 

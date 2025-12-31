@@ -147,38 +147,6 @@ public class EntitySummons {
         wchicken3.customName(Component.text("Kjelli"));
     }
 
-    public void EntityHearths() {
-        Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (!(entity instanceof Monster)) continue;
-
-                    Monster monster = (Monster) entity;
-                    int healthInHearts = (int) Math.ceil(monster.getHealth() / 2);
-
-                    String name = entity.customName() != null
-                            ? PlainTextComponentSerializer.plainText().serialize(entity.customName())
-                            : null;
-
-                    if (name == null || !name.contains("❤")) {
-                        entity.setCustomNameVisible(true);
-                        entity.customName(Component.text(healthInHearts + "❤"));
-                    } else {
-                        String displayedHealthString = name.replace("❤", "").trim();
-                        try {
-                            int displayedHealth = Integer.parseInt(displayedHealthString);
-                            if (displayedHealth != healthInHearts) {
-                                entity.customName(Component.text(healthInHearts + "❤"));
-                            }
-                        } catch (NumberFormatException e) {
-                            entity.customName(Component.text(healthInHearts + "❤"));
-                        }
-                    }
-                }
-            }
-        }, 5, 5);
-    }
-
 
     public void EntitysSummonsEnd() {
         /*s1sheep.remove();
