@@ -2,7 +2,6 @@ package dev.lars.utilsmanager;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import dev.lars.utilsmanager.entity.EntitySummons;
 import dev.lars.utilsmanager.entity.HeartDisplayManager;
 import dev.lars.utilsmanager.features.backpack.BackpackManager;
 import dev.lars.utilsmanager.features.court.CourtManager;
@@ -35,7 +34,6 @@ public final class UtilsManager extends JavaPlugin {
     private BackpackManager backpackManager;
     private TablistManager tablistManager;
     private RankManager rankManager;
-    private EntitySummons entitySummons;
     private HeartDisplayManager heartDisplayManager;
     private QuestManager questManager;
     private BanManager banManager;
@@ -78,7 +76,6 @@ public final class UtilsManager extends JavaPlugin {
         new Timer();
         new RealTime();
         new BedListener();
-        entitySummons = new EntitySummons();
         heartDisplayManager = new HeartDisplayManager();
         courtManager = new CourtManager();
         banManager = new BanManager();
