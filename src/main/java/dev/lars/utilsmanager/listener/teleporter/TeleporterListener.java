@@ -3,6 +3,7 @@ package dev.lars.utilsmanager.listener.teleporter;
 import dev.lars.apimanager.ApiManager;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
+import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -23,7 +24,7 @@ public class TeleporterListener implements Listener {
     Map<Player, Integer> data = new HashMap<>();
 
     public TeleporterListener() {
-        Bukkit.getScheduler().runTaskTimer(ApiManager.getInstance(), bukkitTask -> {
+        Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
             if (Bukkit.getOnlinePlayers().isEmpty()) return;
             Location loc = ServerStateAPI.getApi().getSpawnLocation();
             if (loc == null) return;
