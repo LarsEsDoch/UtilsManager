@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class ScoreboardBuilder {
@@ -43,6 +44,7 @@ public abstract class ScoreboardBuilder {
             if (rgb[0] >= text.length()) {
                 rgb[0] = 0;
             }
+            if (Character.isWhitespace(text.charAt(rgb[0]))) rgb[0]++;
         }, 10, 10);
 
         createScoreboard();
