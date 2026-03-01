@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("com.gradleup.shadow") version "9.3.1"
 }
 
 group = 'de.lars'
@@ -20,12 +21,34 @@ dependencies {
     compileOnly 'me.lucko:spark-api:0.1-SNAPSHOT'
     compileOnly 'net.dmulloy2:ProtocolLib:5.4.0'
     implementation 'net.dv8tion:JDA:5.0.0-beta.20'
-    implementation 'com.github.LarsEsDoch:ApiManager:4.4.0'
+    compileOnly 'com.github.LarsEsDoch:ApiManager:4.4.0'
 }
 
 tasks {
+    shadowJar {
+        configurations = [project.configurations.runtimeClasspath]
+
+        relocate 'net.dv8tion', 'de.lars.shadow.jda'
+        relocate 'com.iwebpp', 'de.lars.shadow.iwebpp'
+        relocate 'org.apache.commons.collections4', 'de.lars.shadow.collections4'
+
+        mergeServiceFiles()
+        archiveClassifier.set('')
+    }
+
     runServer {
-        minecraftVersion("1.21")
+        pluginJars.from(shadowJar)
+
+        minecraftVersion("1.21.11")
+
+        downloadPlugins {
+            github("LarsEsDoch", "ApiManager", "4.4.0", "ApiManager-v4.4.0.jar")
+            github("dmulloy2", "ProtocolLib", "5.4.0", "ProtocolLib.jar")
+        }
+    }
+
+    jar {
+        enabled = false
     }
 }
 
