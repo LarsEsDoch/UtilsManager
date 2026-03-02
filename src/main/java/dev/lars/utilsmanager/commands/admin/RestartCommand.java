@@ -95,22 +95,15 @@ public class RestartCommand implements BasicCommand {
             }
             if (delay == 0) {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
+                    Component kickMessage;
                     if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        onlinePlayer.sendMessage(Statements.getPrefix().append(Component.text("Server wird neu gestartet...", NamedTextColor.GOLD)));
+                        kickMessage = Component.text("Server wird neu gestartet...", NamedTextColor.GOLD);
                     } else {
-                        onlinePlayer.sendMessage(Statements.getPrefix().append(Component.text("Server is restarting...", NamedTextColor.GOLD)));
+                        kickMessage = Component.text("Server is restarting...", NamedTextColor.GOLD);
                     }
-                    Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Server is restarting...", NamedTextColor.GOLD)));
-                    if (!(onlinePlayer == player)) {
-                        Component kickMessage;
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                            kickMessage = Component.text("Server wird neu gestartet...", NamedTextColor.GOLD);
-                        } else {
-                            kickMessage = Component.text("Server is restarting...", NamedTextColor.GOLD);
-                        }
-                        onlinePlayer.kick(kickMessage);
-                    }
+                    onlinePlayer.kick(kickMessage);
                 }
+                Bukkit.getConsoleSender().sendMessage(Statements.getPrefix().append(Component.text("Server is restarting...", NamedTextColor.GOLD)));
                 Bukkit.restart();
             }
             delay--;

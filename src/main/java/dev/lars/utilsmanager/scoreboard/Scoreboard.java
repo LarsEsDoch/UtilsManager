@@ -209,5 +209,4 @@ public class Scoreboard extends ScoreboardBuilder {
                 .append(Component.text(amount, NamedTextColor.RED)));
         return progressBar.build();
     }
-
 }
