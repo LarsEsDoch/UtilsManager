@@ -1,5 +1,7 @@
 package dev.lars.utilsmanager.plugin;
 
+import dev.lars.utilsmanager.UtilsManager;
+import dev.lars.utilsmanager.commands.UtilsmanagerCommand;
 import dev.lars.utilsmanager.commands.admin.*;
 import dev.lars.utilsmanager.commands.economy.*;
 import dev.lars.utilsmanager.commands.player.*;
@@ -79,6 +81,14 @@ public class Registrar {
 
     public static void commandRegistration(JavaPlugin plugin) {
         LifecycleEventManager<@NotNull Plugin> manager = plugin.getLifecycleManager();
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            commands.register("utilsmanager", "Utilsmanager commands", new UtilsmanagerCommand((UtilsManager) plugin));
+        });
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            commands.register("um", "Utilsmanager commands", new UtilsmanagerCommand((UtilsManager) plugin));
+        });
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("timer", "Control the timer for yourself", new TimerCommand());

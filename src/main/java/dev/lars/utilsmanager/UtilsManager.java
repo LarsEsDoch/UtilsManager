@@ -26,6 +26,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 public final class UtilsManager extends JavaPlugin {
 
     private static UtilsManager instance;
@@ -69,7 +71,7 @@ public final class UtilsManager extends JavaPlugin {
         logToConsole("UtilsManager successfully disabled!", NamedTextColor.DARK_RED);
     }
 
-    private void initializeManagers() {
+    public void initializeManagers() {
         backpackManager = new BackpackManager();
         tablistManager = new TablistManager();
         rankManager = new RankManager();
@@ -87,7 +89,7 @@ public final class UtilsManager extends JavaPlugin {
         questManager = new QuestManager();
     }
 
-    private void initializeDiscordBot() {
+    public void initializeDiscordBot() {
         String token = getConfig().getString("discord.token");
         String serverStatusChannelId = getConfig().getString("discord.serverStatusChannelID");
         String playerStatusChannelId = getConfig().getString("discord.playerStatusChannelID");
@@ -100,8 +102,12 @@ public final class UtilsManager extends JavaPlugin {
         }
     }
 
-    private void registerGameFeatures() {
-        new RecipeLoader().registerRecipes();
+    public void registerGameFeatures() {
+        try {
+            new RecipeLoader().registerRecipes();
+        } catch (Exception e) {
+            logToConsole("Custom recipes already loaded", NamedTextColor.GOLD);
+        }
         heartDisplayManager.start();
         rankManager.checkRanks();
     }
@@ -111,7 +117,7 @@ public final class UtilsManager extends JavaPlugin {
         Registrar.commandRegistration(this);
     }
 
-    private void startBackgroundTasks() {
+    public void startBackgroundTasks() {
         banManager.run();
         playtimeManager.updateTime();
     }
@@ -124,6 +130,22 @@ public final class UtilsManager extends JavaPlugin {
 
     public static UtilsManager getInstance() {
         return instance;
+    }
+
+    public String getVersion() {
+        return getPluginMeta().getVersion();
+    }
+
+    public String getApiVersion() {
+        return getPluginMeta().getAPIVersion();
+    }
+
+    public List<String> getDevelopers() {
+        return getPluginMeta().getAuthors();
+    }
+
+    public String getWebsite() {
+        return getPluginMeta().getWebsite();
     }
 
     public ProtocolManager getProtocolManager() {
