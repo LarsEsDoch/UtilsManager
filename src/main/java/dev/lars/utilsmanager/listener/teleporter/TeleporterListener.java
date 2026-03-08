@@ -1,6 +1,5 @@
 package dev.lars.utilsmanager.listener.teleporter;
 
-import dev.lars.apimanager.ApiManager;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.UtilsManager;

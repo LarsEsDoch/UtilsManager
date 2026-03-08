@@ -16,7 +16,6 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public record UtilsmanagerCommand(UtilsManager plugin) implements BasicCommand {
 

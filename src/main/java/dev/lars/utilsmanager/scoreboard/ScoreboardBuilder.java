@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class ScoreboardBuilder {

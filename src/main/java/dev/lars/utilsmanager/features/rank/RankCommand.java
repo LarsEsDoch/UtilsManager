@@ -161,7 +161,7 @@ public class RankCommand implements BasicCommand {
                         .append(Component.text(".", NamedTextColor.WHITE)));
             }
         }
-        player.kick(Component.text("Please rejoin! /n You're rank has changed.", NamedTextColor.GOLD));
+        player.kick(Component.text("Please rejoin! \n You're rank has changed.", NamedTextColor.GOLD));
     }
 
     @Override
