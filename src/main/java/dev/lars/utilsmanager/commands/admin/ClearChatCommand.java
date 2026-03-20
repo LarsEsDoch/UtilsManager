@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.RankStatements;
 import dev.lars.utilsmanager.utils.Statements;
@@ -42,7 +43,7 @@ public class ClearChatCommand implements BasicCommand {
                     .append(Component.text(" ]", NamedTextColor.DARK_GRAY))
                     .append(Component.text("                    ", NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH)));
 
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 onlinePlayer.sendMessage(Statements.getPrefix().append(Component.text("Der Chat wurde von ", NamedTextColor.WHITE))
                         .append(RankStatements.getRank(player))
                         .append(Component.text(" gelöscht!", NamedTextColor.WHITE)));

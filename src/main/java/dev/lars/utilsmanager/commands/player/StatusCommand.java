@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.statusAPI.StatusAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -36,7 +37,7 @@ public class StatusCommand implements BasicCommand {
 
         if (status.equals("reset")) {
             StatusAPI.getApi().setStatus(player, null);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deinen Status zurückgesetzt!", NamedTextColor.RED)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("You've rested your status!", NamedTextColor.RED)));
@@ -53,7 +54,7 @@ public class StatusCommand implements BasicCommand {
             }
             StatusAPI.getApi().setStatus(player, status);
             StatusAPI.getApi().setColor(player, color);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deinen Status auf ", NamedTextColor.WHITE))
                         .append(Component.text(status, color))
                         .append(Component.text(" gesetzt.", NamedTextColor.WHITE)));
@@ -126,7 +127,7 @@ public class StatusCommand implements BasicCommand {
     }
 
     private void sendUsage(CommandSender sender) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/status <Status> <Farbe> / reset", NamedTextColor.BLUE)));

@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.backpack;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -37,7 +38,7 @@ public class BackpackCommand implements BasicCommand {
         OfflinePlayer openPlayer = Bukkit.getOfflinePlayer(args[0]);
         if (openPlayer.hasPlayedBefore()) {
             UtilsManager.getInstance().getBackpackManager().openOfflineBackpack(openPlayer, player);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Rucksack von ", NamedTextColor.DARK_RED))
                         .append(Component.text(Objects.requireNonNull(openPlayer.getName()), NamedTextColor.WHITE))
                         .append(Component.text("geöffnet.", NamedTextColor.DARK_RED)));
@@ -47,7 +48,7 @@ public class BackpackCommand implements BasicCommand {
                         .append(Component.text(".", NamedTextColor.DARK_RED)));
             }
         } else {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Dieser Spieler besitzt kein Rucksack!", NamedTextColor.RED)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("This player doesn't own a backpack!", NamedTextColor.RED)));

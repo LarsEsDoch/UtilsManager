@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
@@ -62,7 +63,7 @@ public record UtilsmanagerCommand(UtilsManager plugin) implements BasicCommand {
         sender.sendMessage(Statements.getPrefix().append(Component.text("UtilsManager successfully reloaded", NamedTextColor.GREEN)));
         for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
             Component kickMessage;
-            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                 kickMessage = Component.text("Server Features wurden neu geladen!", NamedTextColor.GOLD);
             } else {
                 kickMessage = Component.text("Server features got reloaded!", NamedTextColor.GOLD);

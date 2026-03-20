@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
@@ -27,7 +28,7 @@ public class RespawnListener implements Listener {
         Location loc = ServerStateAPI.getApi().getSpawnLocation();
 
         if (PlayerSettingsAPI.getApi().getBedToggle(player) || !respawnLocation.equals(bedSpawn)) {
-            if (LanguageAPI.getApi().getLanguage(player ) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest an deinem eigenen Respawn Punkt wiederbelebt.", NamedTextColor.GOLD)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at you're own respawn point.", NamedTextColor.GOLD)));
@@ -36,7 +37,7 @@ public class RespawnListener implements Listener {
         } else {
             if (loc != null) {
                 event.setRespawnLocation(loc);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest am Spawn wiederbelebt.", NamedTextColor.GOLD)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at the spawn.", NamedTextColor.GOLD)));
@@ -44,7 +45,7 @@ public class RespawnListener implements Listener {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
             } else {
                 event.setRespawnLocation(worldSpawn);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest am Welt Spawn wiederbelebt.", NamedTextColor.GOLD)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("You were respawned at the world spawn.", NamedTextColor.GOLD)));

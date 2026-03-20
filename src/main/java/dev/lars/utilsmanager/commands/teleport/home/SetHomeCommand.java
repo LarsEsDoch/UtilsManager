@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.teleport.home;
 
 import dev.lars.apimanager.apis.homeAPI.HomeAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
@@ -30,7 +31,7 @@ public class SetHomeCommand implements BasicCommand {
         }
 
         if (UtilsManager.getInstance().getFreeCamManager().isFreeCamPlayer(player)) {
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du kannst nicht im Freecam modus einen Home setzten!", NamedTextColor.RED)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("You can't create a new home in freecam mode!", NamedTextColor.RED)));
@@ -65,7 +66,7 @@ public class SetHomeCommand implements BasicCommand {
         String HomeName = args[0];
 
         if (HomeAPI.getApi().doesHomeExist(HomeName)) {
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Home ", NamedTextColor.RED))
                         .append(Component.text(HomeName, NamedTextColor.YELLOW))
                         .append(Component.text(" existiert schon!", NamedTextColor.RED)));
@@ -80,7 +81,7 @@ public class SetHomeCommand implements BasicCommand {
         String HomeLocation = player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getWorld().getName();
 
         HomeAPI.getApi().createHome(player, HomeName, player.getLocation(), isPublic);
-        if(LanguageAPI.getApi().getLanguage(player) == 2) {
+        if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den " , NamedTextColor.AQUA))
                     .append(publicStringDe)
                     .append(Component.text("Home ", NamedTextColor.AQUA))
@@ -97,7 +98,7 @@ public class SetHomeCommand implements BasicCommand {
 
     private void sendUsage(Player sender) {
         /*if (RankAPI.getApi().getRankId(sender) >= 9) {
-            if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
                 sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                         .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                         .append(Component.text("/sethome <Name> <Öffentlich>", NamedTextColor.BLUE)));
@@ -107,7 +108,7 @@ public class SetHomeCommand implements BasicCommand {
                         .append(Component.text("/sethome <name> <public>", NamedTextColor.BLUE)));
             }
         } else {
-            if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
                 sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                         .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                         .append(Component.text("/sethome <Name>", NamedTextColor.BLUE)));
@@ -119,7 +120,7 @@ public class SetHomeCommand implements BasicCommand {
         }
 
          */
-        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/sethome <Name> (<Öffentlich>)", NamedTextColor.BLUE)));

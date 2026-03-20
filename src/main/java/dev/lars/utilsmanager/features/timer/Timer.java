@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.timer;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.timerAPI.TimerAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -43,7 +44,7 @@ public class Timer {
 
     public void sendActionBar(Player player) {
         if (!TimerAPI.getApi().isRunning(player)) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendActionBar(Component.text("Timer ist pausiert", NamedTextColor.RED));
             } else {
                 player.sendActionBar(Component.text("Timer is paused", NamedTextColor.RED));
@@ -63,7 +64,7 @@ public class Timer {
                 TimerAPI.getApi().setRunning(player, false);
                 TimerAPI.getApi().setTime(player, 0);
                 TimerAPI.getApi().setTimer(player, false);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendActionBar(Component.text("Ende", NamedTextColor.GREEN));
                 } else {
                     player.sendActionBar(Component.text("End", NamedTextColor.GREEN));
@@ -80,7 +81,7 @@ public class Timer {
         int time = TimerAPI.getApi().getTime(player);
         if (!TimerAPI.getApi().isRunning(player)) {
             for (Player onlineplayer:Bukkit.getOnlinePlayers()) {
-                if (LanguageAPI.getApi().getLanguage(onlineplayer) == 2) {
+                if (LanguageAPI.getApi().getLanguage(onlineplayer) == Language.GERMAN) {
                     onlineplayer.sendActionBar(Component.text("Timer ist pausiert", NamedTextColor.RED));
                 } else {
                     onlineplayer.sendActionBar(Component.text("Timer is paused", NamedTextColor.RED));
@@ -104,7 +105,7 @@ public class Timer {
                 TimerAPI.getApi().setTime(player, 0);
                 TimerAPI.getApi().setTimer(player, false);
                 for (Player onlineplayer:Bukkit.getOnlinePlayers()) {
-                    if (LanguageAPI.getApi().getLanguage(onlineplayer) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(onlineplayer) == Language.GERMAN) {
                         onlineplayer.sendActionBar(Component.text("Ende", NamedTextColor.GREEN));
                     } else {
                         onlineplayer.sendActionBar(Component.text("End", NamedTextColor.GREEN));

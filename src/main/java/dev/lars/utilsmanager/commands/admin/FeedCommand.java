@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.CheckPlayers;
 import dev.lars.utilsmanager.utils.RankStatements;
@@ -37,13 +38,13 @@ public class FeedCommand implements BasicCommand {
 
         player = Bukkit.getPlayer(args[0]);
         if (CheckPlayers.checkPlayer(sendplayer, player)) return;
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest gefüttert!", NamedTextColor.GREEN)));
         } else {
             player.sendMessage(Statements.getPrefix().append(Component.text("You were feed!", NamedTextColor.GREEN)));
         }
         player.setFoodLevel(20);
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler ", NamedTextColor.GREEN).append(RankStatements.getRank(player)).append(Component.text(player.getName(), NamedTextColor.GREEN)))
                     .append(Component.text(" gefüttert!", NamedTextColor.GREEN)));
         } else {
@@ -68,7 +69,7 @@ public class FeedCommand implements BasicCommand {
     }
 
     private void sendUsage(CommandSender sender) {
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/invsee <Spieler>");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/invsee <player>");

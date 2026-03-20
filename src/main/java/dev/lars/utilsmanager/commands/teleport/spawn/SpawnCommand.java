@@ -1,6 +1,8 @@
 package dev.lars.utilsmanager.commands.teleport.spawn;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtStatus;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Statements;
@@ -12,11 +14,12 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class SpawnCommand implements BasicCommand {
 
     @Override
-    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String @NonNull [] args) {
         if (!(stack.getExecutor() instanceof Player player)) {
             stack.getSender().sendMessage(Statements.getOnlyPlayers());
             return;
@@ -26,14 +29,14 @@ public class SpawnCommand implements BasicCommand {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
-        if (CourtAPI.getApi().getStatus(player) == 5) {
+        if (CourtAPI.getApi().getStatus(player) == CourtStatus.IMPRISONED) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
 
         Location loc = ServerStateAPI.getApi().getSpawnLocation();
         if (loc == null) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Es konnte keine Spawn-Location gefunden werden!", NamedTextColor.RED)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("No Spawn-Location could be found!", NamedTextColor.RED)));
@@ -42,7 +45,7 @@ public class SpawnCommand implements BasicCommand {
         }
 
         player.teleport(loc);
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest zum Spawn teleportiert.", NamedTextColor.GREEN)));
         } else {
             player.sendMessage(Statements.getPrefix().append(Component.text("You have been teleported to the spawn.", NamedTextColor.GREEN)));

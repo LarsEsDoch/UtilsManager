@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.features.chunk;
 
 import dev.lars.apimanager.apis.chunkAPI.ChunkAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.utils.Statements;
@@ -76,7 +77,7 @@ public class ChunkOwnerListener implements Listener {
         }
         if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                         .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
@@ -104,7 +105,7 @@ public class ChunkOwnerListener implements Listener {
         }
         if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                         .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
@@ -147,7 +148,7 @@ public class ChunkOwnerListener implements Listener {
 
         if (ITEM_STORAGE_BLOCKS.contains(type)) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                         .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
@@ -165,7 +166,7 @@ public class ChunkOwnerListener implements Listener {
         }
 
         OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                     .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                     .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
@@ -209,7 +210,7 @@ public class ChunkOwnerListener implements Listener {
             }
             if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
                 OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                             .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
@@ -254,7 +255,7 @@ public class ChunkOwnerListener implements Listener {
             }
             if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
                 OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                             .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
@@ -291,7 +292,7 @@ public class ChunkOwnerListener implements Listener {
         }
         if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                         .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                         .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));
@@ -322,7 +323,7 @@ public class ChunkOwnerListener implements Listener {
             }
             if (!Objects.equals(ChunkAPI.getApi().getChunkOwner(chunk).toString(), player.getUniqueId().toString())) {
                 OfflinePlayer owner = Bukkit.getOfflinePlayer(ChunkAPI.getApi().getChunkOwner(chunk));
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Der Chunk gehört nicht dir und du bist auch kein Freund oder Vertrauter! Besitzer: ", NamedTextColor.RED))
                             .append(Component.text(owner.getName() + "!", NamedTextColor.DARK_PURPLE))
                             .append(Component.text(formatChunkCoordinates(chunk), NamedTextColor.YELLOW)));

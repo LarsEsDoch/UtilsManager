@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.economy;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.CheckPlayers;
 import dev.lars.utilsmanager.utils.Statements;
@@ -19,8 +20,6 @@ import java.text.DecimalFormat;
 public class PayCommand implements BasicCommand {
 
     private Player sendplayer;
-    private int sendercoins;
-    private int paying;
     private Player player;
 
     @Override
@@ -46,16 +45,16 @@ public class PayCommand implements BasicCommand {
             }
         }
 
-        paying = Integer.parseInt(args[1]);
+        int paying = Integer.parseInt(args[1]);
         if (paying <= 0) {
             sendUsage(player);
             return;
         }
-        sendercoins = EconomyAPI.getApi().getBalance(sendplayer);
+        long senderBalance = EconomyAPI.getApi().getBalance(sendplayer);
         OfflinePlayer recipient = Bukkit.getPlayer(args[0]);
         if (CheckPlayers.checkOfflinePlayer(sendplayer, recipient)) return;
-        if (paying > sendercoins) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (paying > senderBalance) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld zum überweisen!");
             } else {
                 player.sendMessage(NamedTextColor.RED + "You haven´t got enough money to pay!");
@@ -67,7 +66,7 @@ public class PayCommand implements BasicCommand {
         EconomyAPI.getApi().increaseBalance(player, paying);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(paying);
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.GREEN))
                     .append(Component.text(player.getName(), NamedTextColor.LIGHT_PURPLE))
                     .append(Component.text(" "))
@@ -80,7 +79,7 @@ public class PayCommand implements BasicCommand {
                     .append(Component.text(formatierteZahl, NamedTextColor.GOLD))
                     .append(Component.text("$.", NamedTextColor.GREEN)));
         }
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.GREEN))
                     .append(Component.text(formatierteZahl, NamedTextColor.GOLD))
                     .append(Component.text("$ von ", NamedTextColor.GREEN))
@@ -94,8 +93,9 @@ public class PayCommand implements BasicCommand {
                     .append(Component.text(" !", NamedTextColor.GREEN)));
             }
         }
+
     private void sendUsage(CommandSender sender) {
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/pay <Spieler> <Balance>");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/pay <Player> <Balance>");

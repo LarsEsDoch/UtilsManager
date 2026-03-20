@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.features.chunk;
 
 import dev.lars.apimanager.apis.chunkAPI.ChunkAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.limitAPI.LimitAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
@@ -707,7 +708,7 @@ public class ChunkCommand implements BasicCommand {
     }
 
     private boolean isGerman(Player player) {
-        return LanguageAPI.getApi().getLanguage(player) == 2;
+        return LanguageAPI.getApi().getLanguage(player) == Language.GERMAN;
     }
 
     private void sendMessage(Player player, String germanText, String englishText, NamedTextColor color) {

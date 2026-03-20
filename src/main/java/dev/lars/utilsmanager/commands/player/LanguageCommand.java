@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -35,13 +36,13 @@ public class LanguageCommand implements BasicCommand {
 
         switch (args[0].toLowerCase()) {
             case "deutsch", "german": {
-                LanguageAPI.getApi().setLanguage(player, 2);
+                LanguageAPI.getApi().setLanguage(player, Language.GERMAN);
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Server ist für dich nun ", NamedTextColor.GRAY))
                         .append(Component.text("Deutsch", NamedTextColor.YELLOW)));
                 break;
             }
             case "english", "englisch": {
-                LanguageAPI.getApi().setLanguage(player, 1);
+                LanguageAPI.getApi().setLanguage(player, Language.ENGLISH);
                 player.sendMessage(Statements.getPrefix().append(Component.text("The Server is now for you ", NamedTextColor.GRAY))
                         .append(Component.text("english!", NamedTextColor.BLUE)));
                 break;
@@ -54,7 +55,7 @@ public class LanguageCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         Player player = (Player) sender;
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/language deutsch/englisch", NamedTextColor.BLUE)));

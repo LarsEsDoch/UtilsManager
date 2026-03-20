@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.moderation;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -39,7 +40,7 @@ public class KickCommand implements BasicCommand {
         Player kickPlayer = Bukkit.getPlayer(args[0]);
 
         if (kickPlayer == null) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(NamedTextColor.RED + "Der Spieler ist nicht online!");
             } else {
                 player.sendMessage(NamedTextColor.RED + "The Player isn't online!");
@@ -75,12 +76,12 @@ public class KickCommand implements BasicCommand {
         }
 
         if (RankAPI.getApi().getRankId(kickPlayer) > RankAPI.getApi().getRankId(player)) {
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du darfst diesen Spieler nicht kicken!", NamedTextColor.RED)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("You aren't allowed to kick this player!", NamedTextColor.RED)));
             }
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 kickPlayer.sendMessage(Statements.getPrefix().append(Component.text("Achtung! Der Spieler ", NamedTextColor.RED))
                         .append(RankStatements.getRank(player))
                         .append(Component.text(player.getName()))
@@ -95,7 +96,7 @@ public class KickCommand implements BasicCommand {
         }
 
         if (time == 0) {
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler", NamedTextColor.WHITE))
                         .append(RankStatements.getRank(kickPlayer))
                         .append(Component.text(kickPlayer.getName()))
@@ -114,7 +115,7 @@ public class KickCommand implements BasicCommand {
             int hours = (time / 3600);
             String formatedTime = String.format("%02dh %02dm %02ds", hours, minutes, seconds);
             kickPlayer.kick(reasonComponent.append(Component.text("\n Time to wait: " + formatedTime + "!", NamedTextColor.GOLD)));
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler ", NamedTextColor.WHITE))
                         .append(RankStatements.getRank(kickPlayer))
                         .append(Component.text(kickPlayer.getName()))
@@ -169,7 +170,7 @@ public class KickCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         Player player = (Player) sender;
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/kick <Spieler> (<Grund>) (<Länge in Sec>)");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/kick <Player> (<Reason>) (<Period in sec>)");

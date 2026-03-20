@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.features.moderation;
 
 import dev.lars.apimanager.apis.banAPI.BanAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -33,14 +34,14 @@ public class UnbanCommand implements BasicCommand {
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
         if (offlinePlayer == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED)));
             } else {
                 sendplayer.sendMessage(Statements.getPrefix().append(Component.text("The player doesn't exists!", NamedTextColor.RED)));
             }
             return;
         }
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                     .append(Component.text(offlinePlayer.getName(), NamedTextColor.GREEN))
                     .append(Component.text(" entbannt.", NamedTextColor.WHITE)));
@@ -67,7 +68,7 @@ public class UnbanCommand implements BasicCommand {
     }
 
     private void sendUsage(Player sendplayer) {
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sendplayer.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/unban <Spieler>", NamedTextColor.BLUE)));

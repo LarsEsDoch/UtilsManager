@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.rank;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -23,7 +24,7 @@ public class RankManager {
                 if (expiresAt.compareTo(now) <= 0) {
                     int rankId = RankAPI.getApi().getRankId(player);
                     RankAPI.getApi().setRank(player, rankId-1, 182);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.kick(Component.text("Du bist nun ein ", NamedTextColor.RED)
                                 .append(RankStatements.getCleanRank(player))
                                 .append(Component.text("mehr!", NamedTextColor.RED)));

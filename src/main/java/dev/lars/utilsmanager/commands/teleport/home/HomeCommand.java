@@ -1,7 +1,9 @@
 package dev.lars.utilsmanager.commands.teleport.home;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtStatus;
 import dev.lars.apimanager.apis.homeAPI.HomeAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import dev.lars.utilsmanager.utils.SuggestHelper;
@@ -36,14 +38,14 @@ public class HomeCommand implements BasicCommand {
             sendUsage(player);
             return;
         }
-        if (CourtAPI.getApi().getStatus(player) == 5) {
+        if (CourtAPI.getApi().getStatus(player) == CourtStatus.IMPRISONED) {
             player.sendMessage(Statements.getNotAllowed(player));
             return;
         }
 
         String HomeName = args[0];
         if (!HomeAPI.getApi().doesHomeExist(HomeName)) {
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Home ", NamedTextColor.RED))
                         .append(Component.text(HomeName, NamedTextColor.YELLOW))
                         .append(Component.text(" existiert nicht!", NamedTextColor.RED)));
@@ -57,7 +59,7 @@ public class HomeCommand implements BasicCommand {
         Integer id = HomeAPI.getApi().getHomeId(player, HomeName);
         Location loc = HomeAPI.getApi().getHomeLocation(id);
         player.teleport(loc);
-        if(LanguageAPI.getApi().getLanguage(player) == 2) {
+        if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest zum Homepunkt ", NamedTextColor.AQUA))
                     .append(Component.text(HomeName, NamedTextColor.GREEN))
                     .append(Component.text(" teleportiert.", NamedTextColor.AQUA)));
@@ -94,7 +96,7 @@ public class HomeCommand implements BasicCommand {
     }
 
     private void sendUsage(Player sender){
-        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/home <Name>", NamedTextColor.BLUE)));

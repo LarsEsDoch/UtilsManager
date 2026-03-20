@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.admin;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -54,7 +55,7 @@ public class NickCommand implements BasicCommand {
 
             UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
 
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix()
                         .append(Component.text("Du hast deinen Nickname zurückgesetzt.", NamedTextColor.WHITE)));
             } else {
@@ -82,7 +83,7 @@ public class NickCommand implements BasicCommand {
 
         UtilsManager.getInstance().getTablistManager().setAllPlayerTeams();
 
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix()
                     .append(Component.text("Dein Nickname ist nun: ", NamedTextColor.WHITE))
                     .append(Component.text(nickname, NamedTextColor.GOLD))
@@ -96,7 +97,7 @@ public class NickCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getUsage(player)
                     .append(Component.text("/nick <Name>/reset", NamedTextColor.BLUE)));
         } else {

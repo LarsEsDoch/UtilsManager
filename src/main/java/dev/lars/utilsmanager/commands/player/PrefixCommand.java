@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
@@ -199,7 +200,7 @@ public class PrefixCommand implements BasicCommand {
         switch (args[0].toLowerCase()) {
             case "black": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.BLACK);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Schwarz", NamedTextColor.BLACK))
@@ -214,7 +215,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "dark_blue": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_BLUE);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("dunkel Blau", NamedTextColor.DARK_BLUE))
@@ -229,7 +230,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "dark_green": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_GREEN);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("dunkel Grün", NamedTextColor.DARK_GREEN))
@@ -244,7 +245,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "dark_aqua": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_AQUA);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("dunkel Türkis", NamedTextColor.DARK_AQUA))
@@ -259,7 +260,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "dark_red": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("dunkel Rot", NamedTextColor.DARK_RED))
@@ -274,7 +275,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "dark_purple": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_PURPLE);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("dunkel lila", NamedTextColor.DARK_PURPLE))
@@ -289,7 +290,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "gold": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.GOLD);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Gold", NamedTextColor.GOLD))
@@ -304,7 +305,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "gray": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.GRAY);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Grau", NamedTextColor.GRAY))
@@ -319,7 +320,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "dark_gray": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_GRAY);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("dunkel Grau", NamedTextColor.DARK_GRAY))
@@ -334,7 +335,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "blue": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.BLUE);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Blau", NamedTextColor.BLUE))
@@ -349,7 +350,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "green": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.GREEN);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Grün", NamedTextColor.GREEN))
@@ -364,7 +365,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "aqua": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.AQUA);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Türkis", NamedTextColor.AQUA))
@@ -379,7 +380,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "red": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.RED);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Rot", NamedTextColor.RED))
@@ -394,7 +395,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "light_purple": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.LIGHT_PURPLE);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("hell Lila", NamedTextColor.LIGHT_PURPLE))
@@ -409,7 +410,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "yellow": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.YELLOW);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Gelb", NamedTextColor.YELLOW))
@@ -424,7 +425,7 @@ public class PrefixCommand implements BasicCommand {
             }
             case "white": {
                 PrefixAPI.getApi().setColor(player, NamedTextColor.WHITE);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast deinen Prefix auf ", NamedTextColor.WHITE))
                             .append(Component.text("Weiß", NamedTextColor.WHITE))
@@ -440,7 +441,7 @@ public class PrefixCommand implements BasicCommand {
             case "bold": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.BOLD)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.BOLD);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("fett", NamedTextColor.GRAY, TextDecoration.BOLD))
@@ -453,7 +454,7 @@ public class PrefixCommand implements BasicCommand {
                     }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.BOLD);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("fett", NamedTextColor.GRAY, TextDecoration.BOLD))
@@ -470,7 +471,7 @@ public class PrefixCommand implements BasicCommand {
             case "italic": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.ITALIC)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.ITALIC);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("kursiv", NamedTextColor.GRAY, TextDecoration.ITALIC))
@@ -483,7 +484,7 @@ public class PrefixCommand implements BasicCommand {
                     }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.ITALIC);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("kursiv", NamedTextColor.GRAY, TextDecoration.ITALIC))
@@ -500,7 +501,7 @@ public class PrefixCommand implements BasicCommand {
             case "obfuscated": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.OBFUSCATED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.OBFUSCATED);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("verschleiert", NamedTextColor.GRAY, TextDecoration.OBFUSCATED))
@@ -513,7 +514,7 @@ public class PrefixCommand implements BasicCommand {
                     }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.OBFUSCATED);
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("verschleiert", NamedTextColor.GRAY, TextDecoration.OBFUSCATED))
@@ -531,7 +532,7 @@ public class PrefixCommand implements BasicCommand {
             case "strikethrough": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.STRIKETHROUGH)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.STRIKETHROUGH);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("durchgestrichen", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
@@ -544,7 +545,7 @@ public class PrefixCommand implements BasicCommand {
                     }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.STRIKETHROUGH);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("durchgestrichen", NamedTextColor.WHITE, TextDecoration.STRIKETHROUGH))
@@ -561,7 +562,7 @@ public class PrefixCommand implements BasicCommand {
             case "underlined": {
                 if (PrefixAPI.getApi().getDecorations(player).contains(TextDecoration.UNDERLINED)) {
                     PrefixAPI.getApi().removeDecoration(player, TextDecoration.UNDERLINED);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("unterstrichen", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
@@ -574,7 +575,7 @@ public class PrefixCommand implements BasicCommand {
                     }
                 } else {
                     PrefixAPI.getApi().addDecoration(player, TextDecoration.UNDERLINED);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast den Prefix Dekoration ", NamedTextColor.WHITE))
                                 .append(Component.text("unterstrichen", NamedTextColor.WHITE, TextDecoration.UNDERLINED))
@@ -620,7 +621,7 @@ public class PrefixCommand implements BasicCommand {
                     PrefixAPI.getApi().setColor(player, NamedTextColor.DARK_RED);
                 }
                 PrefixAPI.getApi().setDecoration(player, null);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deinen Prefix zurückgesetzt.", NamedTextColor.GOLD)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("You´ve reset your prefix.", NamedTextColor.GOLD)));
@@ -668,7 +669,7 @@ public class PrefixCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getUsage(player).append(Component.text("/prefix <Farbe/Dekoration>", NamedTextColor.BLUE)));
         } else {
             player.sendMessage(Statements.getUsage(player).append(Component.text("/prefix <Color/Decoration>", NamedTextColor.BLUE)));

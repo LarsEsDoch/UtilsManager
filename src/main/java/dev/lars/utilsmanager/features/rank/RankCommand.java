@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.rank;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
@@ -48,7 +49,7 @@ public class RankCommand implements BasicCommand {
             try {
                 time = Integer.parseInt(args[2]);
             } catch (Exception e) {
-                if (LanguageAPI.getApi().getLanguage(sendplayer) == 1) {
+                if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Die Zeitspanne ist zu groß! (Max: 2147483647)", NamedTextColor.RED)));
                 } else {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("The timespan is to long! (Max: 2147483647)", NamedTextColor.RED)));
@@ -63,7 +64,7 @@ public class RankCommand implements BasicCommand {
 
         Player player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
                 sendplayer.sendMessage(Component.text("The Player dosen't exist!", NamedTextColor.RED));
@@ -129,7 +130,7 @@ public class RankCommand implements BasicCommand {
 
         RankAPI.getApi().setRank(player, rankID, time);
         if (rankID >= 5) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Rang von ", NamedTextColor.WHITE))
                         .append(Component.text(player.getName(), NamedTextColor.LIGHT_PURPLE))
                         .append(Component.text(" auf ", NamedTextColor.WHITE))
@@ -147,7 +148,7 @@ public class RankCommand implements BasicCommand {
                         .append(Component.text(" days.", NamedTextColor.WHITE)));
             }
         } else {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Rang von ", NamedTextColor.WHITE))
                         .append(Component.text(player.getName(), NamedTextColor.LIGHT_PURPLE))
                         .append(Component.text(" auf ", NamedTextColor.WHITE))
@@ -192,7 +193,7 @@ public class RankCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setrank <Spieler> <Rang> <Zeit>");
         } else {
             player.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setrank <player> <rank> <time>");

@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.teleport.spawn;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.utils.Statements;
@@ -27,7 +28,7 @@ public class SetSpawnCommand implements BasicCommand {
 
         Location loc = player.getLocation();
         ServerStateAPI.getApi().setSpawnLocation(loc);
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Der Spawn wurde erfolgreich gesetzt.", NamedTextColor.GREEN)));
         } else {
             player.sendMessage(Statements.getPrefix().append(Component.text("Spawn was successfully set!", NamedTextColor.GREEN)));

@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.RankStatements;
 import dev.lars.utilsmanager.utils.Statements;
@@ -34,7 +35,7 @@ public class SudoCommand implements BasicCommand {
             return;
         }
         if (Bukkit.getPlayer(args[0]) == null) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
             } else {
                 player.sendMessage(NamedTextColor.RED + "The Player doesn't exist!");
@@ -52,7 +53,7 @@ public class SudoCommand implements BasicCommand {
                 onlinePlayer.sendMessage(RankStatements.getRank(sudo).append(Component.text(">: ", NamedTextColor.DARK_GRAY))
                         .append(Component.text(sudoMessage.toString(), NamedTextColor.WHITE)));
             }
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Spieler ", NamedTextColor.WHITE))
                         .append(RankStatements.getRank(sudo))
                         .append(Component.text(" hat die Nachricht ", NamedTextColor.WHITE))
@@ -71,7 +72,7 @@ public class SudoCommand implements BasicCommand {
                 sudoArgs += args[i] + " ";
             }
             sudo.performCommand(sudoArgs);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Der Spieler ", NamedTextColor.WHITE))
                         .append(RankStatements.getRank(sudo))
                         .append(Component.text(" hat den Befehl ", NamedTextColor.WHITE))
@@ -101,8 +102,8 @@ public class SudoCommand implements BasicCommand {
         return Collections.emptyList();
     }
 
-    private void sendUsage(CommandSender sender) {
-        if (LanguageAPI.getApi().getLanguage((Player) sender) == 2) {
+    private void sendUsage(Player sender) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/sudo <Spieler> <Befehl> <Argumente>");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/sudo <player> <arguments>");

@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.features.moderation;
 
 import dev.lars.apimanager.apis.banAPI.BanAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -39,7 +40,7 @@ public class BanCommand implements BasicCommand {
 
         player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
                 sendplayer.sendMessage(Component.text("This player dosen't exits!", NamedTextColor.RED));
@@ -66,12 +67,12 @@ public class BanCommand implements BasicCommand {
         }
         if(RankAPI.getApi().getRankId(sendplayer) == 8) {
             if(RankAPI.getApi().getRankId(player) > 8) {
-                if(LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+                if(LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du darfst diesen Spieler nicht bannen!", NamedTextColor.RED)));
                 } else {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You aren't allowed to ban this player!", NamedTextColor.RED)));
                 }
-                if(LanguageAPI.getApi().getLanguage(player) == 2) {
+                if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Achtung! Der Spieler ", NamedTextColor.RED))
                             .append(Component.text(RankStatements.getRank(sendplayer) + sendplayer.getName()))
                             .append(Component.text(" hat versucht dich zu bannen!", NamedTextColor.RED)));
@@ -85,12 +86,12 @@ public class BanCommand implements BasicCommand {
         }
         if(RankAPI.getApi().getRankId(sendplayer) == 9) {
             if(RankAPI.getApi().getRankId(player) > 9) {
-                if(LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+                if(LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du darfst diesen Spieler nicht bannen!", NamedTextColor.RED)));
                 } else {
                     sendplayer.sendMessage(Statements.getPrefix().append(Component.text("You aren't allowed to ban this player!", NamedTextColor.RED)));
                 }
-                if(LanguageAPI.getApi().getLanguage(player) == 2) {
+                if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Achtung! Der Spieler ", NamedTextColor.RED))
                             .append(Component.text(RankStatements.getRank(sendplayer) + sendplayer.getName()))
                             .append(Component.text(" hat versucht dich zu bannen!", NamedTextColor.RED)));
@@ -102,7 +103,7 @@ public class BanCommand implements BasicCommand {
                 return;
             }
         }
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.YELLOW))
                     .append(Component.text(RankStatements.getRank(player) + player.getName()))
                     .append(Component.text(" für ", NamedTextColor.YELLOW))
@@ -125,7 +126,7 @@ public class BanCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/ban <Spieler> <Zeit> <Grund>", NamedTextColor.BLUE)));

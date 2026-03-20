@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -30,7 +31,7 @@ public class VanishCommand implements BasicCommand {
             PlayerIdentityAPI.getApi().setVanished(player, false);
 
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (LanguageAPI.getApi().getLanguage(p) == 2) {
+                if (LanguageAPI.getApi().getLanguage(p) == Language.GERMAN) {
                     p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
                             .append(Component.text(" hat den Server betreten.", NamedTextColor.WHITE)));
                 } else {
@@ -54,7 +55,7 @@ public class VanishCommand implements BasicCommand {
                 UtilsManager.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
             });
 
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun für alle wieder ", NamedTextColor.WHITE))
                         .append(Component.text("sichtbar ", NamedTextColor.GRAY)).append(Component.text("!", NamedTextColor.WHITE)));
             } else {
@@ -66,7 +67,7 @@ public class VanishCommand implements BasicCommand {
             PlayerIdentityAPI.getApi().setVanished(player, true);
 
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                     onlinePlayer.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
                             .append(Component.text(" hat den Server verlassen.", NamedTextColor.WHITE)));
                 } else {
@@ -97,7 +98,7 @@ public class VanishCommand implements BasicCommand {
                 UtilsManager.getInstance().getDiscordBot().sendPlayerMessage(String.valueOf(message));
             });
 
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist nun für alle ", NamedTextColor.WHITE))
                                 .append(Component.text("unsichtbar ", NamedTextColor.GRAY)).append(Component.text("!", NamedTextColor.WHITE)));
             } else {

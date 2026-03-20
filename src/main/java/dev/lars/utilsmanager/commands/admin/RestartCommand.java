@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
@@ -45,7 +46,7 @@ public class RestartCommand implements BasicCommand {
         }
 
         if (delay > 120) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Component.text("Du kannst diese Nummer nicht benutzten! Max allowed is 120!", NamedTextColor.RED));
             } else {
                 player.sendMessage(Component.text("Cant use this number! Der maximal zulässige Wert beträgt 120!", NamedTextColor.RED));
@@ -55,7 +56,7 @@ public class RestartCommand implements BasicCommand {
 
         if (!(delay == 1 || delay == 2 || delay == 3 || delay == 4 || delay == 5 || delay == 10 || delay == 30 || delay == 60 || delay == 90 || delay == 120)) {
             for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     onlinePlayer.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Server wird in ", NamedTextColor.GOLD))
                             .append(Component.text(delay, NamedTextColor.DARK_RED))
@@ -76,7 +77,7 @@ public class RestartCommand implements BasicCommand {
         Bukkit.getScheduler().runTaskTimer(UtilsManager.getInstance(), bukkitTask -> {
             if (delay == 120 || delay == 90 || delay == 60 || delay == 30 || delay == 10 || delay == 5 || delay == 4 || delay == 3 || delay == 2 || delay == 1) {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         onlinePlayer.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Server wird in ", NamedTextColor.GOLD))
                                 .append(Component.text(delay, NamedTextColor.DARK_RED))
@@ -96,7 +97,7 @@ public class RestartCommand implements BasicCommand {
             if (delay == 0) {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     Component kickMessage;
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         kickMessage = Component.text("Server wird neu gestartet...", NamedTextColor.GOLD);
                     } else {
                         kickMessage = Component.text("Server is restarting...", NamedTextColor.GOLD);
@@ -112,7 +113,7 @@ public class RestartCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         Player player = (Player) sender;
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/serverrestart <Verzögerung>", NamedTextColor.BLUE)));

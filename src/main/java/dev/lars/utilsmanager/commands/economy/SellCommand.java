@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.economy;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -74,7 +75,7 @@ public class SellCommand implements BasicCommand {
                         .mapToInt(ItemStack::getAmount).sum();
                 sellprice = 5 * number;
                 if (number > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Kupfer Barren! Dir fehlen " + (number - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Copper Ingots! You miss " + (number - existing) + ".");
@@ -85,7 +86,7 @@ public class SellCommand implements BasicCommand {
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(sellprice);
                 if (number >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
@@ -99,7 +100,7 @@ public class SellCommand implements BasicCommand {
                                 .append(Component.text(formatierteZahl + "$.", NamedTextColor.LIGHT_PURPLE)));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
@@ -124,7 +125,7 @@ public class SellCommand implements BasicCommand {
                         .mapToInt(ItemStack::getAmount).sum();
                 sellprice = 20 * number;
                 if (number > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Amethyst Scherben! Dir fehlen " + (number - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Amethyst Shards! You miss " + (number - existing) + ".");
@@ -135,7 +136,7 @@ public class SellCommand implements BasicCommand {
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(sellprice);
                 if (number >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
                                 .append(Component.text(" Amethyst Scherben verkauft, für ", NamedTextColor.WHITE))
@@ -149,7 +150,7 @@ public class SellCommand implements BasicCommand {
                                 .append(Component.text("$.")));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
                                 .append(Component.text(" Amethyst Scherbe verkauft, für ", NamedTextColor.WHITE))
@@ -174,7 +175,7 @@ public class SellCommand implements BasicCommand {
                         .mapToInt(ItemStack::getAmount).sum();
                 sellprice = 100 * number;
                 if (number > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Diamanten! Dir fehlen " + (number - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Diamonds! You miss " + (number - existing) + ".");
@@ -185,7 +186,7 @@ public class SellCommand implements BasicCommand {
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(sellprice);
                 if (number >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
                                 .append(Component.text(" Diamanten verkauft, für ", NamedTextColor.WHITE))
@@ -199,7 +200,7 @@ public class SellCommand implements BasicCommand {
                                 .append(Component.text("$.")));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
                                 .append(Component.text(" Diamant verkauft, für ", NamedTextColor.WHITE))
@@ -223,7 +224,7 @@ public class SellCommand implements BasicCommand {
                         .mapToInt(ItemStack::getAmount).sum();
                 sellprice = 1000 * number;
                 if (number > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Netherite Barren! Dir fehlen " + (number - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Netherite Ingots! You miss " + (number - existing) + ".");
@@ -234,7 +235,7 @@ public class SellCommand implements BasicCommand {
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(sellprice);
                 if (number >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
                                 .append(Component.text(" Netherite Barren verkauft, für ", NamedTextColor.WHITE))
@@ -248,7 +249,7 @@ public class SellCommand implements BasicCommand {
                                 .append(Component.text("$.")));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                                 .append(Component.text(number, NamedTextColor.GOLD))
                                 .append(Component.text(" Netherite Barren verkauft, für ", NamedTextColor.WHITE))
@@ -273,7 +274,7 @@ public class SellCommand implements BasicCommand {
                         .mapToInt(ItemStack::getAmount).sum();
                 sellprice = 7500 * number;
                 if (number > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Spawner! Dir fehlen " + (number - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Spawner! You miss " + (number - existing) + ".");
@@ -283,7 +284,7 @@ public class SellCommand implements BasicCommand {
                 inventory.removeItem(spawner);
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(sellprice);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                             .append(Component.text(number, NamedTextColor.GOLD))
                             .append(Component.text(" Spawner verkauft, für ", NamedTextColor.WHITE))
@@ -323,7 +324,7 @@ public class SellCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         Player player = (Player) sender;
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/buy copper, amethyst, diamond, netherite, spawner <Anzahl> (Anzahl max. 100000)");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/buy copper, amethyst, diamond, netherite, spawner <number> (number max. 100000)");

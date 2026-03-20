@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -34,7 +35,7 @@ public class InvseeCommand implements BasicCommand {
 
         player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
                 sendplayer.sendMessage(Component.text("The Player doesn't exist!", NamedTextColor.RED));
@@ -63,7 +64,7 @@ public class InvseeCommand implements BasicCommand {
     }
 
     private void sendUsage(Player sendplayer) {
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sendplayer.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/invsee <Spieler>");
         } else {
             sendplayer.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/invsee <player>");

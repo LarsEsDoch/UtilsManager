@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.economy;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -58,19 +59,19 @@ public class AddCoinsCommand implements BasicCommand {
             sendUsage(player);
             return;
         }
-        OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[0]);
+        Player offlinePlayer = Bukkit.getPlayer(args[0]);
         if (offlinePlayer == null) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
             } else {
                 player.sendMessage(NamedTextColor.RED + "The Player doesn't exist!");
             }
             return;
         }
-        EconomyAPI.getApi().increaseBalance((Player) offlinePlayer, addcoins);
+        EconomyAPI.getApi().increaseBalance(offlinePlayer, addcoins);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(addcoins);
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.BLUE))
                     .append(Component.text(offlinePlayer.getName(), NamedTextColor.LIGHT_PURPLE))
                     .append(Component.text(" "))
@@ -84,8 +85,8 @@ public class AddCoinsCommand implements BasicCommand {
                     .append(Component.text("$.", NamedTextColor.BLUE)));
         }
         if (offlinePlayer.isOnline()) {
-            Player player1 = (Player) offlinePlayer;
-            if (LanguageAPI.getApi().getLanguage((Player) player) == 2) {
+            Player player1 = offlinePlayer;
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player1.sendMessage(Statements.getPrefix().append(Component.text("Dir wurde ", NamedTextColor.BLUE))
                         .append(Component.text(formatierteZahl, NamedTextColor.GOLD))
                         .append(Component.text("$ auf dein Konto hinzugefügt.", NamedTextColor.BLUE)));
@@ -112,7 +113,7 @@ public class AddCoinsCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/addcoins <Spieler> <Balance>", NamedTextColor.BLUE)));

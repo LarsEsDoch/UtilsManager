@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.misc;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.progressionAPI.ProgressionAPI;
 import dev.lars.utilsmanager.utils.FormatNumbers;
@@ -26,7 +27,7 @@ public class DimensionListener implements Listener {
             if (now.isBefore(netherUnlockAt)) {
                 long seconds = Duration.between(now, netherUnlockAt).getSeconds();
                 Component time = FormatNumbers.formatDuration(seconds);
-                if (LanguageAPI.getApi().getLanguage(player ) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Component.text("Du kannst nicht in den Nether gehen!", NamedTextColor.RED));
                     player.sendMessage(Component.text("Der Nether wird freigeschaltet in ", NamedTextColor.YELLOW)
                             .append(time));
@@ -44,7 +45,7 @@ public class DimensionListener implements Listener {
             if (now.isBefore(endUnlockAt)) {
                 long seconds = Duration.between(now, endUnlockAt).getSeconds();
                 Component time = FormatNumbers.formatDuration(seconds);
-                if (LanguageAPI.getApi().getLanguage(player ) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Component.text("Du kannst nicht in das End gehen!", NamedTextColor.RED));
                     player.sendMessage(Component.text("Das End wird freigeschaltet in ", NamedTextColor.YELLOW)
                             .append(time));

@@ -73,7 +73,7 @@ public class FormatNumbers {
 
     public static Component formatMoney(int coins) {
         DecimalFormat formatter = new DecimalFormat("#,###");
-        String formatierteZahl = formatter.format(coins);
-        return Component.text(formatierteZahl + "$", NamedTextColor.GOLD);
+        String formatedNumber = formatter.format(coins);
+        return Component.text(formatedNumber + "$", NamedTextColor.GOLD);
     }
 }

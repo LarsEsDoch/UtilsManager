@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.realtime;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverFeatureAPI.ServerFeatureAPI;
 import dev.lars.utilsmanager.utils.Statements;
@@ -29,13 +30,13 @@ public class RealTimeCommand implements BasicCommand {
 
         if (sender instanceof Player player) {
             if (newState) {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Die echte Zeit ist nun aktiviert.", NamedTextColor.GRAY)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("The real Time is now enabled.", NamedTextColor.GRAY)));
                 }
             } else {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Die echte Zeit ist nun deaktiviert.", NamedTextColor.RED)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("The real Time is now disabled.", NamedTextColor.RED)));

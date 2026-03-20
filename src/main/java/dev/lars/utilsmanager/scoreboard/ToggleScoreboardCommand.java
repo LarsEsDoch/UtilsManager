@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.scoreboard;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.utilsmanager.utils.Statements;
@@ -20,7 +21,7 @@ public class ToggleScoreboardCommand implements BasicCommand {
         }
         if (PlayerSettingsAPI.getApi().getScoreboardToggle(player)) {
             PlayerSettingsAPI.getApi().setScoreboardToggle(player, false);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.kick(Statements.getPrefix().append(Component.text("Du hast nun ab dem nächsten join kein Scoreboard!", NamedTextColor.GRAY)));
             } else {
                 player.kick(Statements.getPrefix().append(Component.text("You haven´t after you next join a scoreboard!", NamedTextColor.GRAY)));
@@ -28,7 +29,7 @@ public class ToggleScoreboardCommand implements BasicCommand {
 
         } else {
             PlayerSettingsAPI.getApi().setScoreboardToggle(player,true);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.kick(Statements.getPrefix().append(Component.text("Du hast nun ab dem nächsten join ein Scoreboard!", NamedTextColor.GRAY)));
             } else {
                 player.kick(Statements.getPrefix().append(Component.text("You have after you next join a scoreboard!", NamedTextColor.GRAY)));

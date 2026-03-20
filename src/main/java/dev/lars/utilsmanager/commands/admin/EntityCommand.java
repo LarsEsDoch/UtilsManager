@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import dev.lars.utilsmanager.utils.SuggestHelper;
@@ -52,7 +53,7 @@ public class EntityCommand implements BasicCommand {
             for (int i = 0; i < amount; i++) {
                 player.getWorld().spawnEntity(player.getLocation(), entityType);
             }
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Erfolgreich ", NamedTextColor.WHITE))
                         .append(Component.text(amount, NamedTextColor.GREEN))
                         .append(Component.text(" " + entityType, NamedTextColor.BLUE))
@@ -64,7 +65,7 @@ public class EntityCommand implements BasicCommand {
                         .append(Component.text(".", NamedTextColor.WHITE)));
             }
         } catch (IllegalArgumentException e) {
-            if(LanguageAPI.getApi().getLanguage(player) == 2) {
+            if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Ungültiger Mob-Typ: " + args[0], NamedTextColor.WHITE)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Invalid Entity-Typ: " + args[0], NamedTextColor.WHITE)));
@@ -89,7 +90,7 @@ public class EntityCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getUsage(player)
                     .append(Component.text("/entity <Entität> <Anzahl>", NamedTextColor.BLUE))
             );

@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -20,7 +21,7 @@ public class QuitListener implements Listener {
         Player player = event.getPlayer();
         if (!PlayerIdentityAPI.getApi().isVanished(player)) {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                     onlinePlayer.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
                             .append(Component.text(" hat den Server verlassen.", NamedTextColor.WHITE)));
                 } else {

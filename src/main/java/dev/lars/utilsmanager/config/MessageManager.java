@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.config;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -18,7 +19,7 @@ public class MessageManager {
     private final MiniMessage mini = MiniMessage.miniMessage();
 
     private final Map<Integer, FileConfiguration> languages = new HashMap<>();
-    private final int defaultLangId = 1;
+    private final Language defaultLanguage = Language.ENGLISH;
 
     public MessageManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -39,25 +40,25 @@ public class MessageManager {
         languages.put(id, cfg);
     }
 
-    private int getPlayerLang(Player player) {
+    private Language getPlayerLang(Player player) {
         try {
-            return LanguageAPI.getApi().getLanguage(player); // 1 = EN, 2 = DE
+            return LanguageAPI.getApi().getLanguage(player);
         } catch (Exception e) {
-            return defaultLangId;
+            return defaultLanguage;
         }
     }
 
     public Component get(Player player, String key, Map<String, String> placeholders) {
-        int langId = getPlayerLang(player);
-        String raw = getRaw(langId, key);
-        if (raw == null && langId != defaultLangId)
-            raw = getRaw(defaultLangId, key);
+        Language language = getPlayerLang(player);
+        String raw = getRaw(language, key);
+        if (raw == null && language != defaultLanguage)
+            raw = getRaw(defaultLanguage, key);
         if (raw == null)
             raw = "<red>Missing translation: " + key + "</red>";
 
         if (raw.contains("{prefix}")) {
-            String prefix = getRaw(langId, "prefix");
-            if (prefix == null) prefix = getRaw(defaultLangId, "prefix");
+            String prefix = getRaw(language, "prefix");
+            if (prefix == null) prefix = getRaw(defaultLanguage, "prefix");
             if (prefix != null)
                 raw = raw.replace("{prefix}", prefix);
         }
@@ -75,8 +76,8 @@ public class MessageManager {
         return get(player, key, null);
     }
 
-    private String getRaw(int langId, String key) {
-        FileConfiguration cfg = languages.get(langId);
+    private String getRaw(Language language, String key) {
+        FileConfiguration cfg = languages.get(language.getId());
         if (cfg == null) return null;
         return cfg.getString(key);
     }

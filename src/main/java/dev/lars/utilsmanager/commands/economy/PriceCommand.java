@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.economy;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -23,7 +24,7 @@ public class PriceCommand implements BasicCommand {
             return;
         }
 
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix()
                     .append(Component.text("Kauf und Verkauf kosten:", NamedTextColor.GOLD, TextDecoration.BOLD)));
             player.sendMessage(Statements.getPrefix()

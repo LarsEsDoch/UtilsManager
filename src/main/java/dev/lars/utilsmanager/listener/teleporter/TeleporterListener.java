@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.teleporter;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -86,7 +87,7 @@ public class TeleporterListener implements Listener {
                                 10, 10, 10
                             ));
                             player.teleport(loc);
-                            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest zum Spawn teleportiert.", NamedTextColor.GREEN)));
                             } else {
                                 player.sendMessage(Statements.getPrefix().append(Component.text("You have been teleported to the spawn.", NamedTextColor.GREEN)));
@@ -104,7 +105,7 @@ public class TeleporterListener implements Listener {
                     return;
                 }
                 Component canceledMessage;
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     canceledMessage = Component.text("Abgebrochen!", NamedTextColor.RED);
                 } else {
                     canceledMessage = Component.text("Canceled!", NamedTextColor.RED);

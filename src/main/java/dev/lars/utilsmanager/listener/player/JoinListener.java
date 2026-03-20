@@ -2,6 +2,7 @@ package dev.lars.utilsmanager.listener.player;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.limitAPI.LimitAPI;
 import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
@@ -9,6 +10,8 @@ import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.apimanager.apis.playerSettingsAPI.PlayerSettingsAPI;
 import dev.lars.apimanager.apis.prefixAPI.PrefixAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
+import dev.lars.apimanager.apis.scoreboardSettingsAPI.ScoreboardSettingsAPI;
+import dev.lars.apimanager.apis.scoreboardSettingsAPI.ScoreboardSettingsAPIImpl;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.scoreboard.Scoreboard;
@@ -44,7 +47,7 @@ public class JoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UtilsManager.getInstance().getQuestManager().sendQuests(player);
-        if (PlayerSettingsAPI.getApi().getScoreboardToggle(player)) {
+        if (ScoreboardSettingsAPI.getApi().g) {
             new Scoreboard(player);
         }
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0));
@@ -79,7 +82,7 @@ public class JoinListener implements Listener {
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
                 }
             }
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 Bukkit.getScheduler().runTaskLater(UtilsManager.getInstance(), () -> showTitleGe(player), 35);
                 Component message = Component.text("Willkommen zurück!")
                         .color(NamedTextColor.GOLD);
@@ -113,7 +116,7 @@ public class JoinListener implements Listener {
                         .append(Component.text(" / ", NamedTextColor.GRAY))
                         .append(cmn));
 
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(text2);
                 } else {
                     player.sendMessage(text2e);
@@ -122,7 +125,7 @@ public class JoinListener implements Listener {
 
             if (!PlayerIdentityAPI.getApi().isVanished(player)) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (LanguageAPI.getApi().getLanguage(p) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(p) == Language.GERMAN) {
                         p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
                                 .append(Component.text(" hat den Server betreten.", NamedTextColor.WHITE)));
                     } else {
@@ -159,7 +162,7 @@ public class JoinListener implements Listener {
 
 
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (LanguageAPI.getApi().getLanguage(p) == 2) {
+            if (LanguageAPI.getApi().getLanguage(p) == Language.GERMAN) {
                 p.sendMessage(Statements.getPrefix().append(RankStatements.getRank(player))
                         .append(Component.text(" hat den Server zum ersten mal betreten.", NamedTextColor.WHITE)));
             } else {

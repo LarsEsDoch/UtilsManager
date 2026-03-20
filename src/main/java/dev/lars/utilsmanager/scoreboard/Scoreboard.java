@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.scoreboard;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerAPI.PlayerAPI;
 import dev.lars.apimanager.apis.questAPI.QuestAPI;
@@ -41,7 +42,7 @@ public class Scoreboard extends ScoreboardBuilder {
     @Override
     public void createScoreboard() {
         if (mode) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 setScore(Component.text("Dein Rang:", NamedTextColor.DARK_AQUA), 14);
             } else {
                 setScore(Component.text("Your rank:", NamedTextColor.DARK_AQUA), 14);
@@ -50,7 +51,7 @@ public class Scoreboard extends ScoreboardBuilder {
             setScore(Component.text(">> ", NamedTextColor.GRAY).append(RankStatements.getCleanRank(player)), 13);
             setScore(Component.text(""), 12);
 
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 setScore(Component.text("Deine Kontostand:", NamedTextColor.DARK_AQUA), 11);
             } else {
                 setScore(Component.text("Your balance:", NamedTextColor.DARK_AQUA), 11);
@@ -58,7 +59,7 @@ public class Scoreboard extends ScoreboardBuilder {
             setScore(Component.text(""), 10);
             setScore(Component.text(""), 9);
         } else {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 setScore(Component.text("Deine Tode:", NamedTextColor.DARK_AQUA), 11);
             } else {
                 setScore(Component.text("Your deaths:", NamedTextColor.DARK_AQUA), 11);
@@ -67,7 +68,7 @@ public class Scoreboard extends ScoreboardBuilder {
             setScore(Component.text(""), 9);
         }
 
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             setScore(Component.text("Serverzeit:", NamedTextColor.DARK_AQUA), 8);
         } else {
             setScore(Component.text("Servertime:", NamedTextColor.DARK_AQUA), 8);
@@ -75,7 +76,7 @@ public class Scoreboard extends ScoreboardBuilder {
         setScore(Component.text(""), 7);
         setScore(Component.text(""), 6);
 
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             setScore(Component.text("Spielzeit:", NamedTextColor.DARK_AQUA), 5);
         } else {
             setScore(Component.text("Playtime:", NamedTextColor.DARK_AQUA), 5);
@@ -84,7 +85,7 @@ public class Scoreboard extends ScoreboardBuilder {
         if (mode) {
             setScore(Component.text(""), 3);
 
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 setScore(Component.text("Tägliche Aufgabe:", NamedTextColor.DARK_AQUA), 2);
             } else {
                 setScore(Component.text("Daily quest:", NamedTextColor.DARK_AQUA), 2);
@@ -95,7 +96,7 @@ public class Scoreboard extends ScoreboardBuilder {
         } else {
             setScore(Component.text(""), 3);
 
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 setScore(Component.text("Deine Kordinaten:", NamedTextColor.DARK_AQUA), 2);
             } else {
                 setScore(Component.text("Your coordinates:", NamedTextColor.DARK_AQUA), 2);
@@ -149,7 +150,7 @@ public class Scoreboard extends ScoreboardBuilder {
             int minutes2 = (int) ((playtime % 3600) / 60);
             String playtimeString = String.format("%02dd %02dh %02dm", days, hours2, minutes2);
 
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 setScore(Component.text(">> ", NamedTextColor.GRAY)
                         .append(Component.text(playtimeString, NamedTextColor.GREEN)), 4);
             } else {
@@ -162,7 +163,7 @@ public class Scoreboard extends ScoreboardBuilder {
                 int hasNumber = QuestAPI.getApi().getProgress(player);
                 Component progressBar = getProgressBar(hasNumber, amount);
                 if (QuestAPI.getApi().isQuestComplete(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         setScore(Component.text(">> ", NamedTextColor.GRAY)
                                 .append(Component.text("Abgeschlossen!", NamedTextColor.GREEN, TextDecoration.BOLD)), 1);
                     } else {
@@ -174,7 +175,7 @@ public class Scoreboard extends ScoreboardBuilder {
                 }
 
                 int quest = QuestAPI.getApi().getQuest(player);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     setScore(Component.text(">> ", NamedTextColor.GRAY)
                             .append(Component.text(questsDe[quest], NamedTextColor.WHITE)), 0);
                 } else {

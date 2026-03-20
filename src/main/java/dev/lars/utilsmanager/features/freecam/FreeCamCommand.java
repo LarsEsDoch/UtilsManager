@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.freecam;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
@@ -27,13 +28,13 @@ public class FreeCamCommand implements BasicCommand {
 
         FreeCamManager freeCamManager = UtilsManager.getInstance().getFreeCamManager();
         if (!freeCamManager.enterFreeCam(player)) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du bist bereits im Kamera Modus!", NamedTextColor.RED)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("You're already in the Freecam mode!", NamedTextColor.RED)));
             }
         } else {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du befindest dich nun im Kamera Modus. Benutzte ", NamedTextColor.GREEN))
                         .append(Component.text("/freecamleave", NamedTextColor.AQUA).clickEvent(ClickEvent.runCommand("/freecamleave")))
                         .append(Component.text(" zum verlassen.", NamedTextColor.GREEN)));

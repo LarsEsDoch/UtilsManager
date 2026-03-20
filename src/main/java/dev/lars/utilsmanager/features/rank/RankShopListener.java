@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.features.rank;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.rankAPI.RankAPI;
 import dev.lars.utilsmanager.utils.Statements;
@@ -36,7 +37,7 @@ public class RankShopListener implements Listener {
             String id = clicked.getItemMeta().getPersistentDataContainer().get(rankKey, PersistentDataType.STRING);
             if (id == null) return;
 
-            int balance = EconomyAPI.getApi().getBalance(player);
+            long balance = EconomyAPI.getApi().getBalance(player);
             int price = switch (id) {
                 case "6premium" -> 500;
                 case "12premium" -> 900;
@@ -52,7 +53,7 @@ public class RankShopListener implements Listener {
             if (balance < price) {
                 Component message = Component.text()
                         .append(Component.text(
-                                LanguageAPI.getApi().getLanguage(player) == 2 ? "Du hast nicht genug Geld! Dir fehlen " :
+                                LanguageAPI.getApi().getLanguage(player) == Language.GERMAN ? "Du hast nicht genug Geld! Dir fehlen " :
                                 "You haven´t got enough money! You miss ", NamedTextColor.RED))
                         .append(Component.text(price - balance, NamedTextColor.YELLOW))
                         .append(Component.text("$.", NamedTextColor.RED)).build();
@@ -85,7 +86,7 @@ public class RankShopListener implements Listener {
                 default -> "";
             };
             String months = id.startsWith("6") ? "6 months" : "12 months";
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix()
                         .append(Component.text("Du hast den ", NamedTextColor.WHITE))
                         .append(Component.text(rankName + " ", NamedTextColor.GREEN))

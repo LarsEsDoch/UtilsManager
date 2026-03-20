@@ -6,6 +6,7 @@ import dev.lars.utilsmanager.utils.FormatNumbers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
@@ -50,7 +51,7 @@ public class BanManager {
         }, 20, 20);
     }
 
-    public void checkBanned(Player target) {
+    public void checkBanned(OfflinePlayer target) {
         if (BanAPI.getApi().isBanned(target)) {
             Instant now = Instant.now();
             Instant end = BanAPI.getApi().getExpiration(target);

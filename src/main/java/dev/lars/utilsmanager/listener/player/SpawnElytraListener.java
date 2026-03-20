@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverStateAPI.ServerStateAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -58,7 +59,7 @@ public class SpawnElytraListener implements Listener {
 
         event.setCancelled(true);
         player.setGliding(true);
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendActionBar(Component.text("Drücke ").append(Component.keybind("key.swapOffhand")).append(Component.text(" um zu boosten.")));
         } else {
             player.sendActionBar(Component.text("Press ").append(Component.keybind("key.swapOffhand")).append(Component.text(" to boost.")));

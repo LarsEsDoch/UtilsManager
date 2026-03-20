@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.CheckPlayers;
 import dev.lars.utilsmanager.utils.RankStatements;
@@ -34,14 +35,14 @@ public class HealCommand implements BasicCommand {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (CheckPlayers.checkPlayer(sender, target)) return;
-        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Spieler ", NamedTextColor.GREEN).append(RankStatements.getRank(target)).append(Component.text(target.getName(), NamedTextColor.GREEN)))
                     .append(Component.text(" geheilt!", NamedTextColor.GREEN)));
         } else {
             sender.sendMessage(Statements.getPrefix().append(Component.text("You healed the player ", NamedTextColor.GREEN).append(RankStatements.getRank(target)).append(Component.text(target.getName(), NamedTextColor.GREEN)))
                     .append(Component.text("!", NamedTextColor.GREEN)));
         }
-        if (LanguageAPI.getApi().getLanguage(target) == 2) {
+        if (LanguageAPI.getApi().getLanguage(target) == Language.GERMAN) {
             target.sendMessage(Statements.getPrefix().append(Component.text("Du wurdest geheilt!", NamedTextColor.GREEN)));
         } else {
             target.sendMessage(Statements.getPrefix().append(Component.text("You were healed!", NamedTextColor.GREEN)));
@@ -65,7 +66,7 @@ public class HealCommand implements BasicCommand {
     }
 
     private void sendUsage(Player sender) {
-        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(Statements.getUsage(sender)
                     .append(Component.text("/heal <Spieler>", NamedTextColor.BLUE)));
         } else {

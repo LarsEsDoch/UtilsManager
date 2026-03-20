@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.quest;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.questAPI.QuestAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -69,7 +70,7 @@ public class QuestManager implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String quest = generateQuest(player);
             if (!QuestAPI.getApi().isQuestComplete(player)) {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Deine tägliche Aufgabe ist: ", NamedTextColor.WHITE))
                             .append(Component.text(quest, NamedTextColor.GOLD)));
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast noch ", NamedTextColor.BLUE))
@@ -125,7 +126,7 @@ public class QuestManager implements Listener {
                 minutes = (diffInSeconds % 3600) / 60;
                 seconds = diffInSeconds % 60;
             }
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Deine tägliche Aufgabe ist: ", NamedTextColor.WHITE))
                         .append(Component.text(quest, NamedTextColor.GOLD)));
                 player.sendMessage(Statements.getPrefix().append(Component.text("Du hast noch ", NamedTextColor.BLUE))
@@ -176,7 +177,7 @@ public class QuestManager implements Listener {
             seconds = diffInSeconds % 60;
         }
         String quest = generateQuest(player);
-        /*if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        /*if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast deine tägliche Aufgabe abgeschlossen!", NamedTextColor.GREEN)));
             player.sendMessage(Statements.getPrefix().append(Component.text("Sie war: ", NamedTextColor.WHITE))
                     .append(Component.text(quest, NamedTextColor.GOLD)));
@@ -212,7 +213,7 @@ public class QuestManager implements Listener {
             if (Calendar.HOUR_OF_DAY == 6 && Calendar.MINUTE == 0) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     String quest = generateQuest(player);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Deine tägliche Aufgabe ist: ", NamedTextColor.WHITE))
                                 .append(Component.text(quest, NamedTextColor.GOLD)));
                     } else {
@@ -230,7 +231,7 @@ public class QuestManager implements Listener {
         Boolean complete;
         Instant now = Instant.now();
         if (Calendar.HOUR_OF_DAY < 6) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 return questsDe[QuestAPI.getApi().getQuest(player)];
             } else {
                 return questsEn[QuestAPI.getApi().getQuest(player)];
@@ -238,7 +239,7 @@ public class QuestManager implements Listener {
         } else {
             complete = QuestAPI.getApi().isQuestComplete(player);
             streak = QuestAPI.getApi().getStreak(player);
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 if (QuestAPI.getApi().getLastQuestDate(player).compareTo(now) < 0) {
                     if (!complete) {
                         quest = 0;
@@ -285,10 +286,10 @@ public class QuestManager implements Listener {
 
     private void setQuest(Player player, Integer quest) {
         String questName = "";
-        if (LanguageAPI.getApi().getLanguage(player) == 1) {
-            questName = questsEn[quest];
-        } else {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             questName = questsDe[quest];
+        } else {
+            questName = questsEn[quest];
         }
 
         if (quest == 0) {

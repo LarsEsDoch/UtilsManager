@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.maintenance;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.maintenanceAPI.MaintenanceAPI;
 import dev.lars.utilsmanager.UtilsManager;
@@ -10,6 +11,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
@@ -56,7 +58,7 @@ public class MaintenanceManager {
 
                 if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceStart)) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Die Server Wartung beginnt in ", NamedTextColor.AQUA))
                                     .append(formatedTime)
@@ -86,7 +88,7 @@ public class MaintenanceManager {
                     if (now.isBefore(maintenanceEnd)) {
                         if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceEnd)) {
                             for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                                     player.sendMessage(Statements.getPrefix()
                                             .append(Component.text("Die Server Wartung sollte voraussichtlich in ", NamedTextColor.AQUA))
                                             .append(formatedTime)
@@ -107,7 +109,7 @@ public class MaintenanceManager {
                         if (secondsUntilMaintenanceEnd != 0) {
                             if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceEnd)) {
                                 for (Player player : Bukkit.getOnlinePlayers()) {
-                                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                                         Component stopMaintenanceGermanCommand = Component.text("[Jetzt ausschalten]", NamedTextColor.DARK_RED)
                                                 .clickEvent(ClickEvent.runCommand("/maintenance off"))
                                                 .hoverEvent(HoverEvent.showText(Component.text("Alle Spieler können wieder beitreten und Discord Status Nachrichten werden gesendet!", NamedTextColor.YELLOW)));
@@ -135,7 +137,7 @@ public class MaintenanceManager {
                             }
                         } else {
                             for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                                     Component stopMaintenanceGermanCommand = Component.text("[Jetzt ausschalten]", NamedTextColor.DARK_RED)
                                             .clickEvent(ClickEvent.runCommand("/maintenance off"))
                                             .hoverEvent(HoverEvent.showText(Component.text("Alle Spieler können wieder beitreten und Discord Status Nachrichten werden gesendet!", NamedTextColor.YELLOW)));
@@ -166,7 +168,7 @@ public class MaintenanceManager {
                 if (MaintenanceAPI.getApi().isMaintenanceEnabled() && maintenanceDeadline != null && maintenanceDeadline.isBefore(now)) {
                     MaintenanceAPI.getApi().disableMaintenance();
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                             player.sendMessage(Component.text("Die Server Wartung wurde nun automatisch beendet!", NamedTextColor.GOLD));
                         } else {
                             player.sendMessage(Component.text("Server maintenance was now automatically ended!", NamedTextColor.GOLD));
@@ -181,7 +183,7 @@ public class MaintenanceManager {
                     Component formatedTime = FormatNumbers.formatDuration(secondsUntilMaintenanceDeadline);
                     if (COUNTDOWN_THRESHOLDS.contains(secondsUntilMaintenanceDeadline)) {
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Die Server Wartung wird in ", NamedTextColor.AQUA))
                                         .append(formatedTime)
@@ -204,8 +206,8 @@ public class MaintenanceManager {
         }, 20, 20);
     }
 
-    public static Component kickMessage(Player player) {
-        boolean german = LanguageAPI.getApi().getLanguage(player) == 2;
+    public static Component kickMessage(OfflinePlayer player) {
+        boolean german = LanguageAPI.getApi().getLanguage(player) == Language.GERMAN;
 
         Component message = Component.text(
                 german

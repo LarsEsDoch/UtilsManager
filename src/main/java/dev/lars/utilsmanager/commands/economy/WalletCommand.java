@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.economy;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -18,10 +19,6 @@ import java.util.Objects;
 
 public class WalletCommand implements BasicCommand {
 
-    private int coins;
-    private OfflinePlayer player;
-    private Player sendplayer;
-
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         Player sendplayer = (Player) stack.getSender();
@@ -30,12 +27,13 @@ public class WalletCommand implements BasicCommand {
             sendplayer.sendMessage(Statements.getNotAllowed(sendplayer));
             return;
         }
+        long coins;
         if (args.length == 0) {
 
             coins = EconomyAPI.getApi().getBalance(sendplayer);
             DecimalFormat formatter = new DecimalFormat("#,###");
             String formatierteZahl = formatter.format(coins);
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.AQUA))
                         .append(Component.text(formatierteZahl, NamedTextColor.GOLD))
                         .append(Component.text("$ auf deinem Konto.", NamedTextColor.AQUA)));
@@ -47,9 +45,9 @@ public class WalletCommand implements BasicCommand {
             return;
         }
 
-        player = Bukkit.getPlayer(args[0]);
+        OfflinePlayer player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(NamedTextColor.RED + "Der Spieler existiert nicht!");
             } else {
                 sendplayer.sendMessage(NamedTextColor.RED + "The Player dosen't exist!");
@@ -59,7 +57,7 @@ public class WalletCommand implements BasicCommand {
         coins = EconomyAPI.getApi().getBalance((Player) player);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(coins);
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sendplayer.sendMessage(Statements.getPrefix().append(Component.text(Objects.requireNonNull(player.getName()), NamedTextColor.LIGHT_PURPLE))
                     .append(Component.text(" hat ", NamedTextColor.AQUA))
                     .append(Component.text(formatierteZahl, NamedTextColor.GOLD))
@@ -72,9 +70,8 @@ public class WalletCommand implements BasicCommand {
         }
     }
 
-    private void sendUsage(CommandSender sender) {
-        Player sendplayer = (Player) sender;
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+    private void sendUsage(Player sender) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/wallet (<Spieler>)");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/wallet (<Player>)");

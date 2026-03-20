@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.RankStatements;
@@ -45,7 +46,7 @@ public class DeathListener implements Listener {
             int y = victim.getLocation().getBlockY();
             int z = victim.getLocation().getBlockZ();
 
-            boolean killerGerman = LanguageAPI.getApi().getLanguage(killer) == 2;
+            boolean killerGerman = LanguageAPI.getApi().getLanguage(killer) == Language.GERMAN;
             Component killerMessage = Component.text()
                     .append(Statements.getPrefix())
                     .append(Component.text(killerGerman ? "Du hast " : "You have killed ", NamedTextColor.DARK_RED))
@@ -53,7 +54,7 @@ public class DeathListener implements Listener {
                     .append(Component.text(killerGerman ? " getötet!" : "!", NamedTextColor.DARK_RED)).build();
             killer.sendMessage(killerMessage);
 
-            boolean victimGerman = LanguageAPI.getApi().getLanguage(victim) == 2;
+            boolean victimGerman = LanguageAPI.getApi().getLanguage(victim) == Language.GERMAN;
             Component victimMessage = Component.text()
                     .append(Statements.getPrefix())
                     .append(Component.text(victimGerman ? "Du wurdest von " : "You were killed by ", NamedTextColor.RED))
@@ -64,7 +65,7 @@ public class DeathListener implements Listener {
             victim.sendMessage(victimMessage);
 
             for (Player online : Bukkit.getOnlinePlayers()) {
-                boolean langGerman = LanguageAPI.getApi().getLanguage(online) == 2;
+                boolean langGerman = LanguageAPI.getApi().getLanguage(online) == Language.GERMAN;
                 Component broadcast = Component.text()
                         .append(Statements.getPrefix())
                         .append(victim.displayName().color(NamedTextColor.RED).decorate(TextDecoration.BOLD))
@@ -91,7 +92,7 @@ public class DeathListener implements Listener {
             monsterName = monsterName.replace('_', ' ');
 
             for (Player online : Bukkit.getOnlinePlayers()) {
-                boolean langGerman = LanguageAPI.getApi().getLanguage(online) == 2;
+                boolean langGerman = LanguageAPI.getApi().getLanguage(online) == Language.GERMAN;
                 Component msg = Component.text()
                         .append(Statements.getPrefix())
                         .append(RankStatements.getRank(online))

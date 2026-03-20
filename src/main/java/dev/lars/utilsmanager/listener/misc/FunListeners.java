@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.misc;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
@@ -58,7 +59,7 @@ public class FunListeners implements Listener {
             Player player = event.getPlayer();
             if (tntList.containsKey(player)) {
                 if (tntList.get(player) >= 2) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Warte bis zu Ende der aktuellen Stunde um mehr zu sprengen!", NamedTextColor.RED)));
                     } else {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Wait until the end of the current hour to explode more!", NamedTextColor.RED)));
@@ -117,7 +118,7 @@ public class FunListeners implements Listener {
                 if (checkCooldown(event.getPlayer())) return;
                 Player player = event.getPlayer();
                 if (entityList.containsKey(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast bereits die Entity ", NamedTextColor.RED))
                                 .append(Component.text( entityList.get(player).getType().name(), NamedTextColor.GREEN))
@@ -138,7 +139,7 @@ public class FunListeners implements Listener {
                 Entity entity = event.getRightClicked();
                 if (!(entity instanceof LivingEntity livingEntity)) return;
                 if (entity instanceof EnderDragon || entity instanceof Wither || entity instanceof Warden || entity instanceof Guardian) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Du kannst diesen Mob nicht fangen!", NamedTextColor.RED)));
                     } else {
                         player.sendMessage(Statements.getPrefix().append(Component.text("You can't catch this mob!", NamedTextColor.RED)));
@@ -146,7 +147,7 @@ public class FunListeners implements Listener {
                     return;
                 }
                 entityList.put(player, entity);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast erfolgreich die Entity ", NamedTextColor.WHITE))
                             .append(Component.text(entity.getType().name(), NamedTextColor.GREEN))
@@ -204,7 +205,7 @@ public class FunListeners implements Listener {
                     LivingEntity livingEntity = (LivingEntity) entity;
                     livingEntity.setAI(true);
                     entityList.remove(player);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast erfolgreich die Entity ", NamedTextColor.WHITE))
                                 .append(Component.text(entity.getType().name(), NamedTextColor.GREEN))

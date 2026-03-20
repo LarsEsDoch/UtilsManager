@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.RankStatements;
 import dev.lars.utilsmanager.utils.Statements;
@@ -41,7 +42,7 @@ public class MsgCommand implements BasicCommand {
             if (target != null && target.isOnline()) {
                 targets.add(target);
             } else {
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Component.text("Spieler " + name + " wurde nicht gefunden.", NamedTextColor.RED));
                 } else {
                     player.sendMessage(Component.text("Player " + name + " was not found.", NamedTextColor.RED));
@@ -50,7 +51,7 @@ public class MsgCommand implements BasicCommand {
         }
 
         if (targets.isEmpty()) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Component.text("Keiner der angegebenen Spieler ist online!", NamedTextColor.RED));
                 } else {
                     player.sendMessage(Component.text("None of the specified players are online!", NamedTextColor.RED));
@@ -85,7 +86,7 @@ public class MsgCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         Player player = (Player) sender;
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                     .append(Component.text("/msg <Spieler(,Spieler2,Spieler3,...) <message>", NamedTextColor.BLUE)));

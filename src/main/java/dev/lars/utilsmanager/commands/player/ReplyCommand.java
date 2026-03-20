@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.RankStatements;
 import dev.lars.utilsmanager.utils.Statements;
@@ -25,7 +26,7 @@ public class ReplyCommand implements BasicCommand {
         }
 
         if (args.length < 1) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Component.text("Verwendung: /r <Nachricht>", NamedTextColor.YELLOW));
             } else {
                 player.sendMessage(Component.text("Usage: /r <message>", NamedTextColor.YELLOW));
@@ -35,7 +36,7 @@ public class ReplyCommand implements BasicCommand {
 
         Set<UUID> last = MsgCommand.lastRecipients.get(player.getUniqueId());
         if (last == null || last.isEmpty()) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Component.text("⚠ Du hast niemandem, auf den du antworten kannst!", NamedTextColor.RED));
             } else {
                 player.sendMessage(Component.text("⚠ You have no one to reply to!", NamedTextColor.RED));
@@ -50,7 +51,7 @@ public class ReplyCommand implements BasicCommand {
                 .collect(Collectors.toSet());
 
         if (targets.isEmpty()) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Component.text("Deine letzten Empfänger sind nicht mehr online!", NamedTextColor.RED));
             } else {
                 player.sendMessage(Component.text("Your last recipients are no longer online!", NamedTextColor.RED));

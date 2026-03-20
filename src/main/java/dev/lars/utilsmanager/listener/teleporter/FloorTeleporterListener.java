@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.teleporter;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import net.kyori.adventure.text.Component;
@@ -161,7 +162,7 @@ public class FloorTeleporterListener implements Listener {
             "There are no teleporters above you!" :
             "There are no teleporters below you!";
 
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendActionBar(Component.text(messageKey, NamedTextColor.RED));
         } else {
             player.sendActionBar(Component.text(messageEn, NamedTextColor.RED));

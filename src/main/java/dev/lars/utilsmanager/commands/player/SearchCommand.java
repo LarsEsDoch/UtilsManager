@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.playerIdentityAPI.PlayerIdentityAPI;
 import dev.lars.utilsmanager.utils.RankStatements;
@@ -33,7 +34,7 @@ public class SearchCommand implements BasicCommand {
             return;
         }
 
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Alle Spieler die online sind:")));
             for (Player searchedPlayer: Bukkit.getOnlinePlayers()) {
                 if (PlayerIdentityAPI.getApi().isVanished(searchedPlayer)) continue;

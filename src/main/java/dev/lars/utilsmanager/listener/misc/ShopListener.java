@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.listener.misc;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import net.kyori.adventure.text.Component;
@@ -21,10 +22,9 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class ShopListener implements Listener {
 
-    int balence;
+    long balance;
     int price;
-    int sellprice;
-
+    int sellPrice;
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryKlick(InventoryClickEvent event) {
@@ -89,18 +89,18 @@ public class ShopListener implements Listener {
                 */
                 PlayerInventory inventory = player.getInventory();
                 ItemStack copper = new ItemStack(Material.COPPER_INGOT);
-                balence = EconomyAPI.getApi().getBalance(player);
+                balance = EconomyAPI.getApi().getBalance(player);
                 price = 10;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balence) + "$.");
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
+                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balance) + "$.");
                     } else {
-                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balence) + "$.");
+                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balance) + "$.");
                     }
                     return;
                 }
                 inventory.addItem(copper);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast ", NamedTextColor.GREEN))
                             .append(Component.text("1 ", NamedTextColor.GOLD))
@@ -119,18 +119,18 @@ public class ShopListener implements Listener {
             if (id.equalsIgnoreCase(buyamethyst)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD);
-                balence = EconomyAPI.getApi().getBalance(player);
+                balance = EconomyAPI.getApi().getBalance(player);
                 price = 30;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balence) + "$.");
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
+                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balance) + "$.");
                     } else {
-                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balence) + "$.");
+                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balance) + "$.");
                     }
                     return;
                 }
                 inventory.addItem(amethyst);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast ", NamedTextColor.GREEN))
                             .append(Component.text("1 ", NamedTextColor.GOLD))
@@ -149,18 +149,18 @@ public class ShopListener implements Listener {
             if (id.equalsIgnoreCase(buydiamond)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack diamond = new ItemStack(Material.DIAMOND);
-                balence = EconomyAPI.getApi().getBalance(player);
+                balance = EconomyAPI.getApi().getBalance(player);
                 price = 150;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balence) + "$.");
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
+                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balance) + "$.");
                     } else {
-                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balence) + "$.");
+                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balance) + "$.");
                     }
                     return;
                 }
                 inventory.addItem(diamond);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast ", NamedTextColor.GREEN))
                             .append(Component.text("1 ", NamedTextColor.GOLD))
@@ -179,18 +179,18 @@ public class ShopListener implements Listener {
             if (id.equalsIgnoreCase(buynetherite)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT);
-                balence = EconomyAPI.getApi().getBalance(player);
+                balance = EconomyAPI.getApi().getBalance(player);
                 price = 1250;
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balence) + "$.");
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
+                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balance) + "$.");
                     } else {
-                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balence) + "$.");
+                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balance) + "$.");
                     }
                     return;
                 }
                 inventory.addItem(netherite);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast ", NamedTextColor.GREEN))
                             .append(Component.text("1 ", NamedTextColor.GOLD))
@@ -209,18 +209,18 @@ public class ShopListener implements Listener {
             if (id.equalsIgnoreCase(buyspawner)) {
                 PlayerInventory inventory = player.getInventory();
                 ItemStack spawner = new ItemStack(Material.SPAWNER);
-                balence = EconomyAPI.getApi().getBalance(player);
+                balance = EconomyAPI.getApi().getBalance(player);
                 price = 10000;
-                if (price >= balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
-                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balence) + "$.");
+                if (price >= balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
+                        player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + (price - balance) + "$.");
                     } else {
-                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balence) + "$.");
+                        player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + (price - balance) + "$.");
                     }
                     return;
                 }
                 inventory.addItem(spawner);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast ", NamedTextColor.GREEN))
                             .append(Component.text("1 ", NamedTextColor.GOLD))
@@ -241,9 +241,9 @@ public class ShopListener implements Listener {
                 ItemStack copper = new ItemStack(Material.COPPER_INGOT);
                 int existing = inventory.all(Material.COPPER_INGOT).values().stream()
                         .mapToInt(ItemStack::getAmount).sum();
-                sellprice = 5;
+                sellPrice = 5;
                 if (1 > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Kupfer Barren! Dir fehlen " + (1 - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Copper Ingots! You miss " + (1 - existing) + ".");
@@ -251,20 +251,20 @@ public class ShopListener implements Listener {
                     return;
                 }
                 inventory.removeItem(copper);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Kupfer Barren verkauft, für ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice + "$.", NamedTextColor.LIGHT_PURPLE)));
+                            .append(Component.text(sellPrice + "$.", NamedTextColor.LIGHT_PURPLE)));
                 } else {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("You sold ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Copper Ingot, for ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice + "$.", NamedTextColor.LIGHT_PURPLE)));
+                            .append(Component.text(sellPrice + "$.", NamedTextColor.LIGHT_PURPLE)));
                 }
-                EconomyAPI.getApi().increaseBalance(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellPrice);
                 return;
             }
             if (id.equalsIgnoreCase(sellamethyst)) {
@@ -272,9 +272,9 @@ public class ShopListener implements Listener {
                 ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD);
                 int existing = inventory.all(Material.AMETHYST_SHARD).values().stream()
                         .mapToInt(ItemStack::getAmount).sum();
-                sellprice = 20;
+                sellPrice = 20;
                 if (1 > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Amethyst Scherben! Dir fehlen " + (1 - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Amethyst Shards! You miss " + (1 - existing) + ".");
@@ -282,20 +282,20 @@ public class ShopListener implements Listener {
                     return;
                 }
                 inventory.removeItem(amethyst);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Amethyst Scherbe verkauft, für ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.LIGHT_PURPLE))
+                            .append(Component.text(sellPrice, NamedTextColor.LIGHT_PURPLE))
                             .append(Component.text("$.")));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("You sold ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Amethyst Shard, for ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.LIGHT_PURPLE))
+                            .append(Component.text(sellPrice, NamedTextColor.LIGHT_PURPLE))
                             .append(Component.text("$.")));
                 }
-                EconomyAPI.getApi().increaseBalance(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellPrice);
                 return;
             }
             if (id.equalsIgnoreCase(selldiamond)) {
@@ -303,9 +303,9 @@ public class ShopListener implements Listener {
                 ItemStack diamond = new ItemStack(Material.DIAMOND);
                 int existing = inventory.all(Material.DIAMOND).values().stream()
                         .mapToInt(ItemStack::getAmount).sum();
-                sellprice = 100;
+                sellPrice = 100;
                 if (1 > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Diamanten! Dir fehlen " + (1 - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Diamonds! You miss " + (1 - existing) + ".");
@@ -313,20 +313,20 @@ public class ShopListener implements Listener {
                     return;
                 }
                 inventory.removeItem(diamond);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Diamant verkauft, für ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.AQUA))
+                            .append(Component.text(sellPrice, NamedTextColor.AQUA))
                             .append(Component.text("$.")));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("You sold ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Diamond, for ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.AQUA))
+                            .append(Component.text(sellPrice, NamedTextColor.AQUA))
                             .append(Component.text("$.")));
                 }
-                EconomyAPI.getApi().increaseBalance(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellPrice);
                 return;
             }
             if (id.equalsIgnoreCase(sellnetherite)) {
@@ -334,9 +334,9 @@ public class ShopListener implements Listener {
                 ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT);
                 int existing = inventory.all(Material.NETHERITE_INGOT).values().stream()
                         .mapToInt(ItemStack::getAmount).sum();
-                sellprice = 1000;
+                sellPrice = 1000;
                 if (1 > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Netherite Barren! Dir fehlen " + (1 - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Netherite Ingots! You miss " + (1 - existing) + ".");
@@ -344,20 +344,20 @@ public class ShopListener implements Listener {
                     return;
                 }
                 inventory.removeItem(netherite);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Netherite Barren verkauft, für ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.DARK_GRAY))
+                            .append(Component.text(sellPrice, NamedTextColor.DARK_GRAY))
                             .append(Component.text("$.")));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("You sold ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Netherite Ingot, for ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.DARK_GRAY))
+                            .append(Component.text(sellPrice, NamedTextColor.DARK_GRAY))
                             .append(Component.text("$.")));
                 }
-                EconomyAPI.getApi().increaseBalance(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellPrice);
                 return;
             }
             if (id.equalsIgnoreCase(sellspawner)) {
@@ -365,9 +365,9 @@ public class ShopListener implements Listener {
                 ItemStack spawner = new ItemStack(Material.SPAWNER);
                 int existing = inventory.all(Material.SPAWNER).values().stream()
                         .mapToInt(ItemStack::getAmount).sum();
-                sellprice = 7500;
+                sellPrice = 7500;
                 if (1 > existing) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Spawner! Dir fehlen " + (1 - existing) + ".");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough Spawner! You miss " + (1 - existing) + ".");
@@ -375,20 +375,20 @@ public class ShopListener implements Listener {
                     return;
                 }
                 inventory.removeItem(spawner);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" Spawner verkauft, für ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.BLACK))
+                            .append(Component.text(sellPrice, NamedTextColor.BLACK))
                             .append(Component.text("$.")));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("You sold ", NamedTextColor.WHITE))
                             .append(Component.text("1", NamedTextColor.GOLD))
                             .append(Component.text(" spawner, for ", NamedTextColor.WHITE))
-                            .append(Component.text(sellprice, NamedTextColor.BLACK))
+                            .append(Component.text(sellPrice, NamedTextColor.BLACK))
                             .append(Component.text("$.")));
                 }
-                EconomyAPI.getApi().increaseBalance(player, sellprice);
+                EconomyAPI.getApi().increaseBalance(player, sellPrice);
             }
         }
     }

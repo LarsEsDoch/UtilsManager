@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.listener.misc;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtStatus;
 import dev.lars.utilsmanager.UtilsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,8 +34,8 @@ public class StairClickListener implements Listener {
         if(!Objects.requireNonNull(event.getItem()).getType().equals(Material.PAPER)) return;
         player = event.getPlayer();
         for (Player player2: Bukkit.getOnlinePlayers()) {
-            Integer criminal = CourtAPI.getApi().getStatus(player2);
-            if (criminal == 3) {
+            CourtStatus courtStatus = CourtAPI.getApi().getStatus(player2);
+            if (courtStatus == CourtStatus.PROSECUTED) {
                 return;
             }
             if (Bukkit.getPlayer(CourtAPI.getApi().getProsecutor(player2)) == player) {
@@ -115,8 +116,8 @@ public class StairClickListener implements Listener {
 
         if (entity instanceof Player && dismounted instanceof ArmorStand) {
             for (Player player: Bukkit.getOnlinePlayers()) {
-                Integer criminal = CourtAPI.getApi().getStatus(player);
-                if (criminal == 3) {
+                CourtStatus courtStatus = CourtAPI.getApi().getStatus(player);
+                if (courtStatus == CourtStatus.PROSECUTED) {
                     event.setCancelled(true);
                     return;
                 }

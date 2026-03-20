@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.commands.admin;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.UtilsManager;
 import dev.lars.utilsmanager.utils.Statements;
@@ -63,13 +64,12 @@ public class AnnounceCommand implements BasicCommand {
                         .append(Component.text(">: ", NamedTextColor.DARK_GRAY))
                         .append(Component.text(message, NamedTextColor.WHITE)));
             }
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Es wurde deine Ankündigung erfolgreich jedem übermittelt!", NamedTextColor.GREEN)));
             } else {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Your announcement has been successfully sent to everyone!", NamedTextColor.GREEN)));
             }
         } else if (delay != 0 & repeat == 1) {
-
             Bukkit.getScheduler().runTaskLaterAsynchronously(UtilsManager.getInstance(), bukkitTask -> {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     onlinePlayer.sendMessage(Statements.getPrefix()
@@ -77,14 +77,14 @@ public class AnnounceCommand implements BasicCommand {
                             .append(Component.text(">: ", NamedTextColor.DARK_GRAY))
                             .append(Component.text(message, NamedTextColor.WHITE)));
                 }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Es wurde deine Ankündigung erfolgreich jedem übermittelt!", NamedTextColor.GREEN)));
                 } else {
                     player.sendMessage(Statements.getPrefix().append(Component.text("Your announcement has been successfully sent to everyone!", NamedTextColor.GREEN)));
                 }
             }, delay * 20L);
 
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix()
                         .append(Component.text("Deine Ankündigung wird in ", NamedTextColor.WHITE))
                         .append(Component.text(delay, NamedTextColor.AQUA))
@@ -109,7 +109,7 @@ public class AnnounceCommand implements BasicCommand {
                 }
                 timesDid[0]++;
                 if (timesDid[0] == finalRepeat) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Es wurde deine Ankündigung erfolgreich jedem mehrmals übermittelt!", NamedTextColor.GREEN)));
                     } else {
                         player.sendMessage(Statements.getPrefix().append(Component.text("Your announcement has been successfully sent multiple times to everyone!", NamedTextColor.GREEN)));
@@ -118,7 +118,7 @@ public class AnnounceCommand implements BasicCommand {
                 }
             }, delay * 20L, delay * 20L);
 
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix().append(Component.text("Deine Ankündigung wird ", NamedTextColor.WHITE))
                         .append(Component.text(repeat, NamedTextColor.DARK_AQUA))
                         .append(Component.text(" Mal jede ", NamedTextColor.WHITE))
@@ -135,7 +135,7 @@ public class AnnounceCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Component.text()
                     .append(Component.text("Verwendung").color(NamedTextColor.GRAY))
                     .append(Component.text(": ").color(NamedTextColor.DARK_GRAY))

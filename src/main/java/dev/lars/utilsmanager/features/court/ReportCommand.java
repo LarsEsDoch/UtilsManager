@@ -1,6 +1,8 @@
 package dev.lars.utilsmanager.features.court;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtStatus;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.RankStatements;
 import dev.lars.utilsmanager.utils.Statements;
@@ -22,8 +24,8 @@ public class ReportCommand implements BasicCommand {
             return;
         }
         for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
-            if(CourtAPI.getApi().getStatus(onlinePlayer) != 0) {
-                if(LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+            if(CourtAPI.getApi().getStatus(onlinePlayer) != CourtStatus.RELEASED) {
+                if(LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                     onlinePlayer.sendMessage(Statements.getPrefix().append(Component.text("Es wurde bereits jemand angeklagt!", NamedTextColor.RED)));
                 } else {
                     onlinePlayer.sendMessage(Statements.getPrefix().append(Component.text("Somebody is already accused!", NamedTextColor.RED)));
@@ -33,7 +35,7 @@ public class ReportCommand implements BasicCommand {
         }
         Player player = Bukkit.getPlayer(args[0]);
         if (!Bukkit.getOnlinePlayers().contains(player) || player == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
                 sendplayer.sendMessage(Component.text("The Player doesn't exist!", NamedTextColor.RED));
@@ -44,7 +46,7 @@ public class ReportCommand implements BasicCommand {
         for (int i = 1; i < args.length; i++) {
             reason += args[i] + " ";
         }
-        if(LanguageAPI.getApi().getLanguage(player) == 2) {
+        if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast ", NamedTextColor.WHITE))
                     .append(RankStatements.getRank(player).append(Component.text(player.getName())))
                     .append(Component.text(" angeklagt.", NamedTextColor.WHITE)));
@@ -53,17 +55,16 @@ public class ReportCommand implements BasicCommand {
                     .append(RankStatements.getRank(player).append(Component.text(player.getName())))
                     .append(Component.text(".", NamedTextColor.WHITE)));
         }
-        CourtAPI.getApi().setStatus(player, 1);
+        CourtAPI.getApi().setStatus(player, CourtStatus.REPORTED);
         CourtAPI.getApi().setReason(player, reason);
         CourtAPI.getApi().setProsecutor(player, sendplayer);
     }
 
     private void sendUsage(Player sender) {
-        if (LanguageAPI.getApi().getLanguage(sender) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/criminal <Spieler> <Grund>");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/criminal <player> <reason>");
         }
     }
-
 }

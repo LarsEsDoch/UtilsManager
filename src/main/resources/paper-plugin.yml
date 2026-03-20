@@ -100,3 +100,4 @@ permissions:
   utilsmanager.feature.freecam:
     default: false
   utilsmanager.feature.spawn.setspawn:
+    default: false

@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.listener.player;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.serverFeatureAPI.ServerFeatureAPI;
 import dev.lars.apimanager.apis.timerAPI.TimerAPI;
@@ -51,7 +52,7 @@ public class BedListener{
                     if (TimerAPI.getApi().isEnabled(player)) {
                         return;
                     }
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendActionBar(message);
                     } else {
                         player.sendActionBar(message2);

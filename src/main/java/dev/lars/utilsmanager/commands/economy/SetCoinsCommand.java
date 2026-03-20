@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.economy;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -49,7 +50,7 @@ public class SetCoinsCommand implements BasicCommand {
         setcoins = Integer.parseInt(args[1]);
         player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+            if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
                 sendplayer.sendMessage(Component.text("Der Spieler existiert nicht!", NamedTextColor.RED));
             } else {
                 sendplayer.sendMessage(Component.text("This player dosen't exits!", NamedTextColor.RED));
@@ -59,7 +60,7 @@ public class SetCoinsCommand implements BasicCommand {
         EconomyAPI.getApi().setBalance((Player) player, setcoins);
         DecimalFormat formatter = new DecimalFormat("#,###");
         String formatierteZahl = formatter.format(setcoins);
-        if (LanguageAPI.getApi().getLanguage(sendplayer) == 2) {
+        if (LanguageAPI.getApi().getLanguage(sendplayer) == Language.GERMAN) {
             sendplayer.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Kontostand von ", NamedTextColor.YELLOW))
                     .append(Component.text(player.getName(), NamedTextColor.LIGHT_PURPLE))
                     .append(Component.text(" auf ", NamedTextColor.YELLOW))
@@ -73,7 +74,7 @@ public class SetCoinsCommand implements BasicCommand {
                     .append(Component.text("$.", NamedTextColor.YELLOW)));
         }
         Player player1 = (Player) player;
-        if (LanguageAPI.getApi().getLanguage((Player) player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player1.sendMessage(Statements.getPrefix().append(Component.text("Dein Kontostand wurde auf ", NamedTextColor.YELLOW))
                     .append(Component.text(formatierteZahl, NamedTextColor.GOLD))
                     .append(Component.text("$ gesetzt.", NamedTextColor.YELLOW)));
@@ -85,8 +86,8 @@ public class SetCoinsCommand implements BasicCommand {
         return;
     }
 
-    private void sendUsage(CommandSender sender) {
-        if (LanguageAPI.getApi().getLanguage((Player) sender) == 2) {
+    private void sendUsage(Player sender) {
+        if (LanguageAPI.getApi().getLanguage(sender) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setcoins <Spieler> <Balance>");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/setcoins <Player> <Balance>");

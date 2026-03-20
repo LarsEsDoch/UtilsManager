@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.economy;
 
 import dev.lars.apimanager.apis.economyAPI.EconomyAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -22,10 +23,10 @@ import java.util.List;
 
 public class BuyCommand implements BasicCommand {
 
-    private int price;
-    private int balence;
-    private int nummber;
-    private int missing;
+    private long price;
+    private long balance;
+    private long number;
+    private long missing;
 
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
@@ -58,12 +59,12 @@ public class BuyCommand implements BasicCommand {
             }
         }
 
-        nummber = Integer.parseInt(args[1]);
-        if (nummber <= 0) {
+        number = Integer.parseInt(args[1]);
+        if (number <= 0) {
             sendUsage(player);
             return;
         }
-        if (nummber >= 100001) {
+        if (number >= 100001) {
             sendUsage(player);
             return;
         }
@@ -71,14 +72,14 @@ public class BuyCommand implements BasicCommand {
         switch (args[0].toLowerCase()) {
             case "copper": {
                 PlayerInventory inventory = player.getInventory();
-                ItemStack copper = new ItemStack(Material.COPPER_INGOT, nummber);
-                balence = EconomyAPI.getApi().getBalance(player);
-                price = 10 * nummber;
-                missing = price - balence;
+                ItemStack copper = new ItemStack(Material.COPPER_INGOT, (int) number);
+                balance = EconomyAPI.getApi().getBalance(player);
+                price = 10 * number;
+                missing = price - balance;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
                 String formatierteMissing = formatterm.format(missing);
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + formatierteMissing + "$.");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + formatierteMissing + "$.");
@@ -88,31 +89,31 @@ public class BuyCommand implements BasicCommand {
                 inventory.addItem(copper);
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(price);
-                if (nummber >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (number >= 1) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Kupfer Barren gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Copper Ingots, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Kupfer Barren gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Copper Ingot, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
@@ -123,14 +124,14 @@ public class BuyCommand implements BasicCommand {
             }
             case "amethyst": {
                 PlayerInventory inventory = player.getInventory();
-                ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD, nummber);
-                balence = EconomyAPI.getApi().getBalance(player);
-                price = 30 * nummber;
-                missing = price - balence;
+                ItemStack amethyst = new ItemStack(Material.AMETHYST_SHARD, (int) number);
+                balance = EconomyAPI.getApi().getBalance(player);
+                price = 30 * number;
+                missing = price - balance;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
                 String formatierteMissing = formatterm.format(missing);
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + formatierteMissing + "$.");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + formatierteMissing + "$.");
@@ -140,31 +141,31 @@ public class BuyCommand implements BasicCommand {
                 inventory.addItem(amethyst);
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(price);
-                if (nummber >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (number >= 1) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Amethyst Scherben gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Amethyst Shards, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Amethyst Scherbe gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Amethyst Shard, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
@@ -174,14 +175,14 @@ public class BuyCommand implements BasicCommand {
             }
             case "diamond": {
                 PlayerInventory inventory = player.getInventory();
-                ItemStack diamond = new ItemStack(Material.DIAMOND, nummber);
-                balence = EconomyAPI.getApi().getBalance(player);
-                price = 150 * nummber;
-                missing = price - balence;
+                ItemStack diamond = new ItemStack(Material.DIAMOND, (int) number);
+                balance = EconomyAPI.getApi().getBalance(player);
+                price = 150 * number;
+                missing = price - balance;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
                 String formatierteMissing = formatterm.format(missing);
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + formatierteMissing + "$.");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + formatierteMissing + "$.");
@@ -191,31 +192,31 @@ public class BuyCommand implements BasicCommand {
                 inventory.addItem(diamond);
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(price);
-                if (nummber >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (number >= 1) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Diamanten gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Diamonds, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Diamant gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Diamond, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
@@ -226,14 +227,14 @@ public class BuyCommand implements BasicCommand {
             }
             case "netherite": {
                 PlayerInventory inventory = player.getInventory();
-                ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT, nummber);
-                balence = EconomyAPI.getApi().getBalance(player);
-                price = 1250 * nummber;
-                missing = price - balence;
+                ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT, (int) number);
+                balance = EconomyAPI.getApi().getBalance(player);
+                price = 1250 * number;
+                missing = price - balance;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
                 String formatierteMissing = formatterm.format(missing);
-                if (price > balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (price > balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + formatierteMissing + "$.");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + formatierteMissing + "$.");
@@ -243,31 +244,31 @@ public class BuyCommand implements BasicCommand {
                 inventory.addItem(netherite);
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(price);
-                if (nummber >= 1) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (number >= 1) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Netherite Barren gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Netherite Ingots, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
                 } else {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Netherite Barren gekauft, für ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     } else {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("You bought ", NamedTextColor.GREEN))
-                                .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                                .append(Component.text(number + " ", NamedTextColor.GOLD))
                                 .append(Component.text("Netherite Ingot, for ", NamedTextColor.YELLOW))
                                 .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                     }
@@ -278,14 +279,14 @@ public class BuyCommand implements BasicCommand {
             }
             case "spawner": {
                 PlayerInventory inventory = player.getInventory();
-                ItemStack spawner = new ItemStack(Material.SPAWNER, nummber);
-                balence = EconomyAPI.getApi().getBalance(player);
-                price = 10000 * nummber;
-                missing = price - balence;
+                ItemStack spawner = new ItemStack(Material.SPAWNER, (int) number);
+                balance = EconomyAPI.getApi().getBalance(player);
+                price = 10000 * number;
+                missing = price - balance;
                 DecimalFormat formatterm = new DecimalFormat("#,###");
                 String formatierteMissing = formatterm.format(missing);
-                if (price >= balence) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (price >= balance) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.RED + "Du hast nicht genug Geld! Dir fehlen " + formatierteMissing + "$.");
                     } else {
                         player.sendMessage(NamedTextColor.RED + "You haven´t got enough money! You miss " + formatierteMissing + "$.");
@@ -295,16 +296,16 @@ public class BuyCommand implements BasicCommand {
                 inventory.addItem(spawner);
                 DecimalFormat formatter = new DecimalFormat("#,###");
                 String formatierteZahl = formatter.format(price);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Du hast ", NamedTextColor.GREEN))
-                            .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                            .append(Component.text(number + " ", NamedTextColor.GOLD))
                             .append(Component.text("Spawner gekauft, für ", NamedTextColor.YELLOW))
                             .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                 } else {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("You bought ", NamedTextColor.GREEN))
-                            .append(Component.text(nummber + " ", NamedTextColor.GOLD))
+                            .append(Component.text(number + " ", NamedTextColor.GOLD))
                             .append(Component.text("Spawner, for ", NamedTextColor.YELLOW))
                             .append(Component.text(formatierteZahl + "$", NamedTextColor.LIGHT_PURPLE)));
                 }
@@ -335,7 +336,7 @@ public class BuyCommand implements BasicCommand {
 
     private void sendUsage(CommandSender sender) {
         Player player = (Player) sender;
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/buy copper, amethyst, diamond, netherite, spawner <Anzahl> (Anzahl max. 100000)");
         } else {
             sender.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/buy copper, amethyst, diamond, netherite, spawner <number> (number max. 100000)");

@@ -1,6 +1,7 @@
 package dev.lars.utilsmanager.commands.teleport.home;
 
 import dev.lars.apimanager.apis.homeAPI.HomeAPI;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.utilsmanager.utils.Statements;
 import dev.lars.utilsmanager.utils.SuggestHelper;
@@ -41,7 +42,7 @@ public class DeleteHomeCommand implements BasicCommand {
                 : HomeAPI.getApi().doesOwnHomeExist(player, homeName);
 
         if (!homeExists) {
-            boolean german = LanguageAPI.getApi().getLanguage(player) == 2;
+            boolean german = LanguageAPI.getApi().getLanguage(player) == Language.GERMAN;
 
             Component message = Statements.getPrefix()
                     .append(Component.text(
@@ -57,7 +58,7 @@ public class DeleteHomeCommand implements BasicCommand {
         }
 
         HomeAPI.getApi().deleteHome(HomeAPI.getApi().getHomeId(player, homeName));
-        if(LanguageAPI.getApi().getLanguage(player) == 2) {
+        if(LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Du hast den Home ", NamedTextColor.YELLOW))
                     .append(Component.text(homeName, NamedTextColor.RED))
                     .append(Component.text(" gelöscht!", NamedTextColor.YELLOW)));
@@ -94,7 +95,7 @@ public class DeleteHomeCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getUsage(player)
                     .append(Component.text("/deletehome <Name>", NamedTextColor.BLUE)));
         } else {

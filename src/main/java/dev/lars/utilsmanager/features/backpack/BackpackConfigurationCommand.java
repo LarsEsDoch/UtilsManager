@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.features.backpack;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.limitAPI.LimitAPI;
 import dev.lars.utilsmanager.utils.Statements;
@@ -35,7 +36,7 @@ public class BackpackConfigurationCommand implements BasicCommand {
 
         int slots = Integer.parseInt(args[0]);
 
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(Statements.getPrefix().append(Component.text("Die Backpack Slots sind nun ", NamedTextColor.WHITE))
                     .append(Component.text(slots, NamedTextColor.GREEN)));
         } else {
@@ -48,7 +49,7 @@ public class BackpackConfigurationCommand implements BasicCommand {
     }
 
     private void sendUsage(CommandSender sender) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             sender.sendMessage(Component.text("Verwendung").color(NamedTextColor.GRAY)
                             .append(Component.text(": ").color(NamedTextColor.DARK_GRAY))
                             .append(Component.text("/setBpSlots ").color(NamedTextColor.BLUE))

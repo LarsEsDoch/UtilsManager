@@ -1,5 +1,6 @@
 package dev.lars.utilsmanager.utils;
 
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,7 +17,7 @@ public class Statements {
     }
 
     public static Component getUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             return Component.text("Verwendung", NamedTextColor.GRAY)
                     .append(Component.text(": ", NamedTextColor.DARK_GRAY));
         } else {
@@ -26,14 +27,14 @@ public class Statements {
     }
 
     public static Component getNotAllowed(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             return Component.text("Du bist nicht berechtigt um das auszuführen!", NamedTextColor.RED);
         } else {
-            return Component.text("You aren´t allowed to do that!", NamedTextColor.RED);
+            return Component.text("You aren't allowed to do that!", NamedTextColor.RED);
         }
     }
 
     public static Component getOnlyPlayers() {
-        return Component.text("Only player can send Messages.", NamedTextColor.RED);
+        return Component.text("Only player can use this command.", NamedTextColor.RED);
     }
 }

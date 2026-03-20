@@ -1,6 +1,8 @@
 package dev.lars.utilsmanager.features.timer;
 
 import dev.lars.apimanager.apis.courtAPI.CourtAPI;
+import dev.lars.apimanager.apis.courtAPI.CourtStatus;
+import dev.lars.apimanager.apis.languageAPI.Language;
 import dev.lars.apimanager.apis.languageAPI.LanguageAPI;
 import dev.lars.apimanager.apis.timerAPI.ITimerAPI;
 import dev.lars.apimanager.apis.timerAPI.TimerAPI;
@@ -14,6 +16,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -31,8 +34,8 @@ public class TimerCommand implements BasicCommand {
             return;
         }
 
-        if (CourtAPI.getApi().getStatus(player) != 0) {
-            if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (CourtAPI.getApi().getStatus(player) != CourtStatus.RELEASED) {
+            if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                 player.sendMessage(Statements.getPrefix()
                         .append(Statements.getPrefix()
                         ).append(Component.text("Du kannst das aktuell nicht machen!", NamedTextColor.RED)));
@@ -55,7 +58,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -67,7 +70,7 @@ public class TimerCommand implements BasicCommand {
                     }
                 }
                 if(!timer.isEnabled(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist ausgeschaltet!", NamedTextColor.RED)));
                     } else {
@@ -77,7 +80,7 @@ public class TimerCommand implements BasicCommand {
                     break;
                 }
                 if (timer.isRunning(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer läuft bereits!", NamedTextColor.RED)));
                     } else {
@@ -88,7 +91,7 @@ public class TimerCommand implements BasicCommand {
                 }
 
                 timer.setRunning(player, true);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Timer wurde gestartet.", NamedTextColor.WHITE)));
                 } else {
@@ -101,7 +104,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -113,7 +116,7 @@ public class TimerCommand implements BasicCommand {
                     }
                 }
                 if (!timer.isRunning(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer läuft nicht!", NamedTextColor.RED)));
                     } else {
@@ -124,7 +127,7 @@ public class TimerCommand implements BasicCommand {
                 }
 
                 timer.setRunning(player,false);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Timer wurde gestoppt.", NamedTextColor.WHITE)));
                 } else {
@@ -137,7 +140,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -149,7 +152,7 @@ public class TimerCommand implements BasicCommand {
                     }
                 }
                 if(args.length != 2) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer time <Zeit>");
                     } else {
                         player.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer time <time>");
@@ -159,7 +162,7 @@ public class TimerCommand implements BasicCommand {
 
                 Long seconds = TimeUtil.parseTimeToSeconds(args[1]);
                 if (seconds == null) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Ungültiges Zeitformat! Erwartetes Format: Zahl gefolgt von s/m/h/d (z. B. '30s', '5m', '2h', '7d')", NamedTextColor.RED)));
                     } else {
@@ -172,7 +175,7 @@ public class TimerCommand implements BasicCommand {
                 timer.setRunning(player,false);
                 if(timer.isTimerEnabled(player)) {
                     timer.setTime(player, Math.toIntExact(seconds));
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer wurde auf ", NamedTextColor.WHITE))
                                 .append(Component.text(args[1], NamedTextColor.GOLD))
@@ -186,7 +189,7 @@ public class TimerCommand implements BasicCommand {
 
                 } else {
                     timer.setTime(player, Math.toIntExact(seconds));
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Zeit wurde auf ", NamedTextColor.WHITE))
                                 .append(Component.text(args[1], NamedTextColor.GOLD))
@@ -204,7 +207,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -217,7 +220,7 @@ public class TimerCommand implements BasicCommand {
                 }
                 timer.setRunning(player,false);
                 timer.setTime(player,0);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Timer wurde zurückgesetzt.", NamedTextColor.WHITE)));
                 } else {
@@ -230,7 +233,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -242,7 +245,7 @@ public class TimerCommand implements BasicCommand {
                     }
                 }
                 if (timer.isTimerEnabled(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer Modus ist bereits aktiviert.", NamedTextColor.RED)));
                     } else {
@@ -253,7 +256,7 @@ public class TimerCommand implements BasicCommand {
                 }
                 timer.setTimer(player,true);
                 timer.setRunning(player,false);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Timer Modus ist nun aktiviert.", NamedTextColor.WHITE)));
                 } else {
@@ -266,7 +269,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -278,7 +281,7 @@ public class TimerCommand implements BasicCommand {
                     }
                 }
                 if (!timer.isTimerEnabled(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Stoppuhr Modus ist bereits aktiviert.", NamedTextColor.RED)));
                     } else {
@@ -289,7 +292,7 @@ public class TimerCommand implements BasicCommand {
                 }
                 timer.setTimer(player,false);
                 timer.setRunning(player,false);
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Stoppuhr Modus ist nun aktiviert.", NamedTextColor.WHITE)));
                 } else {
@@ -302,7 +305,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -315,7 +318,7 @@ public class TimerCommand implements BasicCommand {
                 }
                 timer.setRunning(player,false);
                 if (!timer.isEnabled(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist bereits ausgeschaltet!", NamedTextColor.RED)));
                     } else {
@@ -324,7 +327,7 @@ public class TimerCommand implements BasicCommand {
                     }
                     break;
                 }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Timer wurde ausgeschaltet.", NamedTextColor.WHITE)));
                 } else {
@@ -339,7 +342,7 @@ public class TimerCommand implements BasicCommand {
                 for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                         if (onlinePlayer != player) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                             } else {
@@ -351,7 +354,7 @@ public class TimerCommand implements BasicCommand {
                     }
                 }
                 if (timer.isEnabled(player)) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist bereits angeschaltet!", NamedTextColor.RED)));
                     } else {
@@ -360,7 +363,7 @@ public class TimerCommand implements BasicCommand {
                     }
                     break;
                 }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(Statements.getPrefix()
                             .append(Component.text("Der Timer wurde angeschaltet.", NamedTextColor.WHITE)));
                 } else {
@@ -377,7 +380,7 @@ public class TimerCommand implements BasicCommand {
                     return;
                 }
                 if(args.length != 2) {
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(NamedTextColor.WHITE + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer public <on/off>");
                     } else {
                         player.sendMessage(NamedTextColor.WHITE + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer public <on/off>");
@@ -387,7 +390,7 @@ public class TimerCommand implements BasicCommand {
                 if(args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("yes")
                     || args[1].equalsIgnoreCase("y") || args[1].equalsIgnoreCase("ja") || Objects.equals(args[1], "j")) {
                     if(TimerAPI.getApi().isPublic(player)) {
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Der Timer ist bereits öffentlich!", NamedTextColor.RED)));
                         } else {
@@ -398,7 +401,7 @@ public class TimerCommand implements BasicCommand {
                     }
                     for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                         if(TimerAPI.getApi().isPublic(onlinePlayer)) {
-                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                            if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                 player.sendMessage(Statements.getPrefix()
                                         .append(Component.text("Es gibt bereits einen öffentlichen Timer!", NamedTextColor.RED)));
                             } else {
@@ -414,7 +417,7 @@ public class TimerCommand implements BasicCommand {
                     }
                     timer.setRunning(player, true);
                     timer.setPublic(player, true);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer wurde veröffentlicht.", NamedTextColor.WHITE)));
                     } else {
@@ -429,7 +432,7 @@ public class TimerCommand implements BasicCommand {
                     for (Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                         if(TimerAPI.getApi().isPublic(onlinePlayer)) {
                             if (onlinePlayer != player) {
-                                if (LanguageAPI.getApi().getLanguage(onlinePlayer) == 2) {
+                                if (LanguageAPI.getApi().getLanguage(onlinePlayer) == Language.GERMAN) {
                                     player.sendMessage(Statements.getPrefix()
                                             .append(Component.text("Du bist nicht der Besitzer des aktuellen Timers!", NamedTextColor.RED)));
                                 } else {
@@ -442,7 +445,7 @@ public class TimerCommand implements BasicCommand {
                     }
 
                     if(!TimerAPI.getApi().isPublic(player)) {
-                        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                             player.sendMessage(Statements.getPrefix()
                                     .append(Component.text("Der Timer ist bereits nicht öffentlich!", NamedTextColor.RED)));
                         } else {
@@ -456,7 +459,7 @@ public class TimerCommand implements BasicCommand {
                         timer.setEnabled(onlinePlayer, false);
                     }
                     timer.setEnabled(player, true);
-                    if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                    if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                         player.sendMessage(Statements.getPrefix()
                                 .append(Component.text("Der Timer ist nicht mehr öffentlich.", NamedTextColor.WHITE)));
                     } else {
@@ -465,7 +468,7 @@ public class TimerCommand implements BasicCommand {
                     }
                     break;
                 }
-                if (LanguageAPI.getApi().getLanguage(player) == 2) {
+                if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
                     player.sendMessage(NamedTextColor.WHITE + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer public <on/off>");
                 } else {
                     player.sendMessage(NamedTextColor.WHITE + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer public <on/off>");
@@ -479,7 +482,7 @@ public class TimerCommand implements BasicCommand {
     }
 
     @Override
-    public @NotNull Collection<String> suggest(final @NotNull CommandSourceStack commandSourceStack, final String[] args) {
+    public @NotNull Collection<String> suggest(final @NotNull CommandSourceStack commandSourceStack, final String @NonNull [] args) {
          Player player = (Player) commandSourceStack.getSender();
          if (!player.hasPermission("utilsmanager.timer")) return Collections.emptyList();
 
@@ -526,7 +529,7 @@ public class TimerCommand implements BasicCommand {
     }
 
     private void sendUsage(Player player) {
-        if (LanguageAPI.getApi().getLanguage(player) == 2) {
+        if (LanguageAPI.getApi().getLanguage(player) == Language.GERMAN) {
             player.sendMessage(NamedTextColor.GRAY + "Verwendung" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer resume, stop, time <Zeit>, reset, off/on, timer, stopwatch");
         } else {
             player.sendMessage(NamedTextColor.GRAY + "Use" + NamedTextColor.DARK_GRAY + ": " + NamedTextColor.BLUE + "/timer resume, stop, time <time>, reset, off/on, timer, stopwatch");
